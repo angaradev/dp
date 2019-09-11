@@ -23,7 +23,7 @@ class Products(models.Model):
     car_model = models.CharField(max_length=50, null=True)
     cross = models.ManyToManyField(Cross, verbose_name="cross verbose name")
     price = models.FloatField(null=True, blank=True)
-    condition = models.BooleanField(default=True, null=True)
+    cond = models.BooleanField(default=True, null=True)
     weight = models.FloatField(blank=True, null=True)
     color = models.CharField(max_length=20, blank=True, null=True)
     real_weight = models.FloatField(blank=True, null=True)
