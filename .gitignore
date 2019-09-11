@@ -9,17 +9,8 @@
 __pycache__/
 local_settings.py
 db.sqlite3
-media
-dumps
-venezo
-my_static/img
-
-img
-
-media_root
 my.cnf
 *.swp
-settings.py
 # If your build process includes running collectstatic, then you probably don't need or want to include staticfiles/
 # in your Git repository. Update and uncomment the following line accordingly.
 # <django-project-name>/staticfiles/
