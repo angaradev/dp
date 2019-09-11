@@ -16,17 +16,17 @@ class Cross(models.Model):
 
 class Products(models.Model):
     cat = models.ManyToManyField(Categories)
-    name = models.CharField(max_length=255)
-    cat_n = models.CharField(max_length=255, blank=True)
-    brand = models.CharField(max_length=100)
-    car = models.CharField(max_length=50)
+    name = models.CharField(max_length=255, null=True)
+    cat_n = models.CharField(max_length=255, blank=True, null=True)
+    brand = models.CharField(max_length=100, null=True)
+    car = models.CharField(max_length=255, null=True)
     car_model = models.CharField(max_length=50, null=True)
     cross = models.ManyToManyField(Cross, verbose_name="cross verbose name")
     price = models.FloatField(null=True, blank=True)
-    condition = models.BooleanField(default=True)
-    weight = models.FloatField(blank=True)
-    color = models.CharField(max_length=20, blank=True)
-    real_weight = models.FloatField(blank=True)
+    condition = models.BooleanField(default=True, null=True)
+    weight = models.FloatField(blank=True, null=True)
+    color = models.CharField(max_length=20, blank=True, null=True)
+    real_weight = models.FloatField(blank=True, null=True)
     seller = models.CharField(max_length=100, blank=True, null=True)
 
 
