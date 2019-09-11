@@ -15,7 +15,7 @@ class Cross(models.Model):
 
 
 class Products(models.Model):
-    cat = models.ForeignKey(Categories, on_delete=models.CASCADE)
+    cat = models.ManyToManyField(Categories)
     name = models.CharField(max_length=255)
     brand = models.CharField(max_length=100)
     car = models.CharField(max_length=50)
