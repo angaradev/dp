@@ -7,7 +7,7 @@ def show_cars():
     qs = Products.objects.values('car').annotate(dcount=Count('car'))
     return qs
 
-def show_brands(pk, **kwargs):
+def show_brands(pk, car, cat):
     for k, v in kwargs.items():
         pass
     qs = Products.objects.filter(cat = 2502).values('brand').annotate(dbrand=Count('brand'))
@@ -86,9 +86,14 @@ def subcat(request, pk):
 
 
 def cars(request, car):
-    qs = Products.objects.filter(car=car)
-    print(qs.count())
-    cats = Categories.objects.filter(parent_id=0).annotate(prod_count=Count('cat'))
+    qs = Products.objects.filter(car=car).order_by('?')[:50]
+    cats_tmp = Categories.objects.filter(parent_id=0)
+    cats = []
+    for c in cats_tmp:
+        nums = Products.objects.filter(car=car, cat__in=categories_tree(c.id)).count()
+        if nums != 0:
+            setattr(c, 'prod_count', nums)
+            cats.append(c)
     context = {
             'objects': qs,
             'cars': show_cars(),
@@ -97,17 +102,46 @@ def cars(request, car):
             }
     return render(request, 'products/newparts.html', context)
 
-def cars_subcats(request,car, slug):
-    cats = Products.objects.filter(car=car).annotate(Count('cat')) 
+def cars_subcats(request, car, slug, **kwargs):
+    brand = request.GET.get('brand', None)
+    print(brand)
+    cats_tmp = Categories.objects.get(slug=slug)
+    second_level_cats = Categories.objects.filter(parent_id=cats_tmp.id)
+    cats = []
+    for c in second_level_cats:
+        nums = Products.objects.filter(car=car, cat__in=categories_tree(c.id)).count()
+        if nums != 0:
+            setattr(c, 'prod_count', nums) 
+            cats.append(c)
+
     cats_list = [] 
-    for c in cats:
-        cats_list.append(c.id)
-    qs = Products.objects.filter(car=car, cat__in=cats_list)
+    if len(cats) == 0:
+        if brand:
+            qs = Products.objects.filter(car=car, cat=cats_tmp.id, brand=brand)
+        else:
+            qs = Products.objects.filter(car=car, cat=cats_tmp.id)
+    else:
+        for c in cats:
+            cats_list.append(c.id)
+        groups = Categories.objects.filter(parent_id__in=cats_list)
+        for g in groups:
+            cats_list.append(g.id) 
+        if brand:
+            qs = Products.objects.filter(car=car, cat__in=cats_list, brand=brand)
+        else:
+            qs = Products.objects.filter(car=car, cat__in=cats_list)
+    
+    brands = qs.values('brand').annotate(brand_count=Count('brand')) 
+    h1 = cats_tmp.name
     context = {
             'objects': qs,
             'cars': show_cars(),
             'categories': cats,
-            'single_car': car
+            'single_car': car,
+            'brands': brands,
+            'title_h1': h1,
+            'car': car,
+            'brand': brand,
             }
     
     return render(request, 'products/newparts.html', context)

@@ -30,22 +30,28 @@
 						<h3 class="tt-collapse-title">МАРКА</h3>
 						<div class="tt-collapse-content">
 							<ul class="tt-filter-list">
+
+
 								{% for car in cars %}
-								<li class="active">
+
+								<li {% if car.car in request.path %}
+									class="active"
+									{% endif %}>
 									<a href="{% url 'car_page' car.car %}">{{ car.car|upper }} ({{ car.dcount }}){{car.id}}</a>
 								</li>
 								{% endfor %}
 							</ul>
-							<a href="#" class="btn-link-02">Clear All</a>
+							<!--<a href="#" class="btn-link-02">Clear All</a>-->
 						</div>
 					</div>
 					<div class="tt-collapse open">
 						<h3 class="tt-collapse-title">КАТЕГОРИИ ЗАПЧАСТЕЙ</h3>
 						<div class="tt-collapse-content">
+							<div class="tt-clear-cross">&#215;<a href="/zapchasti/{{ single_car }}/"> Очистить</a></div>
 							<ul class="tt-list-row">
 								{% for cat in categories %}
 								{% if 'zapchasti' in request.path %}
-								<li><a href="/zapchasti/{{ single_car }}/{{ cat.slug }}">{{ cat.name|title }} ++ {{ single_car }} ({{ cat.prod_count }})</a></li>
+								<li><a href="/zapchasti/{{ single_car }}/{{ cat.slug }}">{{ cat.name|title }} {{ single_car|title }} ({{ cat.prod_count }})</a></li>
 								{% else %}
 								<li><a href="{% url 'subcat' cat.id %}">{{ cat.name|title }}</a></li>
 								{% endif %}
@@ -55,72 +61,20 @@
 							</ul>
 						</div>
 					</div>
-					<div class="tt-collapse open">
-						<h3 class="tt-collapse-title">FILTER BY PRICE</h3>
-						<div class="tt-collapse-content">
-							<ul class="tt-list-row">
-								<li class="active"><a href="#">$0 — $50</a></li>
-								<li><a href="#">$50 — $100</a></li>
-								<li><a href="#">$100 — $150</a></li>
-								<li><a href="#">$150 —  $200</a></li>
-							</ul>
-						</div>
-					</div>
-					<div class="tt-collapse open">
-						<h3 class="tt-collapse-title">FILTER BY SIZE</h3>
-						<div class="tt-collapse-content">
-							<ul class="tt-options-swatch options-middle">
-								<li><a href="#">4</a></li>
-								<li class="active"><a href="#">6</a></li>
-								<li><a href="#">8</a></li>
-								<li><a href="#">10</a></li>
-								<li><a href="#">12</a></li>
-								<li><a href="#">14</a></li>
-								<li><a href="#">16</a></li>
-								<li><a href="#">18</a></li>
-								<li><a href="#">20</a></li>
-								<li><a href="#">22</a></li>
-								<li><a href="#">24</a></li>
-							</ul>
-						</div>
-					</div>
-					<div class="tt-collapse open">
-						<h3 class="tt-collapse-title">FILTER BY COLOR</h3>
-						<div class="tt-collapse-content">
-							<ul class="tt-options-swatch options-middle">
-								<li><a class="options-color tt-border tt-color-bg-08" href="#"></a></li>
-								<li><a class="options-color tt-color-bg-09" href="#"></a></li>
-								<li class="active"><a class="options-color tt-color-bg-10" href="#"></a></li>
-								<li><a class="options-color tt-color-bg-11" href="#"></a></li>
-								<li><a class="options-color tt-color-bg-12" href="#"></a></li>
-								<li><a class="options-color tt-color-bg-13" href="#"></a></li>
-								<li><a class="options-color tt-color-bg-14" href="#"></a></li>
-								<li><a class="options-color tt-color-bg-15" href="#"></a></li>
-								<li><a class="options-color tt-color-bg-16" href="#"></a></li>
-								<li><a class="options-color tt-color-bg-17" href="#"></a></li>
-								<li><a class="options-color tt-color-bg-18" href="#"></a></li>
-								<li><a class="options-color" href="#">
-									<span class="swatch-img">
-										<img src="{% static 'images/custom/texture-img-01.jpg' %}" alt="">
-									</span>
-									<span class="swatch-label color-black"></span>
-								</a></li>
-							</ul>
-						</div>
-					</div>
+
 					<div class="tt-collapse open">
 						<h3 class="tt-collapse-title">БРЕНД</h3>
 						<div class="tt-collapse-content">
 							<ul class="tt-list-row">
+								<span class="tt-clear-cross">&#215;</span><a href="{{ request.path }}"> Очистить</a>
 								{% for brand in brands %}
-									<li><a href="#">{{ brand.brand }} ({{ brand.dbrand }})</a></li>
+									{% if brand.brand %}
+								<li><a href="?brand={{ brand.brand }}">{{ brand.brand }} ({{ brand.brand_count }})</a></li>
+									{% endif %}
 								{% endfor %}
-								<li><a href="#">Gap</a></li>
-								<li><a href="#">Polo</a></li>
-								<li><a href="#">Lacoste</a></li>
-								<li><a href="#">Guess</a></li>
+
 							</ul>
-							<a href="#" class="btn-link-02">+ More</a>
+							<!--<a href="#" class="btn-link-02">+ More</a>-->
 						</div>
 					</div>
 					<div class="tt-collapse open">
@@ -201,9 +155,16 @@
 					<div class="content-indent container-fluid-custom-mobile-padding-02">
 						<div class="tt-filters-options">
 							<h1 class="tt-title">
-								Заголовок H1 <span class="tt-title-total">(69)</span>
+								{{ title_h1|title }} для
+								{% if car %}
+								{{ car|upper }}
+								{% endif %}
+								{% if brand %}
+								 производитель
+								{{ brand }}
+								{% endif %}
+								<span class="tt-title-total"></span>
 							</h1>
-							<h2>{{ request.path }}</h2>
 							<div class="tt-btn-toggle">
 								<a href="#">FILTER</a>
 							</div>
