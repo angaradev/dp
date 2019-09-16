@@ -19,12 +19,16 @@ from blogs.views import blogs
 from django.conf import settings
 from django.conf.urls.static import static
 from home.views import home
-
+from products.views import newparts, subcat, cars, cars_subcats
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('blogs/', blogs, name='blogs'),
     path('', home, name='home'),
+    path('newparts/', newparts, name='newparts'),
+    path('subcat/<int:pk>/', subcat, name='subcat'),
+    path('zapchasti/<str:car>/', cars, name='car_page'),
+    path('zapchasti/<str:car>/<slug:slug>/', cars_subcats, name='car_page_subcats'),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

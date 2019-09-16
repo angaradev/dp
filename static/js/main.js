@@ -1938,7 +1938,6 @@
             }()),
             ttGridSwitch = $ttFilterOptions.find('.tt-grid-switch');
 
-
         if(ttProductItemValue == 16){
             ttСhangeclass(ttQuantity, '.tt-col-six');
         } else if(ttProductItemValue == 25){

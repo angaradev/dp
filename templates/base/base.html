@@ -7,7 +7,7 @@
 	<meta name="keywords" content="HTML5 Template">
 	<meta name="description" content="Wokiee - Responsive HTML5 Template">
 	<meta name="author" content="wokiee">
-	<link rel="shortcut icon" href="{% static 'favicon.ico' %}">
+	<link rel="shortcut icon" type="image/png" href="{% static 'favicon.png' %}">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<link rel="stylesheet" href="{% static 'css/theme.css' %}">
 	<link rel="stylesheet" href="{% static 'css/my_style.css' %}">
@@ -51,7 +51,7 @@
 	<nav class="panel-menu mobile-main-menu">
 		<ul>
 			<li>
-				<a href="index.html">HOME</a>
+				<a href="{% url 'home' %}">Главная</a>
 				<ul>
 					<li>
 						<a href="index.html">HOME STYLES</a>
@@ -95,7 +95,7 @@
 				</ul>
 			</li>
 			<li>
-				<a href="listing-left-column.html">SHOP</a>
+				<a href="{% url 'newparts' %}">КАТАЛОГИ</a>
 				<ul>
 					<li>
 						<a href="listing-left-column.html">LISTING STYLES</a>
@@ -1023,7 +1023,7 @@
 							<nav>
 								<ul>
 									<li class="dropdown tt-megamenu-col-02 selected">
-										<a href="index.html">HOME</a>
+										<a href="{% url 'home' %}">ГЛАВНАЯ</a>
 										<div class="dropdown-menu">
 											<div class="row tt-col-list">
 												<div class="col">
@@ -1093,7 +1093,7 @@
 										</div>
 									</li>
 									<li class="dropdown megamenu">
-										<a href="listing-collection.html">SHOP</a>
+										<a href="{% url 'newparts' %}">КАТАЛОГИ</a>
 										<div class="dropdown-menu">
 											<div class="row tt-col-list">
 												<div class="col">
