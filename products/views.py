@@ -37,19 +37,22 @@ def categories_tree(pk):
     return cats        
     
 
-def get_image_path(objects):
+def get_image_path(qs):
+
     working_dir = settings.STATICFILES_DIRS[1] 
-    try:
-        for obj in objects:
+    for obj in qs:
+        try:
             files  =  os.listdir(os.path.join(working_dir, obj.cat_n))
             setattr(obj, 'image_path', os.path.join(obj.cat_n, files[0])) 
-    except:
-        pass
-    return objects
+            print(os.path.join(obj.cat_n, files[0]))
+        except Exception as e:
+            print(e)
+    return qs
 
 def newparts(request):
 
     qs = Products.objects.all()[:100]
+    qs = get_image_path(qs)
     cats = Categories.objects.filter(parent_id=0)
     try:
         p = Paginator(qs, 20)
@@ -58,9 +61,8 @@ def newparts(request):
     except:
         pass
     if request.GET.get('load_all') == 'all':
-        objects = qs
-    objects = get_image_path(objects)
-
+        objects = get_image_path(objects)
+    
     context = {
             'objects': objects, 
             'categories': cats,
