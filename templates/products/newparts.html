@@ -58,7 +58,7 @@
 								{% if 'zapchasti' in request.path %}
 								<li><a href="/zapchasti/{{ single_car }}/{{ cat.slug }}">{{ cat.name|title }} {{ single_car|title }} ({{ cat.prod_count }})</a></li>
 								{% else %}
-								<li><a href="{% url 'subcat' cat.id %}">{{ cat.name|title }}</a></li>
+								<li><a href="{% url 'subcat' cat.slug %}">{{ cat.name|title }}</a></li>
 								{% endif %}
 								{% endfor %}
 								<li class="active"><a href="#">{{ cat.name }}</a></li>
@@ -204,7 +204,7 @@
 										<a href="#" class="tt-btn-quickview" data-toggle="modal" data-target="#ModalquickView"	data-tooltip="Quick View" data-tposition="left"></a>
 							<a href="#" class="tt-btn-wishlist" data-tooltip="Add to Wishlist" data-tposition="left"></a>
 							<a href="#" class="tt-btn-compare" data-tooltip="Add to Compare" data-tposition="left"></a>
-										<a href="product.html">
+										<a href="{% url 'detailed' object.pk %}">
 											<!--<span class="tt-img"><img src="{% static 'images/loader.svg' %}" data-src="{% static 'images/product/product-18.jpg' %}" alt=""></span>-->
                                             <span class="tt-img"><img src="{% static 'images/loader.svg' %}" data-src="{% static object.image_path %}" alt=""></span>
 											<span class="tt-img-roll-over"><img src="{% static 'images/loader.svg' %}" data-src="{% static 'images/product/product-18-01.jpg' %}" alt=""></span>

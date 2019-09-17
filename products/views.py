@@ -37,53 +37,35 @@ def categories_tree(pk):
     return cats        
     
 
+def get_image_path(objects):
+    working_dir = settings.STATICFILES_DIRS[1] 
+    try:
+        for obj in objects:
+            files  =  os.listdir(os.path.join(working_dir, obj.cat_n))
+            setattr(obj, 'image_path', os.path.join(obj.cat_n, files[0])) 
+    except:
+        pass
+    return objects
 
 def newparts(request):
 
-    qs = Products.objects.all()[:20]
+    qs = Products.objects.all()[:100]
     cats = Categories.objects.filter(parent_id=0)
+    try:
+        p = Paginator(qs, 20)
+        page = request.GET.get('page')
+        objects = p.get_page(page)
+    except:
+        pass
+    if request.GET.get('load_all') == 'all':
+        objects = qs
+    objects = get_image_path(objects)
+
     context = {
-            'objects': qs, 
+            'objects': objects, 
             'categories': cats,
             'cars': show_cars(),
            # 'brands': show_brands(),
-            }
-    return render(request, 'products/newparts.html', context)
-
-def subcat(request, pk):
-
-    cars = show_cars()
-    cats = Categories.objects.filter(parent_id=pk)
-    if pk > 999:
-        qs = Products.objects.filter(cat=pk)[:20]
-    elif pk > 99 and pk < 999:
-        cats = Categories.objects.filter(parent_id=pk)
-        # Getting products from those parent catrgories
-        ids = []
-        for cat in cats:
-            ids.append(cat.id)
-        qs = Products.objects.filter(cat__in=ids)[:20]
-
-    elif pk < 99:
-        ids = []
-        for cat in cats:
-            ids.append(cat.id)
-        qs = Products.objects.filter(cat__in=ids)[:20]
-        scats = Categories.objects.filter(parent_id__in=ids)
-        sids = []
-        for sid in scats:
-            sids.append(sid.id)
-
-        qs = Products.objects.filter(cat__in=sids)[:20]
-    p_min, p_max, price_range = show_price(4600, 5000)
-    context = {
-            'objects': qs,
-            'categories': cats,
-            'cars': cars,
-            'brands': show_brands(pk),
-            'price_range': price_range,
-            'p_min': p_min,
-            'p_max':p_max,
             }
     return render(request, 'products/newparts.html', context)
 
@@ -97,8 +79,17 @@ def cars(request, car):
         if nums != 0:
             setattr(c, 'prod_count', nums)
             cats.append(c)
+    try:
+        p = Paginator(qs, 20)
+        page = request.GET.get('page')
+        objects = p.get_page(page)
+    except:
+        pass
+    if request.GET.get('load_all') == 'all':
+        objects = qs
+    objects = get_image_path(objects)
     context = {
-            'objects': qs,
+            'objects': objects,
             'cars': show_cars(),
             'categories': cats,
             'single_car': car,
@@ -144,15 +135,7 @@ def cars_subcats(request, car, slug, **kwargs):
     if request.GET.get('load_all') == 'all':
         objects = qs
     
-    def get_image_path():
-        working_dir = '/media/manhee/b68fbbb8-c6b6-4d26-8c3a-a9b68dbc2eb3/ducatoparts_photo_ebay'
-        try:
-            for obj in objects:
-                files  =  os.listdir(os.path.join(working_dir, obj.cat_n))
-                setattr(obj, 'image_path', os.path.join(obj.cat_n, files[0])) 
-        except:
-            pass
-    get_image_path()
+    objects = get_image_path(objects)
 
             
 
@@ -168,3 +151,84 @@ def cars_subcats(request, car, slug, **kwargs):
             }
     
     return render(request, 'products/newparts.html', context)
+
+# HERE IS SAME STUFF BUT NO CAR
+
+def subcat(request, slug, **kwargs):
+    brand = request.GET.get('brand', None)
+    cats_tmp = Categories.objects.get(slug=slug)
+    second_level_cats = Categories.objects.filter(parent_id=cats_tmp.id)
+    cats = []
+    for c in second_level_cats:
+        nums = Products.objects.filter(cat__in=categories_tree(c.id)).count()
+        if nums != 0:
+            setattr(c, 'prod_count', nums) 
+            cats.append(c)
+
+    cats_list = [] 
+    if len(cats) == 0:
+        if brand:
+            qs = Products.objects.filter(cat=cats_tmp.id, brand=brand)
+        else:
+            qs = Products.objects.filter(cat=cats_tmp.id)
+    else:
+        for c in cats:
+            cats_list.append(c.id)
+        groups = Categories.objects.filter(parent_id__in=cats_list)
+        for g in groups:
+            cats_list.append(g.id) 
+        if brand:
+            qs = Products.objects.filter(cat__in=cats_list, brand=brand)
+        else:
+            qs = Products.objects.filter(cat__in=cats_list)
+    
+    brands = qs.values('brand').annotate(brand_count=Count('brand')) 
+    h1 = cats_tmp.name
+    try:
+        p = Paginator(qs, 20)
+        page = request.GET.get('page')
+        objects = p.get_page(page)
+    except:
+        pass
+    if request.GET.get('load_all') == 'all':
+        objects = qs
+    
+    objects = get_image_path(objects)
+
+            
+
+    context = {
+            'objects': objects,
+            'cars': show_cars(),
+            'categories': cats,
+            'brands': brands,
+            'title_h1': h1,
+            'brand': brand,
+            }
+    
+    return render(request, 'products/newparts.html', context)
+
+#Detailed product view starts here
+
+def detailed(request, pk):
+    cats = Categories.objects.filter(parent_id=0)
+    obj = Products.objects.get(id=pk)
+    
+    # Redefine function inside to returning lists of files in the directories
+    def get_image_path(obj):
+        working_dir = settings.STATICFILES_DIRS[1] 
+        files  =  os.listdir(os.path.join(working_dir, obj.cat_n))[:10]
+        img_list = []
+        for f in files:
+            img_list.append(os.path.join(obj.cat_n, f))
+        setattr(obj, 'image_path', img_list ) 
+        return obj
+
+    context = {
+            'object': get_image_path(obj),
+            'categories': cats,
+            'cars': show_cars(),
+            }
+    return render(request, 'products/product.html', context)
+
+

@@ -1,4 +1,4 @@
-"""dp URL Configuration
+"""dp URL Confgguration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/2.2/topics/http/urls/
@@ -19,7 +19,7 @@ from blogs.views import blogs
 from django.conf import settings
 from django.conf.urls.static import static
 from home.views import home
-from products.views import newparts, subcat, cars, cars_subcats
+from products.views import newparts, subcat, cars, cars_subcats, detailed
 
 
 urlpatterns = [
@@ -27,8 +27,9 @@ urlpatterns = [
     path('blogs/', blogs, name='blogs'),
     path('', home, name='home'),
     path('newparts/', newparts, name='newparts'),
-    path('subcat/<int:pk>/', subcat, name='subcat'),
+    path('subcat/<slug:slug>/', subcat, name='subcat'),
     path('zapchasti/<str:car>/', cars, name='car_page'),
     path('zapchasti/<str:car>/<slug:slug>/', cars_subcats, name='car_page_subcats'),
+    path('product/<int:pk>/', detailed, name='detailed'),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
