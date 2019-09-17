@@ -1,5 +1,10 @@
 {% extends 'base.html' %}
 {% load static %}
+{% block meta %}
+	{% if request.GET.load_all == 'all'  %}
+		<link rel="canonical" href="{{ request.path }}" />
+	{% endif %}
+{% endblock %}
 {% block page %}
 <div class="tt-breadcrumb">
 	<div class="container">
@@ -155,13 +160,15 @@
 					<div class="content-indent container-fluid-custom-mobile-padding-02">
 						<div class="tt-filters-options">
 							<h1 class="tt-title">
-								{{ title_h1|title }} для
-								{% if car %}
-								{{ car|upper }}
-								{% endif %}
-								{% if brand %}
-								 производитель
-								{{ brand }}
+								{% if title_h1 %}
+									{{ title_h1|title }} для
+									{% if car %}
+									{{ car|upper }}
+									{% endif %}
+									{% if brand %}
+								<br>производитель
+									{{ brand }}
+									{% endif %}
 								{% endif %}
 								<span class="tt-title-total"></span>
 							</h1>
@@ -198,7 +205,8 @@
 							<a href="#" class="tt-btn-wishlist" data-tooltip="Add to Wishlist" data-tposition="left"></a>
 							<a href="#" class="tt-btn-compare" data-tooltip="Add to Compare" data-tposition="left"></a>
 										<a href="product.html">
-											<span class="tt-img"><img src="{% static 'images/loader.svg' %}" data-src="{% static 'images/product/product-18.jpg' %}" alt=""></span>
+											<!--<span class="tt-img"><img src="{% static 'images/loader.svg' %}" data-src="{% static 'images/product/product-18.jpg' %}" alt=""></span>-->
+                                            <span class="tt-img"><img src="{% static 'images/loader.svg' %}" data-src="{% static object.image_path %}" alt=""></span>
 											<span class="tt-img-roll-over"><img src="{% static 'images/loader.svg' %}" data-src="{% static 'images/product/product-18-01.jpg' %}" alt=""></span>
 										</a>
 									</div>
@@ -214,7 +222,7 @@
 										</div>
 										<h2 class="tt-title"><a href="product.html">{{ object.name|title }}</a></h2>
 										<div class="tt-price">
-											{{ object.price }}
+											&#8381; {{ object.price }}
 										</div>
 										<div class="tt-product-inside-hover">
 											<div class="tt-row-btn">
@@ -233,10 +241,14 @@
 
 						</div>
 						<div class="text-center tt_product_showmore">
-							<a href="#" class="btn btn-border">LOAD MORE</a>
-							<div class="tt_item_all_js">
-								<a href="#" class="btn btn-border01">NO MORE ITEM TO SHOW</a>
-							</div>
+
+							{% if request.GET.load_all == 'all'  %}
+								<div class="">
+									<a href="{{ request.path }}" class="btn btn-border01">НЕТ БОЛЬШЕ ТОВАРОВ ДЛЯ ЗАГРУЗКИ</a>
+								</div>
+							{% else %}
+								<a href="?load_all=all" class="btn btn-border">ЗАГРУЗИТЬ ВСЕ</a>
+							{% endif %}
 						</div>
 					</div>
 				</div>

@@ -602,7 +602,7 @@
     };
     // add product item
     if (blocks.ttBtnAddProduct.length) {
-        ttAddProduct();
+        //ttAddProduct();
     };
     // switching click
     if (blocks.ttOptionsSwatch.length) {
@@ -940,20 +940,22 @@
             isotopShowmoreJs.on('click', function(e) {
                 e.preventDefault();
                 $.ajax({
-                    url: 'ajax_product.php',
+                    url: '',       //ajax_product.php
+                    method: 'get',
+                    data: 'load_all=all',
                     success: function(data) {
                       var $item = $(data);
                       ttAddItem.append($item);
                       ttProductSmall();
-                      adjustOffset();
+                //      adjustOffset();
                     }
                 });
-                function adjustOffset(){
-                    var offsetLastItem = ttAddItem.children().last().children().offset().top - 80;
-                    $($body, $html).animate({
-                        scrollTop: offsetLastItem
-                    }, 500);
-                };
+               // function adjustOffset(){
+               //     var offsetLastItem = ttAddItem.children().last().children().offset().top - 80;
+               //     $($body, $html).animate({
+               //         scrollTop: offsetLastItem
+               //     }, 500);
+               // };
                 return false;
              });
         };

@@ -2,6 +2,9 @@ from django.shortcuts import render
 from .models import Products, Categories
 from django.db.models import Count, Min, Max
 from django.db.models import Q
+from django.core.paginator import Paginator
+from django.conf import settings
+import os
 
 def show_cars():
     qs = Products.objects.values('car').annotate(dcount=Count('car'))
@@ -104,7 +107,6 @@ def cars(request, car):
 
 def cars_subcats(request, car, slug, **kwargs):
     brand = request.GET.get('brand', None)
-    print(brand)
     cats_tmp = Categories.objects.get(slug=slug)
     second_level_cats = Categories.objects.filter(parent_id=cats_tmp.id)
     cats = []
@@ -133,8 +135,29 @@ def cars_subcats(request, car, slug, **kwargs):
     
     brands = qs.values('brand').annotate(brand_count=Count('brand')) 
     h1 = cats_tmp.name
+    try:
+        p = Paginator(qs, 20)
+        page = request.GET.get('page')
+        objects = p.get_page(page)
+    except:
+        pass
+    if request.GET.get('load_all') == 'all':
+        objects = qs
+    
+    def get_image_path():
+        working_dir = '/media/manhee/b68fbbb8-c6b6-4d26-8c3a-a9b68dbc2eb3/ducatoparts_photo_ebay'
+        try:
+            for obj in objects:
+                files  =  os.listdir(os.path.join(working_dir, obj.cat_n))
+                setattr(obj, 'image_path', os.path.join(obj.cat_n, files[0])) 
+        except:
+            pass
+    get_image_path()
+
+            
+
     context = {
-            'objects': qs,
+            'objects': objects,
             'cars': show_cars(),
             'categories': cats,
             'single_car': car,
