@@ -220,7 +220,7 @@
 
 
 										</div>
-										<h2 class="tt-title"><a href="product.html">{{ object.name|title }}</a></h2>
+										<h2 class="tt-title"><a href="{% url 'detailed' object.pk %}">{{ object.name|title }}</a></h2>
 										<div class="tt-price">
 											&#8381; {{ object.price }}
 										</div>
