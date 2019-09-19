@@ -1,0 +1,189 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load extras %}
+{% block meta %}
+	{% if request.GET.page  %}
+		<link rel="canonical" href="{{ request.path }}" />
+	{% endif %}
+{% endblock meta %}
+{% block page_title %}Советы по выбору запчастей для автомобилей{% for car in cars %} {{ car.car|upper }}{% endfor %}{% endblock page_title %}
+
+
+{% block page_keywords %}
+	{% for car in cars %}Запчасти для {{ car.car|upper }},&nbsp;{% endfor %}
+{% endblock page_keywords %}
+
+{% block page_description %}
+	Полезные статьи, исследования, наблюдения касающиеся эксплуатации, ремонта а так же выбора запчастей для автомобилей{% for car in cars %}{{ car.car|upper }} {% endfor %} {% endblock page_description %}
+{% block page %}
+<div class="tt-breadcrumb">
+	<div class="container">
+		<ul>
+			<li><a href="{% url 'home' %}">Главная</a></li>
+			<li><a href="{% url 'blogs' %}">Блог</a></li>
+			<li>{{ object.title|title }}</li>
+		</ul>
+	</div>
+</div>
+<div id="tt-pageContent">
+	<div class="container-indent">
+		<div class="container container-fluid-custom-mobile-padding">
+			<div class="row justify-content-center">
+				<div class="col-xs-12 col-md-10 col-lg-8 col-md-auto">
+					<div class="tt-post-single">
+						<div class="tt-tag"><a href="#">{{ object.category.name|upper }}</a></div>
+						<h1 class="tt-title">
+							{{ object.title }}
+						</h1>
+						<div class="tt-autor">by <span>Админ</span> on {{ object.publish }}</div>
+						<div class="tt-post-content">
+							<img src="images/loader.svg" data-src="{{ object.image.url }}" alt="{{ object.title }}">
+							<div class="row">
+								<div class="col-xs-12 col-sm-6">
+									<img src="images/loader.svg" data-src="images/blog/blog-single-img-02.jpg" alt="">
+								</div>
+								<div class="col-xs-12 col-sm-6">
+									<img src="images/loader.svg" data-src="images/blog/blog-single-img-03.jpg" alt="">
+								</div>
+							</div>
+							{{ object.text|safe }}
+
+						</div>
+						<!--<div class="post-meta">
+							<span class="item">
+								<span>Tag:</span> <span><a href="#">FASHION</a></span>, <span><a href="#">STYLE</a></span>
+							</span>
+						</div>-->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container-indent wrapper-social-icon">
+		<div class="container">
+			<ul class="tt-social-icon justify-content-center">
+				<li><a class="icon-g-64" href="http://www.facebook.com/"></a></li>
+				<li><a class="icon-h-58" href="http://www.facebook.com/"></a></li>
+				<li><a class="icon-g-66" href="http://www.twitter.com/"></a></li>
+				<li><a class="icon-g-67" href="http://www.google.com/"></a></li>
+				<li><a class="icon-g-70" href="https://instagram.com/"></a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="container-indent">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-xs-12 col-md-10 col-lg-8 col-md-auto">
+					<div class="comments-single-post">
+						<h6 class="tt-title-border">ПОХОЖИЕ ПОСТЫ</h6>
+						<div class="tt-blog-thumb-list">
+							<div class="row">
+								{% for rel in related %}
+								<div class="col-sm-6">
+									<div class="tt-blog-thumb">
+										<div class="tt-img"><a href="{% url 'blog' rel.slug %}" target="_blank"><img src="images/loader.svg" data-src="{{ rel.image.url }}" alt="{{ rel.title }}"></a></div>
+										<div class="tt-title-description">
+											<div class="tt-background"></div>
+											<div class="tt-tag">
+												<a href="{% url 'subcat' rel.category.slug %}">{{ rel.category.name }}</a>
+											</div>
+											<div class="tt-title">
+												<a href="{% url 'subcat' rel.category.slug %}">{{ rel.title|upper }}</a>
+											</div>
+										</div>
+									</div>
+								</div>
+								{% endfor %}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container-indent">
+		<div class="container container-fluid-custom-mobile-padding">
+			<div class="row justify-content-center">
+				<div class="col-xs-12 col-md-10 col-lg-8 col-md-auto">
+					<h6 class="tt-title-border">2 COMMENTS</h6>
+					<div class="tt-comments-layout">
+						{% for comment in comments %}
+						<div class="tt-item">
+							<div class="tt-comments-level-1">
+								<div class="tt-avatar"><img src="images/blog/comments-img-01.jpg" alt=""></div>
+								<div class="tt-content">
+									<div class="tt-comments-title">
+										<span class="username">by <span>{{ comment.user }}</span></span>
+										<span class="time">{{ comment.timestamp }}</span>
+									</div>
+									<p>
+										{{ comment.content }}
+									</p>
+									{{ comment.id }}
+									<a href="#" class="tt-btn"><i class="icon-g-06"></i></a>
+									<form action="." method="post">{% csrf_token %}
+										<div class="form-group">
+											<label for="textarea" class="control-label">YOUR COMMENT *</label>
+											{{ comment_form }}
+										</div>
+										<div class="form-group">
+											<input type="hidden" name="parent_id" value="{{ comment.id }}" >
+											<button type="submit" class="btn">ОТВЕТИТЬ</button>
+										</div>
+									</form>
+								</div>
+							</div>
+							{% for child_comment in comment.children %}
+							<div class="tt-comments-level-2">
+								<div class="tt-avatar"></div>
+								<div class="tt-content">
+									<div class="tt-comments-title">
+										<span class="username">by <span>{{ child_comment.user.username }}</span></span>
+										<span class="time">on {{ child_comment.timestamp }}</span>
+									</div>
+									<p>
+										{{ child_comment.content }}
+									</p>
+									<a href="#" class="tt-btn"><i class="icon-g-06"></i></a>
+								</div>
+							</div>
+							{% endfor %}
+						</div>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container-indent">
+		<div class="container container-fluid-custom-mobile-padding">
+			<div class="row justify-content-center">
+				<div class="col-xs-12 col-md-10 col-lg-8 col-md-auto">
+					<div class="form-single-post">
+						<h6 class="tt-title-border">LEAVE A REPLY</h6>
+						<div class="form-default">
+							<form action="." method="post">{% csrf_token %}
+								<div class="form-group">
+									<label for="inputName" class="control-label">YOUR NAME *</label>
+									<input type="text" class="form-control" id="inputName" placeholder="Enter your name">
+								</div>
+								<div class="form-group">
+									<label for="inputEmail" class="control-label">E-MAIL *</label>
+									<input type="email" class="form-control" id="inputEmail" placeholder="Enter your e-mail">
+								</div>
+								<div class="form-group">
+									<label for="textarea" class="control-label">YOUR COMMENT *</label>
+									{{ comment_form }}
+								</div>
+								<div class="form-group">
+									<button type="submit" class="btn">POST COMMENT</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

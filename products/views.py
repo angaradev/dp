@@ -5,6 +5,7 @@ from django.db.models import Q
 from django.core.paginator import Paginator
 from django.conf import settings
 import os
+from comments.models import Comment
 
 def show_cars():
     qs = Products.objects.values('car').annotate(dcount=Count('car'))
@@ -225,11 +226,13 @@ def detailed(request, pk):
             img_list.append(os.path.join(obj.cat_n, f))
         setattr(obj, 'image_path', img_list ) 
         return obj
+    comments = Comment.objects.filter_by_instance(obj)
 
     context = {
             'object': get_image_path(obj),
             'categories': cats,
             'cars': show_cars(),
+            'comments': comments,
             }
     return render(request, 'products/product.html', context)
 

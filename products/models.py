@@ -1,4 +1,6 @@
 from django.db import models
+from django.contrib.contenttypes.models import ContentType
+
 
 
 class Categories(models.Model):
@@ -35,4 +37,14 @@ class Products(models.Model):
     seller = models.CharField(max_length=100, blank=True, null=True)
 
 
+    @property
+    def comments(self):
+        instance = self
+        qs = Comment.objects.filter_by_instance(instance)
+        return qs
 
+    @property
+    def get_content_type(self):
+        instance = self
+        qs = ContentType.objects.get_for_model(instance.__class__)
+        return qs

@@ -207,14 +207,14 @@
 										<a href="{% url 'detailed' object.pk %}">
 											<!--<span class="tt-img"><img src="{% static 'images/loader.svg' %}" data-src="{% static 'images/product/product-18.jpg' %}" alt=""></span>-->
                                             <span class="tt-img"><img src="{% static 'images/loader.svg' %}" data-src="{% static object.image_path %}" alt=""></span>
-											<span class="tt-img-roll-over"><img src="{% static 'images/loader.svg' %}" data-src="{% static 'images/product/product-18-01.jpg' %}" alt=""></span>
+											<span class="tt-img-roll-over"><img src="{% static 'images/loader.svg' %}" data-src="{% static object.image_path %}" alt=""></span>
 										</a>
 									</div>
 									<div class="tt-description">
 										<div class="tt-row">
 											<ul class="tt-add-info">
 												{% for cat in object.cat.all %}
-												<li><a href="{% url 'subcat' cat.pk %}">{{ cat.name }}</a></li>
+												<li><a href="{% url 'subcat' cat.slug %}">{{ cat.name }}</a></li>
 												{% endfor %}
 											</ul>
 

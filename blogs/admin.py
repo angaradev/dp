@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Blogs, ArtCategory
+from .models import Blogs
 
 
 class BlogsAdmin(admin.ModelAdmin):
@@ -10,6 +10,5 @@ class BlogsAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Blogs)
-admin.site.register(ArtCategory)
 
 

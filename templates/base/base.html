@@ -4,8 +4,8 @@
 	{% load static %}
 	<meta charset="utf-8">
 	<title>{% block page_title %}Автозапчасти новые и Б/У для Дукато, Джампер, Боксер, Транзит{% endblock %}</title>
-	<meta name="keywords" content="HTML5 Template">
-	<meta name="description" content="Wokiee - Responsive HTML5 Template">
+	<meta name="keywords" content="{% block page_keywords %}Запчасти для коммерческих автомобилей{% endblock %}">
+	<meta name="description" content="{% block page_description %}Автозапчасти для коммерческого транспорта в Москве с доставкой{% endblock %}">
 	{% block meta %}{% endblock %}
 	<link rel="shortcut icon" type="image/png" href="{% static 'favicon.png' %}">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -104,35 +104,12 @@
 				</ul>
 			</li>
 			<li>
-				<a href="{% url 'blogs' %}">BLOG</a>
-				<ul>
-					<li>
-						<a href="{% url 'blogs' %}">BLOG STYLE</a>
-						<ul>
-							<li><a href="blog-listing-without-col.html">Standard Without Sidebar</a></li>
-							<li><a href="blog-listing-col-left.html">Standard With Left Sidebar</a></li>
-							<li><a href="blog-listing-col-right.html">Standard With Right Sidebar</a></li>
-							<li><a href="blog-masonry-col-2.html">Two Colums</a></li>
-							<li><a href="blog-masonry-col-3.html">Three Colums</a></li>
-							<li><a href="blog-masonry-col-3-filter.html">Three Colums With Filter</a></li>
-						</ul>
-					</li>
-					<li>
-						<a href="blog-single-post.html">POST TYPE</a>
-						<ul>
-							<li><a href="blog-single-post.html">Standard</a></li>
-							<li><a href="blog-single-post-gallery.html">Gallery</a></li>
-							<li><a href="blog-single-post-link.html">Link</a></li>
-							<li><a href="blog-single-post-quote.html">Quote</a></li>
-							<li><a href="blog-single-post-video.html">Video</a></li>
-							<li><a href="blog-single-post-audio.html">Audio</a></li>
-						</ul>
-					</li>
-				</ul>
+				<a href="{% url 'blogs' %}">БЛОГ</a>
+
 			</li>
 			<li>
 				<a href="portfolio-col-grid-four.html">PORTFOLIO</a>
-				<ul>
+				<<!--ul>
 					<li>
 						<a href="portfolio-col-grid-four.html">BOXED GRID</a>
 						<ul>
@@ -150,7 +127,7 @@
 							<li><a href="portfolio-col-wide-four.html">Four Colums</a></li>
 						</ul>
 					</li>
-				</ul>
+				</ul>-->
 			</li>
 			<li>
 				<a href="about.html">PAGES</a>
@@ -781,33 +758,8 @@
 										</div>
 									</li>
 									<li class="dropdown tt-megamenu-col-01">
-										<a href="{% url 'blogs' %}">BLOG</a>
-										<div class="dropdown-menu">
-											<div class="row tt-col-list">
-												<div class="col">
-													<h6 class="tt-title-submenu"><a href="blog-listing-without-col.html">BLOG STYLES</a></h6>
-													<ul class="tt-megamenu-submenu">
-														<li><a href="blog-listing-without-col.html">Standard Without Sidebar</a></li>
-														<li><a href="blog-listing-col-left.html">Standard With Left Sidebar</a></li>
-														<li><a href="blog-listing-col-right.html">Standard With Right Sidebar</a></li>
-														<li><a href="blog-masonry-col-2.html">Two Colums</a></li>
-														<li><a href="blog-masonry-col-3.html">Three Colums</a></li>
-														<li><a href="blog-masonry-col-3-filter.html">Three Colums With Filter</a></li>
-													</ul>
-												</div>
-												<div class="col">
-													<h6 class="tt-title-submenu"><a href="blog-single-post.html">POST TYPES</a></h6>
-													<ul class="tt-megamenu-submenu">
-														<li><a href="blog-single-post.html">Standard</a></li>
-														<li><a href="blog-single-post-gallery.html">Gallery</a></li>
-														<li><a href="blog-single-post-link.html">Link</a></li>
-														<li><a href="blog-single-post-quote.html">Quote</a></li>
-														<li><a href="blog-single-post-video.html">Video</a></li>
-														<li><a href="blog-single-post-audio.html">Audio</a></li>
-													</ul>
-												</div>
-											</div>
-										</div>
+										<a href="{% url 'blogs' %}">БЛОГ</a>
+
 									</li>
 									<li class="dropdown tt-megamenu-col-01">
 										<a href="portfolio-col-wide-four.html">PORTFOLIO</a>
