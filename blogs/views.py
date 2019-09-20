@@ -11,6 +11,7 @@ from django.contrib.contenttypes.models import ContentType
 from comments.forms import CommentForm
 from comments.models import Comment
 from django.utils.html import strip_tags
+from django.core.mail import send_mail
 
 def blogs(request):
     req_cat = request.GET.get('category')
@@ -90,7 +91,15 @@ def blog(request, slug):
                parent = parent_obj,
                user = strip_tags(user_string),
                )
-        return HttpResponseRedirect(new_comment.content_object.get_absolute_url())
+        url = new_comment.content_object.get_absolute_url()
+        send_mail(
+                'Ducatoparts.ru новый комментарий',
+                f'На дукато партс оставили новый комментарий на странице {url}',
+                'angara99@gmail.com',
+                ['angara99@gmail.com', 'yellkalolka@gmail.com'],
+                fail_silently=False,
+                )
+        return HttpResponseRedirect(url)
 
 
     #comments count stuff

@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'blogs',
     'home',
     'comments',
+    'star_ratings',
 ]
 
 MIDDLEWARE = [
@@ -141,3 +142,6 @@ STATICFILES_DIRS = [
     '/media/manhee/b68fbbb8-c6b6-4d26-8c3a-a9b68dbc2eb3/ducatoparts_photo_ebay',
     
 ]
+
+STAR_RATINGS_ANONYMOUS = True
+STAR_RATINGS_RERATE = False

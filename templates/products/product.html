@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load ratings %}
 {% block page %}
 <div class="tt-breadcrumb">
 	<div class="container">
@@ -64,6 +65,12 @@
 							<div class="tt-price">
 								<span class="new-price">&#8381; {{ object.price }}</span>
 								<span class="old-price"></span>
+							</div>
+							{% ratings object 16 16 %}
+							<div class="tt-review">
+								<div class="tt-rating">
+
+								</div>
 							</div>
 							<div class="tt-wrapper">
 								Внимание! Изображения запчастей могут не соответсвовать реальным! Мы обновляем базу изображений.
