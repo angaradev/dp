@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
-
+from django.urls.base import reverse
 
 
 class Categories(models.Model):
@@ -35,6 +35,9 @@ class Products(models.Model):
     color = models.CharField(max_length=20, blank=True, null=True)
     real_weight = models.FloatField(blank=True, null=True)
     seller = models.CharField(max_length=100, blank=True, null=True)
+    
+    def get_absolute_url(self):
+       return reverse('detailed', kwargs={'pk': self.id})
 
 
     @property
@@ -48,3 +51,4 @@ class Products(models.Model):
         instance = self
         qs = ContentType.objects.get_for_model(instance.__class__)
         return qs
+    

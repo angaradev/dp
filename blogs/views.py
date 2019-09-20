@@ -1,4 +1,4 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.core.paginator import Paginator
 from products.views import show_cars
@@ -10,7 +10,7 @@ from products.models import Categories
 from django.contrib.contenttypes.models import ContentType
 from comments.forms import CommentForm
 from comments.models import Comment
-
+from django.utils.html import strip_tags
 
 def blogs(request):
     req_cat = request.GET.get('category')
@@ -45,6 +45,7 @@ def blogs(request):
             }
     return render(request, 'blog/blogs.html', context)
 
+
 def blog(request, slug):
     obj = Blogs.objects.get(slug=slug)
     related = Blogs.objects.filter(category=obj.category).exclude(slug=slug)[:2]
@@ -56,7 +57,16 @@ def blog(request, slug):
             }
 
     form = CommentForm(request.POST or None, initial=initial_data) 
+    user_string = None
     if form.is_valid():
+        
+        if request.user.is_authenticated:
+            user_string = request.user
+        elif form.cleaned_data.get('user') is not None:
+            user_string = form.cleaned_data.get('user')
+        else:
+            user_string = 'ANONIMUS'
+
         c_type = form.cleaned_data.get('content_type')
         content_type = ContentType.objects.get(model=c_type)
         obj_id = form.cleaned_data.get('object_id')
@@ -74,13 +84,27 @@ def blog(request, slug):
                 parent_obj = parent_qs.first()
                     
         new_comment, created = Comment.objects.get_or_create(
-               user = request.user,
                content_type = content_type,
                object_id = obj_id,
-               content = content_data,
+               content = strip_tags(content_data),
                parent = parent_obj,
+               user = strip_tags(user_string),
                )
         return HttpResponseRedirect(new_comment.content_object.get_absolute_url())
+
+
+    #comments count stuff
+    def check_comment_count():
+        count = comments.count() % 10
+        comment_word = 'КОММЕНТАРИЕВ'
+        if count == 1:
+            comments_word = 'КОММЕНТАРИЙ'
+        elif count > 1 and count < 5:
+            comment_word = 'КОММЕНТАРИЯ'
+        elif count >= 5:
+            comment_word = 'КОММЕНТАРИЕВ'
+        return comment_word
+
 
     context = {
             'categories': Categories.objects.filter(parent_id=0),
@@ -88,6 +112,7 @@ def blog(request, slug):
             'cars': show_cars(),
             'related': related,
             'comments': comments,
+            'comment_count_word': check_comment_count(),
             'comment_form': form,
             }
     return render(request, 'blog/blog.html', context)

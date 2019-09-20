@@ -19,9 +19,9 @@ class CommentManager(models.Manager):
 
 
 class Comment(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1, on_delete=models.CASCADE)
+    #user = models.ForeignKey(settings.AUTH_USER_MODEL, default=1, on_delete=models.CASCADE)
     #post = models.ForeignKey(Blogs, on_delete=models.CASCADE) 
-    
+    user = models.CharField(max_length=100)
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
@@ -36,7 +36,7 @@ class Comment(models.Model):
         ordering = ['-timestamp']
     
     def __str__(self):
-        return str(self.id)
+        return str(self.user)
     
     def children(self): ## Replies
         return Comment.objects.filter(parent=self)

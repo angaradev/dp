@@ -16,3 +16,10 @@
     font-size: 1.2rem;
     line-height: 150%;
 }
+.comment-reply {
+    display: none;
+}
+
+.my-form-control{
+    margin-bottom: 20px;
+}
