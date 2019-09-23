@@ -6,11 +6,12 @@ from django.conf.urls.static import static
 from home.views import home
 from django.conf.urls import include
 from products.views import newparts, subcat, cars, cars_subcats, detailed
-
+from accounts.views import login_view, register_view, logout_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('blogs/', blogs, name='blogs'),
+    path('login/', login_view, name='login'),
     path('blogs/<slug:slug>/', blog, name='blog'),
     path('', home, name='home'),
     path('newparts/', newparts, name='newparts'),
