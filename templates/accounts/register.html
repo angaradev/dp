@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load extras %}
+{% block meta %}
+	{% if request.GET.page  %}
+		<link rel="canonical" href="{{ request.path }}" />
+	{% endif %}
+{% endblock meta %}
+{% block page_title %}Страница регистрации{% endblock page_title %}
+
+
+{% block page_keywords %}Страница регистрации{% endblock page_keywords %}
+
+{% block page_description %}Страница регистрации{% endblock page_description %}
+{% block page %}
+<div class="tt-breadcrumb">
+	<div class="container">
+		<ul>
+			<li><a href="index.html">Home</a></li>
+			<li>Register</li>
+		</ul>
+	</div>
+</div>
+<div id="tt-pageContent">
+	<div class="container-indent">
+		<div class="container">
+			<h1 class="tt-title-subpages noborder">СТРАНИЦА РЕГИСТРАЦИИ</h1>
+			<div class="tt-login-form">
+				<div class="row">
+					<div class="col-xs-12 col-md-6">
+						<div class="tt-item">
+							<h2 class="tt-title">УЖЕ ЕСТЬ АКАУНТ</h2>
+							<p>
+								By creating an account with our store, you will be able to move through the checkout process faster, store multiple shipping addresses, view and track your orders in your account and more.
+							</p>
+							<div class="form-group">
+								<a href="{% url 'login' %}" class="btn btn-top btn-border">СТРАНИЦА ВХОДА</a>
+							</div>
+						</div>
+					</div>
+					<div class="col-xs-12 col-md-6">
+						<div class="tt-item">
+							<h2 class="tt-title">РЕГИСТРАЦИЯ</h2>
+							Если у Вас уже есть аккаунт, войдите.
+							<div class="form-default form-top">
+								<form id="customer_login" method="post" novalidate="novalidate">{% csrf_token %}
+									<div class="form-group">
+										<div class="tt-required">* Обязательные поля</div>
+										{{ form }}
+									</div>
+									<div class="row">
+										<div class="col-auto mr-auto">
+											<div class="form-group">
+												<button class="btn btn-border" type="submit">ВОЙТИ</button>
+											</div>
+										</div>
+										<div class="col-auto align-self-end">
+											<div class="form-group">
+												<ul class="additional-links">
+													<li><a href="#">Забыли пароль?</a></li>
+												</ul>
+											</div>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

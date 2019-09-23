@@ -51,11 +51,21 @@ def blog(request, slug):
     obj = Blogs.objects.get(slug=slug)
     related = Blogs.objects.filter(category=obj.category).exclude(slug=slug)[:2]
     comments = Comment.objects.filter_by_instance(obj)
+    if request.user.is_authenticated:
+        value = str(request.user).upper()
 
-    initial_data = {
-            'content_type': obj.get_content_type,
-            'object_id': obj.id,
-            }
+        initial_data = {
+                'content_type': obj.get_content_type,
+                'object_id': obj.id,
+                'user': value,
+                
+                }
+    else:
+        initial_data = {
+                    'content_type': obj.get_content_type,
+                    'object_id': obj.id,
+                    }
+
 
     form = CommentForm(request.POST or None, initial=initial_data) 
     user_string = None
