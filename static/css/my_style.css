@@ -7,3 +7,19 @@
     margin-top: 28px;
     margin-bottom: 28px;
 }
+
+.arch-btn {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.tt-post-content {
+    font-size: 1.2rem;
+    line-height: 150%;
+}
+.comment-reply {
+    display: none;
+}
+
+.my-form-control{
+    margin-bottom: 20px;
+}

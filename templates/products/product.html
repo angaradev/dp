@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load ratings %}
 {% block page %}
 <div class="tt-breadcrumb">
 	<div class="container">
@@ -65,6 +66,12 @@
 								<span class="new-price">&#8381; {{ object.price }}</span>
 								<span class="old-price"></span>
 							</div>
+							{% ratings object 16 16 %}
+							<div class="tt-review">
+								<div class="tt-rating">
+
+								</div>
+							</div>
 							<div class="tt-wrapper">
 								Внимание! Изображения запчастей могут не соответсвовать реальным! Мы обновляем базу изображений.
 								Для уточнения деталей звоните пожалуйста менеджеру!
@@ -103,6 +110,7 @@
 									</ul>
 								</div>
 							</div>
+
 							<div class="tt-collapse-block">
 								<div class="tt-item">
 									<div class="tt-collapse-title">ОПИСАНИЕ</div>
@@ -280,7 +288,7 @@
 							</div>
 							<div class="tt-product-inside-hover">
 								<div class="tt-row-btn">
-									<a href="#" class="tt-btn-addtocart thumbprod-button-bg" data-toggle="modal" data-target="#modalAddToCartProduct">ADD TO CART</a>
+									<a href="#" class="tt-btn-addtocart thumbprod-button-bg" data-toggle="modal" data-target="#modalAddToCartProduct">В КОРЗИНУ</a>
 								</div>
 								<div class="tt-row-btn">
 									<a href="#" class="tt-btn-quickview" data-toggle="modal" data-target="#ModalquickView"></a>
@@ -314,7 +322,7 @@
 							</div>
 							<div class="tt-product-inside-hover">
 								<div class="tt-row-btn">
-									<a href="#" class="tt-btn-addtocart thumbprod-button-bg" data-toggle="modal" data-target="#modalAddToCartProduct">ADD TO CART</a>
+									<a href="#" class="tt-btn-addtocart thumbprod-button-bg" data-toggle="modal" data-target="#modalAddToCartProduct">В КОРЗИНУ</a>
 								</div>
 								<div class="tt-row-btn">
 									<a href="#" class="tt-btn-quickview" data-toggle="modal" data-target="#ModalquickView"></a>
@@ -328,5 +336,6 @@
 			</div>
 		</div>
 	</div>
+	{% include 'snippets/comments.html' %}
 </div>
 {% endblock %}

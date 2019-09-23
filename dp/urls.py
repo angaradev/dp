@@ -1,35 +1,24 @@
-"""dp URL Confgguration
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/2.2/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
 from django.urls import path
-from blogs.views import blogs
+from blogs.views import blogs, blog
 from django.conf import settings
 from django.conf.urls.static import static
 from home.views import home
+from django.conf.urls import include
 from products.views import newparts, subcat, cars, cars_subcats, detailed
-
+from accounts.views import login_view, register_view, logout_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('blogs/', blogs, name='blogs'),
+    path('login/', login_view, name='login'),
+    path('blogs/<slug:slug>/', blog, name='blog'),
     path('', home, name='home'),
     path('newparts/', newparts, name='newparts'),
     path('subcat/<slug:slug>/', subcat, name='subcat'),
     path('zapchasti/<str:car>/', cars, name='car_page'),
     path('zapchasti/<str:car>/<slug:slug>/', cars_subcats, name='car_page_subcats'),
     path('product/<int:pk>/', detailed, name='detailed'),
+    path('ratings/', include('star_ratings.urls', namespace='ratings')),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

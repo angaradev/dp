@@ -1,0 +1,91 @@
+<div class="container-indent">
+		<div class="container container-fluid-custom-mobile-padding">
+			<div class="row justify-content-center">
+				<div class="col-xs-12 col-md-10 col-lg-8 col-md-auto">
+					<div class="form-single-post">
+						<h6 class="tt-title-border">ОСТАВИТЬ КОММЕНТАРИЙ</h6>
+						<div class="form-default">
+							<form action="." method="post">{% csrf_token %}
+								<!--<div class="form-group">
+									<label for="inputName" class="control-label">ВАШЕ ИМЯ *</label>
+									<input type="text" class="form-control" id="inputName" placeholder="ВАШЕ ИМЯ">
+								</div>-->
+								<!--<div class="form-group">
+									<label for="inputEmail" class="control-label">E-MAIL *</label>
+									<input type="email" class="form-control" id="inputEmail" placeholder="Enter your e-mail">
+								</div>-->
+								<div class="form-group">
+									{{ comment_form }}
+								</div>
+								<div class="form-group">
+									<button type="submit" class="btn">КОММНЕНТИРОВАТЬ</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container-indent">
+		<div class="container container-fluid-custom-mobile-padding">
+			<div class="row justify-content-center">
+				<div class="col-xs-12 col-md-10 col-lg-8 col-md-auto">
+					<h6 class="tt-title-border">
+						{{ comments.count }} {{ comment_count_word }}</h6>
+					<div class="tt-comments-layout">
+						{% for comment in comments %}
+						<div class="tt-item">
+							<div class="tt-comments-level-1">
+								<div class="tt-avatar"><img src="images/blog/comments-img-01.jpg" alt=""></div>
+								<div class="tt-content">
+									<div class="tt-comments-title">
+										<span class="username">by <span>{{ comment.user|upper }}</span></span>
+										<span class="time">{{ comment.timestamp|timesince }}</span>
+									</div>
+									<p>
+										{{ comment.content }}
+									</p>
+									<a href="#" class="tt-btn my-btn-reply"><i class="icon-g-06"></i></a>
+									{% if comment.children.count > 0 %}
+									<span class="username"> | Ответов: {{ comment.children.count }}</span>
+
+									{% endif %}
+									<div class="comment-reply">
+										<form action="." method="post">{% csrf_token %}
+											<div class="form-group">
+												{{ comment_form }}
+											</div>
+											<div class="form-group">
+												<input type="hidden" name="parent_id" value="{{ comment.id }}" >
+												<button type="submit" class="btn">ОТВЕТИТЬ</button>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+							{% for child_comment in comment.children %}
+							<div class="tt-comments-level-2">
+								<div class="tt-avatar"></div>
+								<div class="tt-content">
+									<div class="tt-comments-title">
+										<span class="username">by <span>{{ child_comment.user|upper }}</span></span>
+										<span class="time">on {{ child_comment.timestamp|timesince }}</span>
+									</div>
+									<p>
+										{{ child_comment.content }}
+									</p>
+									<!--<a href="#" class="tt-btn"><i class="icon-g-06"></i></a>-->
+								</div>
+							</div>
+							{% endfor %}
+						</div>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="container-indent">
+
+	</div>
