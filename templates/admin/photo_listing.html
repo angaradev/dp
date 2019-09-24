@@ -1,0 +1,24 @@
+{% extends 'admin/adm_base.html' %}
+{% load static %}
+{% block page_content %}
+
+
+
+
+<h2>Работаем с фото {% if single_car %}{{ single_car|upper }}{% endif %}</h2>
+<div class="row">
+
+        {% for object in objects %}
+            <div class="col-3">
+                <div class="thumbnail {% if object.image_path %}thumbnail-green{% else %}thumbnail-red{% endif %}">
+                        {% if object.image_path %}
+                        <img src="{% static object.image_path %}" class="img-fluid">
+                        {% endif %}
+                    <h5>{{ object.cat_n }}</h5>
+                    <h5>{{ object.name|title }}</h5>
+                    </div>
+            </div>
+            <!--<img src="{% static object.image_path %}" alt="..." class="img-thumbnail img-fluid">-->
+        {% endfor %}
+</div>
+{% endblock %}

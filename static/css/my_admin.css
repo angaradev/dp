@@ -1,0 +1,25 @@
+.thumbnail img{
+    width: 200px;
+    max-height: 200px;
+}
+
+.thumbnail {
+    border-radius: 5px;
+    padding: 10px;
+    margin: 5px;
+    min-height: 350px;
+}
+.thumbnail-red {
+    border: 2px solid HOTPINK;
+    color: hotpink;
+}
+.thumbnail-green {
+    border: 1px solid MEDIUMSEAGREEN;
+    color: MEDIUMSEAGREEN;
+}
+
+
+
+.thumbnail h5{
+height: 20px;
+}

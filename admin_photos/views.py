@@ -3,8 +3,19 @@ from django.contrib.auth.decorators import login_required
 from products.models import Categories, Products
 from django.db.models import Count, Sum
 from django.db.models import Subquery 
+from products.views import categories_tree, get_image_path
+import os
+from django.conf import settings 
 
 
+def get_image_path_all(obj):
+    working_dir = settings.STATICFILES_DIRS[1] 
+    files  =  os.listdir(os.path.join(working_dir, obj.cat_n))[:10]
+    img_list = []
+    for f in files:
+        img_list.append(os.path.join(obj.cat_n, f))
+    setattr(obj, 'image_path', img_list ) 
+    return obj
 
 def categories_tree(pk):
 
@@ -19,6 +30,10 @@ def categories_tree(pk):
             c_l.append(cat_sub.id)
         cats = Categories.objects.filter(parent_id__in=c_l)
     return cats        
+
+def show_cars():
+    qs = Products.objects.values('car').annotate(dcount=Count('car'))
+    return qs
 
 @login_required
 def admin_photos_view(request):
@@ -36,9 +51,15 @@ def admin_photos_view(request):
         if not pqs:
             continue
         objects.append({'id': q.id, 'name': q.name, 'p_count': pqs.count()})
+
+    cars = show_cars()
+    if not car:
+        car = None
+
     context = {
                 'objects': objects,
-                'car': car,
+                'cars': cars,
+                'single_car': car,
             }
     return render(request, 'admin/photo.html', context)
 
@@ -49,3 +70,25 @@ def admin_photos_statistic(request):
 
             }
     return render(request, 'admin/statistic.html', context)
+
+
+
+@login_required
+def admin_photo_listing(request, pk):
+    car = request.GET.get('car')
+    
+    cat = categories_tree(pk)
+    li = []
+    for c in cat:
+        li.append(c.id)
+    if car is not None:
+        qs = Products.objects.filter(cat__in=li, car=car)
+    else:
+        qs = Products.objects.filter(cat__in=li)
+    objects = get_image_path(qs)
+    
+    context = {
+                'objects': objects,
+
+            }
+    return render(request, 'admin/photo_listing.html', context)

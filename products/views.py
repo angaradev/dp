@@ -50,7 +50,7 @@ def get_image_path(qs):
         try:
             files  =  os.listdir(os.path.join(working_dir, obj.cat_n))
             setattr(obj, 'image_path', os.path.join(obj.cat_n, files[0])) 
-#            print(os.path.join(obj.cat_n, files[0]))
+            print(os.path.join(obj.cat_n, files[0]))
         except Exception as e:
             print(e)
     return qs
@@ -231,6 +231,8 @@ def detailed(request, pk):
             img_list.append(os.path.join(obj.cat_n, f))
         setattr(obj, 'image_path', img_list ) 
         return obj
+
+
     comments = Comment.objects.filter_by_instance(obj)
     comments = Comment.objects.filter_by_instance(obj)
 
