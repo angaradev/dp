@@ -142,7 +142,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
-    '/media/manhee/b68fbbb8-c6b6-4d26-8c3a-a9b68dbc2eb3/ducatoparts_photo_ebay',
+    local_img_dir,
     
 ]
 
