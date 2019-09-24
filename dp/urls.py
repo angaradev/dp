@@ -7,6 +7,7 @@ from home.views import home
 from django.conf.urls import include
 from products.views import newparts, subcat, cars, cars_subcats, detailed
 from accounts.views import login_view, register_view, logout_view
+from admin_photos.views import admin_photos_view, admin_photos_statistic
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -22,5 +23,7 @@ urlpatterns = [
     path('zapchasti/<str:car>/<slug:slug>/', cars_subcats, name='car_page_subcats'),
     path('product/<int:pk>/', detailed, name='detailed'),
     path('ratings/', include('star_ratings.urls', namespace='ratings')),
+    path('adminphotos/', admin_photos_view, name='adminphotos'),
+    path('adminphotosstatistic/', admin_photos_statistic, name='adminphotosstatistic'),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

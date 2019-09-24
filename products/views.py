@@ -50,7 +50,7 @@ def get_image_path(qs):
         try:
             files  =  os.listdir(os.path.join(working_dir, obj.cat_n))
             setattr(obj, 'image_path', os.path.join(obj.cat_n, files[0])) 
-            print(os.path.join(obj.cat_n, files[0]))
+#            print(os.path.join(obj.cat_n, files[0]))
         except Exception as e:
             print(e)
     return qs
@@ -118,9 +118,9 @@ def cars_subcats(request, car, slug, **kwargs):
     cats_list = [] 
     if len(cats) == 0:
         if brand:
-            qs = Products.objects.filter(car=car, cat=cats_tmp.id, brand=brand)
+            qs = Products.objects.filter(car=car, cat=cats_tmp.id, brand=brand).distinct()
         else:
-            qs = Products.objects.filter(car=car, cat=cats_tmp.id)
+            qs = Products.objects.filter(car=car, cat=cats_tmp.id).distinct()
     else:
         for c in cats:
             cats_list.append(c.id)
@@ -128,9 +128,9 @@ def cars_subcats(request, car, slug, **kwargs):
         for g in groups:
             cats_list.append(g.id) 
         if brand:
-            qs = Products.objects.filter(car=car, cat__in=cats_list, brand=brand)
+            qs = Products.objects.filter(car=car, cat__in=cats_list, brand=brand).distinct()
         else:
-            qs = Products.objects.filter(car=car, cat__in=cats_list)
+            qs = Products.objects.filter(car=car, cat__in=cats_list).distinct()
     
     brands = qs.values('brand').annotate(brand_count=Count('brand')) 
     h1 = cats_tmp.name
@@ -176,9 +176,9 @@ def subcat(request, slug, **kwargs):
     cats_list = [] 
     if len(cats) == 0:
         if brand:
-            qs = Products.objects.filter(cat=cats_tmp.id, brand=brand)
+            qs = Products.objects.filter(cat=cats_tmp.id, brand=brand).distinct()
         else:
-            qs = Products.objects.filter(cat=cats_tmp.id)
+            qs = Products.objects.filter(cat=cats_tmp.id).distinct()
     else:
         for c in cats:
             cats_list.append(c.id)
@@ -186,9 +186,9 @@ def subcat(request, slug, **kwargs):
         for g in groups:
             cats_list.append(g.id) 
         if brand:
-            qs = Products.objects.filter(cat__in=cats_list, brand=brand)
+            qs = Products.objects.filter(cat__in=cats_list, brand=brand).distinct()
         else:
-            qs = Products.objects.filter(cat__in=cats_list)
+            qs = Products.objects.filter(cat__in=cats_list).distinct()
     
     brands = qs.values('brand').annotate(brand_count=Count('brand')) 
     h1 = cats_tmp.name
