@@ -92,3 +92,29 @@ def admin_photo_listing(request, pk):
 
             }
     return render(request, 'admin/photo_listing.html', context)
+
+
+@login_required
+def detailed_view(request, pk):
+    qs = Products.objects.get(id=pk)
+    objects = get_image_path_all(qs)
+    context = {
+            'objects': objects,
+            }
+    return render(request, 'admin/photo_detailed.html', context)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
