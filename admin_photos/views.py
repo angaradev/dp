@@ -105,7 +105,8 @@ def get_image_path_all(obj):
 def admin_detailed_view(request, pk):
     qs = Products.objects.get(id=pk)
     objects = get_image_path_all(qs)
-    
+    dir_listing = os.listdir(os.path.join(settings.STATICFILES_DIRS[1],qs.cat_n))    
+    print(dir_listing)
     img_delete = request.GET.getlist('img_delete')
     if img_delete:
         for f in img_delete:

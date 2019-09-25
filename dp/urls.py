@@ -27,6 +27,7 @@ urlpatterns = [
     path('adminphotos/', admin_photos_view, name='adminphotos'),
     path('adminphotosstatistic/', admin_photos_statistic, name='adminphotosstatistic'),
     path('adminphotolisting/<int:pk>', admin_photo_listing, name='adminphotolisting'),
+    path('admindetailedview/<int:pk>/', admin_detailed_view, name='admin_detailed_view'),
     path('about/', about, name='about'),
 
 
