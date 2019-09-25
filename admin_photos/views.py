@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from products.models import Categories, Products
 from django.db.models import Count, Sum
@@ -6,16 +7,9 @@ from django.db.models import Subquery
 from products.views import categories_tree, get_image_path
 import os
 from django.conf import settings 
+from django.views.generic.edit import FormView
+from .forms import FileFieldForm
 
-
-def get_image_path_all(obj):
-    working_dir = settings.STATICFILES_DIRS[1] 
-    files  =  os.listdir(os.path.join(working_dir, obj.cat_n))[:10]
-    img_list = []
-    for f in files:
-        img_list.append(os.path.join(obj.cat_n, f))
-    setattr(obj, 'image_path', img_list ) 
-    return obj
 
 def categories_tree(pk):
 
@@ -94,18 +88,51 @@ def admin_photo_listing(request, pk):
     return render(request, 'admin/photo_listing.html', context)
 
 
+def get_image_path_all(obj):
+    working_dir = settings.STATICFILES_DIRS[1] 
+    files  =  os.listdir(os.path.join(working_dir, obj.cat_n))
+    img_list = []
+    for f in files:
+        try:
+            img_list.append({ 'path': os.path.join(obj.cat_n, f), 'img_name': f})
+        except Exception as e:
+            print(e)
+    setattr(obj, 'image_path', img_list ) 
+    return obj
+
+
 @login_required
-def detailed_view(request, pk):
+def admin_detailed_view(request, pk):
     qs = Products.objects.get(id=pk)
     objects = get_image_path_all(qs)
+    
+    img_delete = request.GET.getlist('img_delete')
+    if img_delete:
+        for f in img_delete:
+            os.remove(os.path.join(settings.STATICFILES_DIRS[1], f))
+        return redirect('admin_detailed_view', pk)
     context = {
-            'objects': objects,
+            'images': objects,
             }
     return render(request, 'admin/photo_detailed.html', context)
 
 
 
+class FileFieldView(FormView):
+    form_class = FileFieldForm
+    template_name = 'upload.html'  # Replace with your template.
+    success_url = '...'  # Replace with your URL or reverse().
 
+    def post(self, request, *args, **kwargs):
+        form_class = self.get_form_class()
+        form = self.get_form(form_class)
+        files = request.FILES.getlist('file_field')
+        if form.is_valid():
+            for f in files:
+                ...  # Do something with each file.
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
 
 
 

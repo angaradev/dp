@@ -19,3 +19,12 @@ def home(request):
             }
 
     return render(request, 'home/home.html', context)
+
+def about(request):
+
+
+    context = {
+
+            }
+
+    return render(request, 'home/about.html', context)

@@ -1,0 +1,61 @@
+{% extends 'admin/adm_base.html' %}
+{% load static %}
+{% block page_content %}
+<form method="get" action=".">
+<div class="row">
+    <div class="col-12">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th style="width: 16.66%;">
+                        <button type="submit" class="btn btn-outline-danger float">Удалить отмеченные</button>
+                    </th>
+                    <th style="width: 16.66%;">
+                        <button type="submit" class="btn btn-outline-danger float">Удалить отмеченные</button>
+                    </th>
+                    <th style="width: 50%;">
+                        <h5>{{ images.cat_n }} | {{ images.name|title }}</h5>
+                    </th>
+                    <th>
+
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for img in images.image_path %}
+                <tr>
+                    <td>
+
+                    </td>
+                    <td>
+                        <div class="form-check">
+
+                          <label class="form-check-label container" for="check-{{ img.img_name }}">
+                              <input class="form-check-input" type="checkbox" name="img_delete" value="{{ img.path }}"  id="check-{{ img.img_name }}">
+
+                              <span class="detailed-red delete-photo"> Отметить для удаления</span>
+                              <span class="checkmark"></span>
+
+                          </label>
+
+                        </div>
+
+                    </td>
+                    <td>
+                        <div class="detailed">
+                            <img src="{% static img.path %}" class="img-fluid">
+                        </div>
+                    </td>
+                    <td>
+
+                    </td>
+
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+    </form>
+
+{% endblock %}
