@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from products.models import Categories, Products
+from products.views import get_image_path
 
 
 def home(request):
@@ -10,6 +11,10 @@ def home(request):
     body = Products.objects.filter(id__in=ls['body'])
     engine = Products.objects.filter(id__in=ls['engine'])
 
+    brakes = get_image_path(brakes)
+    fuel = get_image_path(fuel)
+    engine = get_image_path(engine)
+    body = get_image_path(body)
     context = {
             'brakes': brakes,
             'fuel': fuel,
