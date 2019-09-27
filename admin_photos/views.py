@@ -44,7 +44,12 @@ def admin_photos_view(request):
         sub = Categories.objects.filter(parent_id=q.id)
         for s in sub:
             sub_l.append(s.id)
-        pqs = Products.objects.filter(cat__in=sub_l).distinct()
+        if checked and checked == 'True':
+            pqs = Products.objects.filter(cat__in=sub_l).filter(img_check=True).distinct()
+        elif checked and checked == 'False':
+            pqs = Products.objects.filter(cat__in=sub_l).filter(img_check=False).distinct()
+        else:
+            pqs = Products.objects.filter(cat__in=sub_l).distinct()
 
         if not pqs:
             continue
