@@ -1,32 +1,17 @@
 {% extends 'admin/adm_base.html' %}
 {% load static %}
 {% block page_content %}
-<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h1 class="h2">Dashboard</h1>
-    <div class="btn-toolbar mb-2 mb-md-0">
-        <div class="btn-group mr-2">
-            <button type="button" class="btn btn-sm btn-outline-secondary">Share</button>
-            <button type="button" class="btn btn-sm btn-outline-secondary">Export</button>
-        </div>
-        <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
-            <span data-feather="calendar"></span>
-            This week
-        </button>
-    </div>
-</div>
 
-
-
-<h2>Работаем с фото {% if single_car %}{{ single_car|upper }}{% endif %}</h2>
+{% include 'admin/snippets/breadcrumbs.html' %}
 <div class="table-responsive">
     <table class="table table-striped table-sm">
         <thead>
         <tr>
-            <th>#</th>
-            <th>Header</th>
-            <th>Header</th>
-            <th>Header</th>
-            <th>Header</th>
+            <th>ID</th>
+            <th>Категория</th>
+            <th>Всего номеров</th>
+            <th>Проверено</th>
+            <th>Осталось</th>
         </tr>
         </thead>
         <tbody>
@@ -38,9 +23,9 @@
             {% else %}
             <td><a href="{% url 'adminphotolisting' object.id %}">{{ object.name }}</a></td>
             {% endif %}
-            <td>{{ object.p_count }}</td>
-            <td>dolor</td>
-            <td>sit</td>
+            <td><span class="bblue">{{ object.p_count }}</span></td>
+            <td><span class="bgreen">{{ object.checked_count }}</span></td>
+            <td><span class="bred">{{ object.unchecked_count }}</span></td>
         </tr>
         {% endfor %}
         </tbody>

@@ -4,19 +4,25 @@
 
 
 
-
-<h2>Работаем с фото {% if single_car %}{{ single_car|upper }}{% endif %}</h2>
+{% include 'admin/snippets/breadcrumbs.html' %}
 <div class="row">
 
         {% for object in objects %}
-            <div class="col-3">
-                <a href="{% url 'admin_detailed_view' object.id %}"><div class="thumbnail {% if object.image_path %}thumbnail-green{% else %}thumbnail-red{% endif %}">
+            <div class="col-2">
+                <div class="thumbnail {% if object.image_path %}thumbnail-green{% else %}thumbnail-red{% endif %}">
                         {% if object.image_path %}
-                        <img src="{% static object.image_path %}" class="img-fluid">
+                    <a href="{% url 'admin_detailed_view' object.id %}?car={{ car }}">
+                        <img src="{% static object.image_path %}" class="img-fluid"></a>
                         {% endif %}
-                    <h5>{{ object.cat_n }}</h5>
-                    <h5>{{ object.name|title }}</h5>
-                    </div></a>
+                    <div class="detailed-cat_n mt-2">{{ object.cat_n }}</div>
+                    <div class="detailed-cat_n mt-2">{{ object.car }}</div>
+                    <a href="{% url 'admin_detailed_view' object.id %}?car={{ car }}"><div>{{ object.name|title }}</div></a>
+                    {% if object.img_check %}
+                    <a href="{% url 'admin_detailed_view' object.id %}?car={{ car }}"> <div class="img-check-green text-center">ПРОВЕРЕНО</div></a>
+                    {% else %}
+                       <a href="{% url 'admin_detailed_view' object.id %}?car={{ car }}"><div class="img-check-red text-center">НЕ ПРОВЕРЕНО</div></a>
+                    {% endif %}
+                    </div>
             </div>
             <!--<img src="{% static object.image_path %}" alt="..." class="img-thumbnail img-fluid">-->
         {% endfor %}

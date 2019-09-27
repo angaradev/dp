@@ -20,8 +20,6 @@ except ImportError:
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LOGIN_URL = 'login'
 
-FILE_UPLOAD_HENLDLERS = ["django.core.files.uploadhandler.MemoryFileUploadHandler",
-         "django.core.files.uploadhandler.TemporaryFileUploadHandler"]
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 

@@ -35,6 +35,8 @@ class Products(models.Model):
     color = models.CharField(max_length=20, blank=True, null=True)
     real_weight = models.FloatField(blank=True, null=True)
     seller = models.CharField(max_length=100, blank=True, null=True)
+    main_img = models.CharField(max_length=500, blank=True, null=True)
+    img_check = models.BooleanField(default=False)
     
     def get_absolute_url(self):
        return reverse('detailed', kwargs={'pk': self.id})

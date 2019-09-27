@@ -48,12 +48,17 @@ def get_image_path(qs):
     working_dir = settings.STATICFILES_DIRS[1] 
     for obj in qs:
         try:
-            files  =  os.listdir(os.path.join(working_dir, obj.cat_n))
-            setattr(obj, 'image_path', os.path.join(obj.cat_n, files[0])) 
-            print(os.path.join(obj.cat_n, files[0]))
+            if  obj.main_img:
+                f = os.path.join(obj.cat_n, obj.main_img)
+            else:
+                files  =  os.listdir(os.path.join(working_dir, obj.cat_n))
+                f = os.path.join(obj.cat_n, files[0])
+
+            setattr(obj, 'image_path', f) 
         except Exception as e:
             print(e)
     return qs
+
 
 def newparts(request):
 
