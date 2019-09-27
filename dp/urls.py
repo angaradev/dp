@@ -3,7 +3,7 @@ from django.urls import path
 from blogs.views import blogs, blog
 from django.conf import settings
 from django.conf.urls.static import static
-from home.views import home, about
+from home.views import home, about, payment, contacts, delivery, guaranties, policy, requsites, footer_form
 from django.conf.urls import include
 from products.views import newparts, subcat, cars, cars_subcats, detailed
 from accounts.views import login_view, register_view, logout_view
@@ -28,6 +28,14 @@ urlpatterns = [
     path('adminphotosstatistic/', admin_photos_statistic, name='adminphotosstatistic'),
     path('adminphotolisting/<int:pk>', admin_photo_listing, name='adminphotolisting'),
     path('about/', about, name='about'),
+    path('payment/', payment, name='payment'),
+    path('contacts/', contacts, name='contacts'),
+    path('delivery/', delivery, name='delivery'),
+    path('guaranties/', guaranties, name='guaranties'),
+    path('policy/', policy, name='policy'),
+    path('requsites/', requsites, name='requsites'),
+    path('footerform/', footer_form, name='footer_form'),
+
 
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

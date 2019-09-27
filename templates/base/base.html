@@ -63,6 +63,10 @@
 
 			</li>
 			<li>
+				<a href="{% url 'contacts' %}">БЛОГ</a>
+
+			</li>
+			<li>
 				<a href="#">О Компании</a>
 				<ul>
 					<li>
@@ -135,7 +139,7 @@
 			<div class="row">
 				<div class="tt-logo-container">
 					<!-- mobile logo -->
-					<a class="tt-logo tt-logo-alignment" href="{% url 'home' %}"><img src="{% static 'images/custom/logo.png' %}" alt=""></a>
+					<a class="tt-logo tt-logo-alignment" href="{% url 'home' %}"><img src="{% static 'logo1.png' %}" alt=""></a>
 					<!-- /mobile logo -->
 					<!-- /mobile logo -->
 				</div>
@@ -148,7 +152,7 @@
 			<div class="tt-header-holder">
 				<div class="tt-col-obj tt-obj-logo">
 					<!-- logo -->
-					<a class="tt-logo tt-logo-alignment" href="index.html"><img src="{% static 'images/custom/logo.png' %}" alt=""></a>
+					<a class="tt-logo tt-logo-alignment" href="{% url 'home' %}"><img src="{% static 'logo1.png' %}" alt=""></a>
 					<!-- /logo -->
 				</div>
 				<div class="tt-col-obj tt-obj-search-type2">
@@ -275,23 +279,31 @@
 
 									</li>
 									<li class="dropdown tt-megamenu-col-01">
-										<a href="#">О НАС</a>
+										<a href="{% url 'contacts' %}">КОНТАКТЫ</a>
+
+									</li>
+									<li class="dropdown tt-megamenu-col-01">
+										<a href="{% url 'delivery' %}">ДОСТАВКА</a>
+
+									</li>
+									<li class="dropdown tt-megamenu-col-01">
+										<a href="{% url 'about' %}">О НАС</a>
 										<div class="dropdown-menu">
 											<div class="row tt-col-list">
 												<div class="col">
 													<h6 class="tt-title-submenu"><a href="#">Информация</a></h6>
 													<ul class="tt-megamenu-submenu">
-														<li><a href="#">О Компании</a></li>
-														<li><a href="#">Доставка</a></li>
-														<li><a href="#">Оплата</a></li>
-														<li><a href="#">Реквизиты</a></li>
+														<li><a href="{% url 'about' %}">О Компании</a></li>
+														<li><a href="{% url 'delivery' %}">Доставка</a></li>
+														<li><a href="{% url 'payment' %}">Оплата</a></li>
+														<li><a href="{% url 'requsites' %}">Реквизиты</a></li>
 													</ul>
 												</div>
 												<div class="col">
 													<h6 class="tt-title-submenu"><a href="#">Документы</a></h6>
 													<ul class="tt-megamenu-submenu">
-														<li><a href="#">Политика Конфиденциальности</a></li>
-														<li><a href="#">Гарантии</a></li>
+														<li><a href="{% url 'policy' %}">Политика Конфиденциальности</a></li>
+														<li><a href="{% url 'guaranties' %}">Гарантии</a></li>
 													</ul>
 												</div>
 											</div>
@@ -482,40 +494,8 @@
 </header>
 {% block page %}{% endblock %}
 <footer class="nomargin">
-	<div class="tt-footer-default tt-color-scheme-02">
-		<div class="container">
-			<div class="row">
-				<div class="col-12 col-md-9">
-					<div class="tt-newsletter-layout-01">
-						<div class="tt-newsletter">
-							<div class="tt-mobile-collapse">
-								<h4 class="tt-collapse-title">
-									BE IN TOUCH WITH US:
-								</h4>
-								<div class="tt-collapse-content">
-									<form id="newsletterform" class="form-inline form-default" method="post" novalidate="novalidate" action="#">
-										<div class="form-group">
-											<input type="text" name="email" class="form-control" placeholder="Enter your e-mail">
-											<button type="submit" class="btn">JOIN US</button>
-										</div>
-									</form>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-md-auto">
-					<ul class="tt-social-icon">
-						<li><a class="icon-g-64" target="_blank" href="http://www.facebook.com/"></a></li>
-						<li><a class="icon-h-58" target="_blank" href="http://www.facebook.com/"></a></li>
-						<li><a class="icon-g-66" target="_blank" href="http://www.twitter.com/"></a></li>
-						<li><a class="icon-g-67" target="_blank" href="http://www.google.com/"></a></li>
-						<li><a class="icon-g-70" target="_blank" href="https://instagram.com/"></a></li>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</div>
+	{% include 'home/footer_form.html' %}
+
 	<div class="tt-footer-col tt-color-scheme-01">
 		<div class="container">
 			<div class="row">
@@ -541,11 +521,12 @@
 						</h4>
 						<div class="tt-collapse-content">
 							<ul class="tt-list">
-								<li><a href="account_order.html">О Компании</a></li>
-								<li><a href="page404.html">Контакты</a></li>
-								<li><a href="page404.html">Доставка</a></li>
-								<li><a href="login.html">Гарантии</a></li>
-								<li><a href="create-account.html">Оплата</a></li>
+								<li><a href="{% url 'about' %}">О Компании</a></li>
+								<li><a href="{% url 'contacts' %}">Контакты</a></li>
+								<li><a href="{% url 'delivery' %}">Доставка</a></li>
+								<li><a href="{% url 'guaranties' %}">Гарантии</a></li>
+								<li><a href="{% url 'payment' %}">Оплата</a></li>
+								<li><a href="{% url 'policy' %}">Политика Конфиденциальности</a></li>
 							</ul>
 						</div>
 					</div>
@@ -589,7 +570,7 @@
 					<div class="tt-col-item tt-logo-col">
 						<!-- logo -->
 						<a class="tt-logo tt-logo-alignment" href="index.html">
-							<img src="{% static 'images/custom/logo.png' %}" alt="">
+							<img src="{% static 'logo1.png' %}" alt="">
 						</a>
 						<!-- /logo -->
 					</div>

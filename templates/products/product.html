@@ -1,13 +1,16 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load ratings %}
+{% load crispy_forms_tags %}
 {% block page %}
 <div class="tt-breadcrumb">
 	<div class="container">
 		<ul>
-			<li><a href="index.html">Home</a></li>
-			<li><a href="listing-left-column.html">Shop</a></li>
-			<li>T-Shirt</li>
+			<li><a href="{% url 'home' %}">Главная</a></li>
+			<li><a href="{% url 'newparts' %}">Каталог</a></li>
+			<li>{% for c in object.cat.all %}
+				<a href="{% url 'subcat' c.slug %}">{{ c.name }}</a>,
+				{% endfor %}</li>
 		</ul>
 	</div>
 </div>
@@ -17,7 +20,7 @@
 		<div class="tt-mobile-product-layout visible-xs">
 			<div class="tt-mobile-product-slider arrow-location-center slick-animated-show-js">
 				{% for p in object.image_path %}
-				<h1>hsdfsdfsd</h1>
+				<h1>O</h1>
 				<div><img src="{% static p %}" alt=""></div>
 				{% endfor %}
 				<!--<div>
@@ -86,16 +89,20 @@
 										</div>
 									</div>
 									<div class="col-item">
-										<a href="#" class="btn btn-lg"><i class="icon-f-39"></i>ADD TO CART</a>
+										<a href="#" class="btn btn-lg"><i class="icon-f-39"></i>В Корзину</a>
+									</div>
+									<!-- Button trigger modal -->
+									<div>
+									<button type="button" class="btn btn-lg button-call-product" data-toggle="modal" data-target="#call_form">Обратный звонок</button>
 									</div>
 								</div>
 							</div>
-							<div class="tt-wrapper">
-								<ul class="tt-list-btn">
-									<li><a class="btn-link" href="#"><i class="icon-n-072"></i>ADD TO WISH LIST</a></li>
-									<li><a class="btn-link" href="#"><i class="icon-n-08"></i>ADD TO COMPARE</a></li>
-								</ul>
-							</div>
+<!--							<div class="tt-wrapper">-->
+<!--								<ul class="tt-list-btn">-->
+<!--									<li><a class="btn-link" href="#"><i class="icon-n-072"></i>ADD TO WISH LIST</a></li>-->
+<!--									<li><a class="btn-link" href="#"><i class="icon-n-08"></i>ADD TO COMPARE</a></li>-->
+<!--								</ul>-->
+<!--							</div>-->
 							<div class="tt-wrapper">
 								<div class="tt-add-info">
 									<ul>
@@ -336,6 +343,30 @@
 			</div>
 		</div>
 	</div>
+	<!--MODAL_CALLBACK-->
+						<div class="modal fade" id="call_form">
+							  <div class="modal-dialog" role="document">
+								<div class="modal-content">
+								  <div class="modal-header">
+									<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Закрыть">
+
+									</button>
+								  </div>
+								  <div class="modal-body">
+									<form method="post" action=".">{% csrf_token %}
+									{{ form|crispy }}
+									<button type="submit" class="btn btn-success">отправить</button>
+									</form>
+								  </div>
+								  <div class="modal-footer">
+									<button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+									<button type="submit" class="btn btn-success">Отправить</button>
+								  </div>
+								</div>
+							  </div>
+							</div>
+		<!--END_MODAL_CALLBACK-->
 	{% include 'snippets/comments.html' %}
 </div>
 {% endblock %}

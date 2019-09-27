@@ -1,71 +1,61 @@
 {% extends 'base.html' %}
 {% load static %}
-
-{% block page_title %}Страничка о компании{% endblock page_title %}
+{% load crispy_forms_tags %}
+{% block page_title %}О компании Ducatoparts.ru{% endblock page_title %}
 
 {% block page_description %}{% endblock page_description %}
 {% block page %}
 <div class="tt-breadcrumb">
 	<div class="container">
 		<ul>
-			<li><a href="index.html">Home</a></li>
-			<li>About</li>
+			<li><a href="{% url 'home' %}">Главная</a></li>
+			<li>О Компании</li>
 		</ul>
 	</div>
 </div>
 <div id="tt-pageContent">
 	<div class="nomargin container-indent">
-		<div class="tt-about-box" style="background-image: url({% static 'images/custom/about-img-01.jpg' %});">
-			<img class="img-mobile" src="{% static 'images/custom/about-img-01.jpg' %}" alt="">
+		<div class="about-box">
 			<div class="container">
 				<div class="row">
 					<div class="col-md-7">
-						<h1 class="tt-title">YOUR STORE IS A GLOBAL FASHION DESTINATION FOR 20-SOMETHINGS.</h1>
-						<p>
-							Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse. Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor.
-						</p>
-						<blockquote class="tt-blockquote-02">
-							<i class="tt-icon icon-g-56"></i>
-							<div class="tt-title">We sell cutting-edge fashion and offer a wide variety of fashion-related content.</div>
-							<div class="tt-title-description">— DANIEL BROWN</div>
-						</blockquote>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="container-indent">
-		<div class="container">
-			<div class="tt-about-col-list">
-				<div class="row">
-					<div class="col-md-6">
-						<h5 class="tt-title">OUR STORES</h5>
-						<div class="width-90">
-							Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse. Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor.
-						</div>
+						<h1 class="title">О магазине DucatoParts.ru</h1>
+						<p>Наша компания с 2007 года занимается продажей запчастей на комерческий транспорт.
+							За это время нам удалось сформировать полноценный склад и отличный сервис для клиентов.<p/>
+						<p>В основе нашего сервиса стоит человеческое отношение клиенту, поэтому Вы всегда можете расчитывать
+							на взаимопонимание и индивидуальный подход</p>
+						<p>К тому же, мы используем только прямые поставки, что положительно сказывается на конечной стоимости запчастей.</p>
+						<br>
+						<h3>Коротко о том, как мы работаем:</h3>
+						<h6>Если Вам нужны запчасти, но вы не успеваете до закрытия?</h6>
+						<p>Просто позвоните и мы найдем решение. Возможно мы подождем Вас,
+							а может быть для Вас будет удобнее, если менеждер заберет запчасти к себе домой ,
+							и точно сможет вам их отдать в любое вечернее время</p>
+						<br>
+						<h6>Что делать если запчасть не понадобилась?</h6>
+						<p>Мы можем вернуть запчасти которые вы не использовали, при сохранении товарного вида</p>
+						<p>Часто бывает так, что при замене некоторых узлов используются старые детали, например кронштейны или клипсы.
+							Наши постоянные покупатели уже знают, что проще купить все и не беспокоиться о том ,
+							что мастер в автосервисе при демонтаже сломал парочку старых креплений. Если все обошлось, просто вернете их нам.</p>
+
 
 					</div>
-					<div class="col-md-6">
-						<h5 class="tt-title">CONTACTS</h5>
-						<div class="tt-box-info">
-							<p>
-								<span class="tt-base-dark-color">Address:</span> 2548 Broaddus Maple Court Avenue, Madisonville KY 4783,<br>
-								United States of America
-							</p>
-							<p>
-								<span class="tt-base-dark-color">Phone:</span> +777 2345 7885:  +777 2345 7886
-							</p>
-							<p>
-								<span class="tt-base-dark-color">Hours:</span> 7 Days a week from 10 am to 6 pm
-							</p>
-							<p>
-								<span class="tt-base-dark-color">E-mail:</span> <a class="link" href="mailto:info@mydomain.com">info@mydomain.com</a>
-							</p>
-						</div>
-					</div>
+
+
 				</div>
+
 			</div>
+
 		</div>
+
 	</div>
+
 </div>
+
+
+
+
 {% endblock %}
+
+
+
