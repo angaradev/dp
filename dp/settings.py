@@ -47,7 +47,11 @@ INSTALLED_APPS = [
     'star_ratings',
     'accounts',
     'admin_photos',
+    'email_form',
+    'crispy_forms',
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -78,6 +82,8 @@ TEMPLATES = [
         },
     },
 ]
+
+
 
 WSGI_APPLICATION = 'dp.wsgi.application'
 

@@ -11,6 +11,8 @@ from comments.forms import CommentForm
 from comments.models import Comment
 from django.utils.html import strip_tags
 from django.core.mail import send_mail
+from email_form.forms import EmailFormLight, EmailFormOneField
+from email_form.models import EmailModel
 
 def show_cars():
     qs = Products.objects.values('car').annotate(dcount=Count('car'))
@@ -302,6 +304,15 @@ def detailed(request, pk):
         elif count >= 5:
             comment_word = 'КОММЕНТАРИЕВ'
         return comment_word
+    # Форма звонка Вася
+    form = EmailFormLight(request.POST or None)
+
+    if form.is_valid():
+
+        phone = form.cleaned_data.get('phone')
+        name = form.cleaned_data.get('name')
+        callback, created = EmailModel.objects.get_or_create(phone=phone, name=name)
+
 
     context = {
             'object': get_image_path(obj),
@@ -310,7 +321,9 @@ def detailed(request, pk):
             'comments': comments,
             'comment_count_word': check_comment_count(),
             'comment_form': form,
+            'form': form,
             }
     return render(request, 'products/product.html', context)
+
 
 
