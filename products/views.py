@@ -330,7 +330,6 @@ def detailed(request, pk):
         callback, created = EmailModel.objects.get_or_create(phone=phone, name=name)
     # Похожие товары
 
-
     context = {
             'object': get_image_path(obj),
             'categories': cats,
