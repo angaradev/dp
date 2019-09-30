@@ -5,6 +5,7 @@ from products.views import get_image_path
 from blogs.models import Blogs
 from email_form.forms import EmailFormLight, EmailFormOneField
 from email_form.models import EmailModel
+from django.db.models import Count, Min, Max
 
 
 def home(request):
@@ -15,6 +16,7 @@ def home(request):
     body = Products.objects.filter(id__in=ls['body'])
     engine = Products.objects.filter(id__in=ls['engine'])
     articles = Blogs.objects.all().order_by('-publish')[:2]
+    cars = Products.objects.values('car').annotate(dcount=Count('car'))
 
     cats = Categories.objects.filter(parent_id=0)
 
@@ -29,6 +31,7 @@ def home(request):
             'engine': engine,
             'articles': articles,
             'categories': cats,
+            'cars': cars,
             }
 
     return render(request, 'home/home.html', context)

@@ -164,7 +164,8 @@
 						<div class="tt-description">
 							<div class="tt-row">
 								<ul class="tt-add-info">
-									<li><a href="#">T-SHIRTS</a></li>
+									<li><a href="#">{{ c.name }}</a></li>
+
 								</ul>
 							</div>
 							<h2 class="tt-title"><a href="product.html">Flared Shift Dress</a></h2>
@@ -355,7 +356,7 @@
 								  </div>
 								  <div class="modal-body">
 									<form method="post" action=".">{% csrf_token %}
-									{{ form|crispy }}
+									{{ email_form|crispy }}
 									<button type="submit" class="btn btn-success">отправить</button>
 									</form>
 								  </div>
