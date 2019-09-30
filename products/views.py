@@ -313,7 +313,6 @@ def detailed(request, pk):
         name = form.cleaned_data.get('name')
         callback, created = EmailModel.objects.get_or_create(phone=phone, name=name)
 
-
     context = {
             'object': get_image_path(obj),
             'categories': cats,
