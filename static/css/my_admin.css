@@ -160,3 +160,13 @@ height: 20px;
     list-style: none;
     color: MEDIUMSEAGREEN;
 }
+
+.left-buttons a {
+    background-color: #fff;
+    color: #6c757d;
+}
+.left-buttons a:hover {
+    background-color: #6c757d;
+    color: #fff;
+
+}

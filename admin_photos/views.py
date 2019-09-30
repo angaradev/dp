@@ -14,6 +14,50 @@ from django.http import HttpResponse
 from django.db.models import Q
 from django.urls.base import reverse
 
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from .models import PhotoStatistic
+
+
+
+
+@login_required
+def make_stat(request):
+    qs = Products.objects.values('img_check')
+    print(count(qs))
+    return redirect('home')
+
+
+class ChartData(APIView):
+
+    authentication_classes = []
+    permission_classes = []
+
+    def get(self, request, format=None):
+        
+        d = Products.objects.values('img_check')
+        print(d)
+        checked = d.filter(img_check=True).count()
+        unchecked = d.filter(img_check=False).count()
+        labels = [f'Сделано {checked}', f'Осталось {unchecked}']
+        defaultData = [checked, unchecked]
+
+
+
+        data = {
+                "labels": labels,   #['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                'defaultData':defaultData, # [12, 19, 3, 5, 2, 3],
+                "bgColors": [
+                                'rgba(0, 255, 127, 0.2)',
+                                'rgba(255, 20, 147, 0.2)',
+                            ],
+                "borderColor":  [
+                                'rgba(0, 255, 127, 1)',
+                                'rgba(255, 20, 147, 1)',
+                            ]
+                }
+        return Response(data)      
+
 def categories_tree(pk):
 
     if pk > 999:

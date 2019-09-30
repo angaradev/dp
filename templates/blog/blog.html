@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load extras %}
+{% load ratings %}
 {% block meta %}
 	{% if request.GET.page  %}
 		<link rel="canonical" href="{{ request.path }}" />
@@ -35,7 +36,9 @@
 						<h1 class="tt-title">
 							{{ object.title }}
 						</h1>
-						<div class="tt-autor">by <span>Админ</span> on {{ object.publish }}</div>
+						<div class="tt-autor">by <span>Админ</span> on {{ object.publish }}
+
+						</div>
 						<div class="tt-post-content">
 							<img src="images/loader.svg" data-src="{{ object.image.url }}" alt="{{ object.title }}">
 							<div class="row">
@@ -49,11 +52,13 @@
 							{{ object.text|safe }}
 
 						</div>
-						<!--<div class="post-meta">
-							<span class="item">
-								<span>Tag:</span> <span><a href="#">FASHION</a></span>, <span><a href="#">STYLE</a></span>
-							</span>
-						</div>-->
+						<div class="post-meta">
+                            <span>{% ratings object 16 16 %}</span>
+							<!--<span class="item">
+								<span>Tag:</span> <span><a href="#">FASHION</a></span>, <span class="mr-4"><a href="#">STYLE</a></span>
+							</span>-->
+                            <span style="float:right;">Прочитано <span class="badge badge-pill badge-secondary">{{ object.number_views }}</span></span>
+						</div>
 					</div>
 				</div>
 			</div>

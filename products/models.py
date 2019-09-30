@@ -15,6 +15,9 @@ class Categories(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('subcat', kwargs={'slug': self.slug })
+
 
 class Cross(models.Model):
     orig_n = models.CharField(max_length=50)

@@ -11,6 +11,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<link rel="stylesheet" href="{% static 'star-ratings/css/star-ratings.css' %}">
 	<link rel="stylesheet" href="{% static 'css/theme.css' %}">
+	<link rel="stylesheet"  href="https://cdn.jsdelivr.net/npm/pretty-checkbox@3.0/dist/pretty-checkbox.min.css">
 	<link rel="stylesheet" href="{% static 'css/my_style.css' %}">
 </head>
 <body>
@@ -158,9 +159,9 @@
 				<div class="tt-col-obj tt-obj-search-type2">
 					<div class="tt-search-type2">
 			 			<!-- tt-search -->
-						<form action="/search" method="get" role="search">
+						<form action="{% url 'search' %}" method="get" role="search">
 							<i class="icon-f-85"></i>
-							<input class="tt-search-input" type="search" placeholder="Поиск..." aria-label="SEARCH PRODUCTS..." autocomplete="off">
+							<input class="tt-search-input" type="search" name="search" {% if request.GET.search %} value="{{ request.GET.search }}{% endif %}" placeholder="Поиск..." aria-label="SEARCH PRODUCTS..." autocomplete="off">
 							<button type="submit" class="tt-btn-search">Поиск</button>
 							<div class="search-results">
 								<ul>
@@ -210,6 +211,7 @@
 							            </a>
 							        </li>
 								</ul>
+
 								<button type="button" class="tt-view-all">View all products</button>
 							</div>
 						</form>

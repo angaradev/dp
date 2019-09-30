@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from .models import Products, Categories
 from django.db.models import Count, Min, Max
-from django.db.models import Q
+from django.db.models import Q, Subquery
 from django.core.paginator import Paginator
 from django.conf import settings
 import os
@@ -326,4 +326,86 @@ def detailed(request, pk):
     return render(request, 'products/product.html', context)
 
 
+def search(request):
+    qs = Products.objects.filter(name__icontains="фильтр").distinct()
+    
+    search = request.GET.get('search')
 
+    def search_splitter(search):
+        from .stemmer import Porter
+        s = Porter()
+        search_list = search.split(' ')
+        new_search_list = []
+        for word in search_list:
+            n_w = s.stem(word)
+            new_search_list.append(n_w)
+        return(new_search_list)
+
+    search_list = search_splitter(search)
+
+    if len(search_list) == 1:
+        qs_s = f'Products.objects.filter(name__icontains="{search}").distinct().filter('
+    else:
+        qs_s = f'Products.objects.filter('
+        for word in search_list:
+            qs_s += f'Q(name__icontains="{word}") & '
+#        qs_s = qs_s.rstrip()
+#        qs_s = qs_s.rstrip('&').rstrip()
+#        qs_s += ').distinct()'
+#        print(qs_s)
+
+    cars_l = request.GET.getlist('car')
+    cats_l = request.GET.getlist('cat')
+    brands_l = request.GET.getlist('brand')
+    if cars_l:
+        qs_s += f'Q(car__in={cars_l}) & '
+    if cats_l:
+        qs_s += f'Q(cat__in={cats_l}) & '
+    if brands_l:
+        qs_s += f'Q(brand__in={brands_l}) & '
+    else:
+        pass
+    qs_s = qs_s.rstrip()
+    qs_s = qs_s.rstrip('&').rstrip()
+    qs_s += ')'
+    print(qs_s)
+    qs = eval(qs_s)
+
+    qs_cars = qs.values('car').annotate(scount=Count('car'))
+
+    qs_brand = qs.values('brand').annotate(bcount=Count('brand'))
+
+    qs_cats = qs.prefetch_related('cat')#.annotate(ccount=Count('cat'))
+    l = []
+    for q in qs_cats:
+        for c in q.cat.all():
+            caa = Categories.objects.get(id=c.parent_id)
+            if caa.id not in l:
+                l.append(caa.id)
+    cats = Categories.objects.filter(parent_id__in=l)
+    
+    ca = [] 
+    for c in cats:
+        p = qs.filter(cat=c.id)
+        if not p:
+            continue
+        ca.append({'cat': c, 'ccount': p.count()})
+    
+
+    try:
+        p = Paginator(qs, 20)
+        page = request.GET.get('page')
+        objects = p.get_page(page)
+    except:
+        pass
+    if request.GET.get('load_all') == 'all':
+        objects = qs
+    
+    objects = get_image_path(objects)
+    context = {
+                'objects': objects,
+                'cars': qs_cars, 
+                'search_categories': ca,
+                'brands': qs_brand,
+            }
+    return render(request, 'products/search.html', context)

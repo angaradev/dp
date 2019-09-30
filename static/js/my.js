@@ -8,4 +8,12 @@ jQuery(function($){
     });
 
 
+
+});
+
+
+$(document).ready(function(){
+    $('input[type=checkbox]').on('change', function() {
+        $(this).closest("form").submit();
+    });
 });

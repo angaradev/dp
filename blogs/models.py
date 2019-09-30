@@ -39,6 +39,7 @@ class Blogs(models.Model):
     image               = models.ImageField(upload_to=upload_image_path, null=True, blank=True)
     category            = models.ForeignKey(Categories, related_name='category', on_delete=models.CASCADE, default=1)
     publish             = models.DateField(auto_now=True)
+    number_views        = models.IntegerField(default=0)
 
     @property
     def comments(self):

@@ -49,6 +49,9 @@ def blogs(request):
 
 def blog(request, slug):
     obj = Blogs.objects.get(slug=slug)
+    obj.number_views += 1
+    obj.save()
+    
     related = Blogs.objects.filter(category=obj.category).exclude(slug=slug)[:2]
     comments = Comment.objects.filter_by_instance(obj)
     if request.user.is_authenticated:
