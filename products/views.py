@@ -63,6 +63,7 @@ def get_image_path(qs):
 
 
 def newparts(request):
+
     qs = Products.objects.all()[:100]
     qs = get_image_path(qs)
     cats = Categories.objects.filter(parent_id=0)
@@ -74,15 +75,11 @@ def newparts(request):
         pass
     if request.GET.get('load_all') == 'all':
         objects = get_image_path(objects)
-
-    sale_prod = [2274, 2582, 2027]
-    brakes = Products.objects.filter(id__in=sale_prod)
-    brakes = get_image_path(brakes)
+    
     context = {
             'objects': objects, 
             'categories': cats,
             'cars': show_cars(),
-            'brakes': brakes,
            # 'brands': show_brands(),
             }
     return render(request, 'products/newparts.html', context)
@@ -106,17 +103,11 @@ def cars(request, car):
     if request.GET.get('load_all') == 'all':
         objects = qs
     objects = get_image_path(objects)
-
-    sale_prod = [2274, 2582, 2027]
-    brakes = Products.objects.filter(id__in=sale_prod)
-    brakes = get_image_path(brakes)
-
     context = {
             'objects': objects,
             'cars': show_cars(),
             'categories': cats,
             'single_car': car,
-            'brakes': brakes,
             }
     return render(request, 'products/newparts.html', context)
 
@@ -161,9 +152,7 @@ def cars_subcats(request, car, slug, **kwargs):
     
     objects = get_image_path(objects)
 
-    sale_prod = [2274, 2582, 2027]
-    brakes = Products.objects.filter(id__in=sale_prod)
-    brakes = get_image_path(brakes)
+            
 
     context = {
             'objects': objects,
@@ -174,7 +163,6 @@ def cars_subcats(request, car, slug, **kwargs):
             'title_h1': h1,
             'car': car,
             'brand': brand,
-            'brakes': brakes,
             }
     
     return render(request, 'products/newparts.html', context)
@@ -221,9 +209,7 @@ def subcat(request, slug, **kwargs):
         objects = qs
     
     objects = get_image_path(objects)
-    sale_prod = [2274, 2582, 2027]
-    brakes = Products.objects.filter(id__in=sale_prod)
-    brakes = get_image_path(brakes)
+
             
 
     context = {
@@ -233,7 +219,6 @@ def subcat(request, slug, **kwargs):
             'brands': brands,
             'title_h1': h1,
             'brand': brand,
-            'brakes': brakes,
             }
     
     return render(request, 'products/newparts.html', context)
@@ -320,15 +305,13 @@ def detailed(request, pk):
             comment_word = 'КОММЕНТАРИЕВ'
         return comment_word
     # Форма звонка Вася
+    form = EmailFormLight(request.POST or None)
 
-    e_form = EmailFormLight(request.POST or None)
+    if form.is_valid():
 
-    if e_form.is_valid():
-
-        phone = e_form.cleaned_data.get('phone')
-        name = e_form.cleaned_data.get('name')
+        phone = form.cleaned_data.get('phone')
+        name = form.cleaned_data.get('name')
         callback, created = EmailModel.objects.get_or_create(phone=phone, name=name)
-    # Похожие товары
 
 
     context = {
@@ -338,7 +321,7 @@ def detailed(request, pk):
             'comments': comments,
             'comment_count_word': check_comment_count(),
             'comment_form': form,
-            'email_form': e_form,
+            'form': form,
             }
     return render(request, 'products/product.html', context)
 
@@ -385,7 +368,6 @@ def search(request):
     qs_s = qs_s.rstrip()
     qs_s = qs_s.rstrip('&').rstrip()
     qs_s += ')'
-    print(qs_s)
     qs = eval(qs_s)
 
     qs_cars = qs.values('car').annotate(scount=Count('car'))
