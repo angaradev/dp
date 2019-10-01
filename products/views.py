@@ -20,13 +20,11 @@ def show_cars():
     qs = Products.objects.values('car').annotate(dcount=Count('car'))
     return qs
 
-
 def show_brands(pk, car, cat):
     for k, v in kwargs.items():
         pass
-    qs = Products.objects.filter(cat=2502).values('brand').annotate(dbrand=Count('brand'))
+    qs = Products.objects.filter(cat = 2502).values('brand').annotate(dbrand=Count('brand'))
     return qs
-
 
 def show_price(price_min, price_max):
     price_range = Products.objects.filter(price__range=[price_min, price_max])
@@ -34,8 +32,8 @@ def show_price(price_min, price_max):
     p_max = Products.objects.all().aggregate(Max('price'))
     return p_min, p_max, price_range
 
-
 def categories_tree(pk):
+
     if pk > 999:
         cats = Categories.objects.filter(id=pk)
     if pk < 999 and pk > 99:
@@ -46,20 +44,21 @@ def categories_tree(pk):
         for cat_sub in cats_sub:
             c_l.append(cat_sub.id)
         cats = Categories.objects.filter(parent_id__in=c_l)
-    return cats
-
+    return cats        
+    
 
 def get_image_path(qs):
-    working_dir = settings.STATICFILES_DIRS[1]
+
+    working_dir = settings.STATICFILES_DIRS[1] 
     for obj in qs:
         try:
-            if obj.main_img:
+            if  obj.main_img:
                 f = os.path.join(obj.cat_n, obj.main_img)
             else:
-                files = os.listdir(os.path.join(working_dir, obj.cat_n))
+                files  =  os.listdir(os.path.join(working_dir, obj.cat_n))
                 f = os.path.join(obj.cat_n, files[0])
 
-            setattr(obj, 'image_path', f)
+            setattr(obj, 'image_path', f) 
         except Exception as e:
             print(e)
     return qs
@@ -82,12 +81,12 @@ def newparts(request):
     brakes = Products.objects.filter(id__in=sale_prod)
     brakes = get_image_path(brakes)
     context = {
-        'objects': objects,
-        'categories': cats,
-        'cars': show_cars(),
-        'brakes': brakes,
-        # 'brands': show_brands(),
-    }
+            'objects': objects, 
+            'categories': cats,
+            'cars': show_cars(),
+            'brakes': brakes,
+           # 'brands': show_brands(),
+            }
     return render(request, 'products/newparts.html', context)
 
 
@@ -115,14 +114,13 @@ def cars(request, car):
     brakes = get_image_path(brakes)
 
     context = {
-        'objects': objects,
-        'cars': show_cars(),
-        'categories': cats,
-        'single_car': car,
-        'brakes': brakes,
-    }
+            'objects': objects,
+            'cars': show_cars(),
+            'categories': cats,
+            'single_car': car,
+            'brakes': brakes,
+            }
     return render(request, 'products/newparts.html', context)
-
 
 def cars_subcats(request, car, slug, **kwargs):
     brand = request.GET.get('brand', None)
@@ -132,10 +130,10 @@ def cars_subcats(request, car, slug, **kwargs):
     for c in second_level_cats:
         nums = Products.objects.filter(car=car, cat__in=categories_tree(c.id)).count()
         if nums != 0:
-            setattr(c, 'prod_count', nums)
+            setattr(c, 'prod_count', nums) 
             cats.append(c)
 
-    cats_list = []
+    cats_list = [] 
     if len(cats) == 0:
         if brand:
             qs = Products.objects.filter(car=car, cat=cats_tmp.id, brand=brand).distinct()
@@ -146,13 +144,13 @@ def cars_subcats(request, car, slug, **kwargs):
             cats_list.append(c.id)
         groups = Categories.objects.filter(parent_id__in=cats_list)
         for g in groups:
-            cats_list.append(g.id)
+            cats_list.append(g.id) 
         if brand:
             qs = Products.objects.filter(car=car, cat__in=cats_list, brand=brand).distinct()
         else:
             qs = Products.objects.filter(car=car, cat__in=cats_list).distinct()
-
-    brands = qs.values('brand').annotate(brand_count=Count('brand'))
+    
+    brands = qs.values('brand').annotate(brand_count=Count('brand')) 
     h1 = cats_tmp.name
     try:
         p = Paginator(qs, 20)
@@ -162,7 +160,7 @@ def cars_subcats(request, car, slug, **kwargs):
         pass
     if request.GET.get('load_all') == 'all':
         objects = qs
-
+    
     objects = get_image_path(objects)
 
     sale_prod = [2274, 2582, 2027]
@@ -170,19 +168,18 @@ def cars_subcats(request, car, slug, **kwargs):
     brakes = get_image_path(brakes)
 
     context = {
-        'objects': objects,
-        'cars': show_cars(),
-        'categories': cats,
-        'single_car': car,
-        'brands': brands,
-        'title_h1': h1,
-        'car': car,
-        'brand': brand,
-        'brakes': brakes,
-    }
-
+            'objects': objects,
+            'cars': show_cars(),
+            'categories': cats,
+            'single_car': car,
+            'brands': brands,
+            'title_h1': h1,
+            'car': car,
+            'brand': brand,
+            'brakes': brakes,
+            }
+    
     return render(request, 'products/newparts.html', context)
-
 
 # HERE IS SAME STUFF BUT NO CAR
 
@@ -190,6 +187,8 @@ def subcat(request, slug, **kwargs):
     brand = request.GET.get('brand', None)
     cats_tmp = Categories.objects.get(slug=slug)
     second_level_cats = Categories.objects.filter(parent_id=cats_tmp.id)
+
+
 
     if cats_tmp.id < 99:
         bread1 = Categories.objects.get(slug=slug, parent_id=0)
@@ -204,14 +203,15 @@ def subcat(request, slug, **kwargs):
         bread2 = Categories.objects.get(id=bread3.parent_id)
         bread1 = Categories.objects.get(id=bread2.parent_id)
 
+
     cats = []
     for c in second_level_cats:
         nums = Products.objects.filter(cat__in=categories_tree(c.id)).count()
         if nums != 0:
-            setattr(c, 'prod_count', nums)
+            setattr(c, 'prod_count', nums) 
             cats.append(c)
 
-    cats_list = []
+    cats_list = [] 
     if len(cats) == 0:
         if brand:
             qs = Products.objects.filter(cat=cats_tmp.id, brand=brand).distinct()
@@ -222,13 +222,13 @@ def subcat(request, slug, **kwargs):
             cats_list.append(c.id)
         groups = Categories.objects.filter(parent_id__in=cats_list)
         for g in groups:
-            cats_list.append(g.id)
+            cats_list.append(g.id) 
         if brand:
             qs = Products.objects.filter(cat__in=cats_list, brand=brand).distinct()
         else:
             qs = Products.objects.filter(cat__in=cats_list).distinct()
-
-    brands = qs.values('brand').annotate(brand_count=Count('brand'))
+    
+    brands = qs.values('brand').annotate(brand_count=Count('brand')) 
     h1 = cats_tmp.name
     try:
         p = Paginator(qs, 20)
@@ -238,29 +238,29 @@ def subcat(request, slug, **kwargs):
         pass
     if request.GET.get('load_all') == 'all':
         objects = qs
-
+    
     objects = get_image_path(objects)
     sale_prod = [2274, 2582, 2027]
     brakes = Products.objects.filter(id__in=sale_prod)
     brakes = get_image_path(brakes)
+            
 
     context = {
-        'objects': objects,
-        'cars': show_cars(),
-        'categories': cats,
-        'brands': brands,
-        'title_h1': h1,
-        'brand': brand,
-        'brakes': brakes,
-        'bread1': bread1,
-        'bread2': bread2,
-        'bread3': bread3,
-    }
-
+            'objects': objects,
+            'cars': show_cars(),
+            'categories': cats,
+            'brands': brands,
+            'title_h1': h1,
+            'brand': brand,
+            'brakes': brakes,
+            'bread1': bread1,
+            'bread2': bread2,
+            'bread3': bread3,
+            }
+    
     return render(request, 'products/newparts.html', context)
 
-
-# Detailed product view starts here
+#Detailed product view starts here
 
 def detailed(request, pk):
     cats = Categories.objects.filter(parent_id=0)
@@ -273,13 +273,14 @@ def detailed(request, pk):
 
     # Redefine function inside to returning lists of files in the directories
     def get_image_path_detailed(obj):
-        working_dir = settings.STATICFILES_DIRS[1]
-        files = os.listdir(os.path.join(working_dir, obj.cat_n))[:10]
+        working_dir = settings.STATICFILES_DIRS[1] 
+        files  =  os.listdir(os.path.join(working_dir, obj.cat_n))[:10]
         img_list = []
         for f in files:
             img_list.append(os.path.join(obj.cat_n, f))
-        setattr(obj, 'image_path', img_list)
+        setattr(obj, 'image_path', img_list ) 
         return obj
+
 
     comments = Comment.objects.filter_by_instance(obj)
     comments = Comment.objects.filter_by_instance(obj)
@@ -325,15 +326,16 @@ def detailed(request, pk):
         )
         url = new_comment.content_object.get_absolute_url()
         send_mail(
-            'Ducatoparts.ru новый комментарий',
-            f'На дукато партс оставили новый комментарий на странице {url}',
-            'angara99@gmail.com',
-            ['angara99@gmail.com', 'yellkalolka@gmail.com'],
-            fail_silently=False,
-        )
+                'Ducatoparts.ru новый комментарий',
+                f'На дукато партс оставили новый комментарий на странице {url}',
+                'angara99@gmail.com',
+                ['angara99@gmail.com', 'yellkalolka@gmail.com'],
+                fail_silently=False,
+                )
         return HttpResponseRedirect(url)
+    
 
-    # comments count stuff
+    #comments count stuff
     def check_comment_count():
         count = comments.count() % 10
         comment_word = 'КОММЕНТАРИЕВ'
@@ -344,36 +346,38 @@ def detailed(request, pk):
         elif count >= 5:
             comment_word = 'КОММЕНТАРИЕВ'
         return comment_word
-
     # Форма звонка Вася
 
     e_form = EmailFormLight(request.POST or None)
 
     if e_form.is_valid():
+
         phone = e_form.cleaned_data.get('phone')
         name = e_form.cleaned_data.get('name')
         callback, created = EmailModel.objects.get_or_create(phone=phone, name=name)
 
-    context = {
-        'object': get_image_path_detailed(obj),
-        'categories': cats,
-        'cars': show_cars(),
-        'comments': comments,
-        'comment_count_word': check_comment_count(),
-        'comment_form': form,
-        'email_form': e_form,
-        'bread_sub1': bread_sub1,
-        'bread_sub2': bread_sub2,
-        'similar_products': get_image_path(similar_products),
-        'aver': aver.average,
 
-    }
+
+    context = {
+            'object': get_image_path_detailed(obj),
+            'categories': cats,
+            'cars': show_cars(),
+            'comments': comments,
+            'comment_count_word': check_comment_count(),
+            'comment_form': form,
+            'email_form': e_form,
+            'bread_sub1': bread_sub1,
+            'bread_sub2': bread_sub2,
+            'similar_products': get_image_path(similar_products),
+            'aver': aver.average,
+
+            }
     return render(request, 'products/product.html', context)
 
 
 def search(request):
     qs = Products.objects.filter(name__icontains="фильтр").distinct()
-
+    
     search = request.GET.get('search')
 
     def search_splitter(search):
@@ -384,7 +388,7 @@ def search(request):
         for word in search_list:
             n_w = s.stem(word)
             new_search_list.append(n_w)
-        return (new_search_list)
+        return(new_search_list)
 
     search_list = search_splitter(search)
 
@@ -394,10 +398,10 @@ def search(request):
         qs_s = f'Products.objects.filter('
         for word in search_list:
             qs_s += f'Q(name__icontains="{word}") & '
-    #        qs_s = qs_s.rstrip()
-    #        qs_s = qs_s.rstrip('&').rstrip()
-    #        qs_s += ').distinct()'
-    #        print(qs_s)
+#        qs_s = qs_s.rstrip()
+#        qs_s = qs_s.rstrip('&').rstrip()
+#        qs_s += ').distinct()'
+#        print(qs_s)
 
     cars_l = request.GET.getlist('car')
     cats_l = request.GET.getlist('cat')
@@ -420,7 +424,7 @@ def search(request):
 
     qs_brand = qs.values('brand').annotate(bcount=Count('brand'))
 
-    qs_cats = qs.prefetch_related('cat')  # .annotate(ccount=Count('cat'))
+    qs_cats = qs.prefetch_related('cat')#.annotate(ccount=Count('cat'))
     l = []
     for q in qs_cats:
         for c in q.cat.all():
@@ -428,13 +432,14 @@ def search(request):
             if caa.id not in l:
                 l.append(caa.id)
     cats = Categories.objects.filter(parent_id__in=l)
-
-    ca = []
+    
+    ca = [] 
     for c in cats:
         p = qs.filter(cat=c.id)
         if not p:
             continue
         ca.append({'cat': c, 'ccount': p.count()})
+    
 
     try:
         p = Paginator(qs, 20)
@@ -444,12 +449,12 @@ def search(request):
         pass
     if request.GET.get('load_all') == 'all':
         objects = qs
-
+    
     objects = get_image_path(objects)
     context = {
-        'objects': objects,
-        'cars': qs_cars,
-        'search_categories': ca,
-        'brands': qs_brand,
-    }
+                'objects': objects,
+                'cars': qs_cars, 
+                'search_categories': ca,
+                'brands': qs_brand,
+            }
     return render(request, 'products/search.html', context)
