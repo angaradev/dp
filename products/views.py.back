@@ -13,7 +13,6 @@ from django.utils.html import strip_tags
 from django.core.mail import send_mail
 from email_form.forms import EmailFormLight, EmailFormOneField
 from email_form.models import EmailModel
-from star_ratings.models import Rating
 
 
 def show_cars():
@@ -190,20 +189,6 @@ def subcat(request, slug, **kwargs):
     brand = request.GET.get('brand', None)
     cats_tmp = Categories.objects.get(slug=slug)
     second_level_cats = Categories.objects.filter(parent_id=cats_tmp.id)
-
-    if cats_tmp.id < 99:
-        bread1 = Categories.objects.get(slug=slug, parent_id=0)
-        bread2 = None
-        bread3 = None
-    elif cats_tmp.id > 99 and cats_tmp.id < 999:
-        bread2 = cats_tmp
-        bread1 = Categories.objects.get(id=bread2.parent_id)
-        bread3 = None
-    else:
-        bread3 = cats_tmp
-        bread2 = Categories.objects.get(id=bread3.parent_id)
-        bread1 = Categories.objects.get(id=bread2.parent_id)
-
     cats = []
     for c in second_level_cats:
         nums = Products.objects.filter(cat__in=categories_tree(c.id)).count()
@@ -252,9 +237,6 @@ def subcat(request, slug, **kwargs):
         'title_h1': h1,
         'brand': brand,
         'brakes': brakes,
-        'bread1': bread1,
-        'bread2': bread2,
-        'bread3': bread3,
     }
 
     return render(request, 'products/newparts.html', context)
@@ -265,14 +247,9 @@ def subcat(request, slug, **kwargs):
 def detailed(request, pk):
     cats = Categories.objects.filter(parent_id=0)
     obj = Products.objects.get(id=pk)
-    bread_sub2 = Categories.objects.get(id=obj.cat.first().parent_id)
-    bread_sub1 = Categories.objects.get(id=bread_sub2.parent_id)
-    aver = Rating.objects.get(object_id=pk)
-    # Похожие товары
-    similar_products = Products.objects.filter(cat=obj.cat.first().id)
 
     # Redefine function inside to returning lists of files in the directories
-    def get_image_path_detailed(obj):
+    def get_image_path(obj):
         working_dir = settings.STATICFILES_DIRS[1]
         files = os.listdir(os.path.join(working_dir, obj.cat_n))[:10]
         img_list = []
@@ -353,20 +330,16 @@ def detailed(request, pk):
         phone = e_form.cleaned_data.get('phone')
         name = e_form.cleaned_data.get('name')
         callback, created = EmailModel.objects.get_or_create(phone=phone, name=name)
+    # Похожие товары
 
     context = {
-        'object': get_image_path_detailed(obj),
+        'object': get_image_path(obj),
         'categories': cats,
         'cars': show_cars(),
         'comments': comments,
         'comment_count_word': check_comment_count(),
         'comment_form': form,
         'email_form': e_form,
-        'bread_sub1': bread_sub1,
-        'bread_sub2': bread_sub2,
-        'similar_products': get_image_path(similar_products),
-        'aver': aver.average,
-
     }
     return render(request, 'products/product.html', context)
 
