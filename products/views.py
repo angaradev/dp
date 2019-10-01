@@ -267,7 +267,10 @@ def detailed(request, pk):
     obj = Products.objects.get(id=pk)
     bread_sub2 = Categories.objects.get(id=obj.cat.first().parent_id)
     bread_sub1 = Categories.objects.get(id=bread_sub2.parent_id)
-    aver = Rating.objects.get(object_id=pk)
+    try:
+        aver = Rating.objects.get(object_id=pk)
+    except:
+        aver = 0
     # Похожие товары
     similar_products = Products.objects.filter(cat=obj.cat.first().id)
 
@@ -369,7 +372,7 @@ def detailed(request, pk):
             'bread_sub1': bread_sub1,
             'bread_sub2': bread_sub2,
             'similar_products': get_image_path(similar_products),
-            'aver': aver.average,
+            'aver': aver,
 
             }
     return render(request, 'products/product.html', context)
