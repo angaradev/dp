@@ -1,6 +1,9 @@
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.urls.base import reverse
+from django.utils import timezone
+from django.conf import settings
+import os
 
 
 class Categories(models.Model):
@@ -56,4 +59,46 @@ class Products(models.Model):
         instance = self
         qs = ContentType.objects.get_for_model(instance.__class__)
         return qs
-    
+
+    @property
+    def get_image_path(self):
+        working_dir = settings.STATICFILES_DIRS[1]
+        if self.main_img:
+            f = os.path.join(self.cat_n, self.main_img)
+        else:
+            files = os.listdir(os.path.join(working_dir, self.cat_n))
+            f = os.path.join(self.cat_n, files[0])
+        print(f)
+        return f
+
+
+
+
+
+
+class CartItem(models.Model):
+    product = models.ForeignKey(Products, on_delete=models.CASCADE )
+    quantity = models.PositiveIntegerField(default=1)
+    item_total = models.DecimalField(max_digits=9, decimal_places=2, default=0.00)
+
+    def __str__(self):
+        return 'Cart item for product {}'.format(self.product.name)
+
+class Cart(models.Model):
+
+    items = models.ManyToManyField(CartItem, blank=True)
+    cart_total = models.DecimalField(max_digits=9, decimal_places=2, default=0.00)
+    timestamp = models.DateField(default=timezone.now)
+
+
+
+
+
+
+
+
+
+
+
+
+
