@@ -1,5 +1,5 @@
 from django.db import models
-import datetime
+from django.utils import timezone
 
 # Create your models here.
 class EmailModel(models.Model):
@@ -7,7 +7,7 @@ class EmailModel(models.Model):
     phone = models.CharField(max_length=50)
     email = models.CharField(max_length=100, blank=True, null=True)
     text = models.TextField(blank=True, null=True)
-    timestamp = models.DateField(default=datetime.date.today())
+    timestamp = models.DateField(default=timezone.now)
 
     class Meta:
         verbose_name = 'обратный звонок'

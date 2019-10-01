@@ -41,6 +41,7 @@ class Blogs(models.Model):
     publish             = models.DateField(auto_now=True)
     number_views        = models.IntegerField(default=0)
 
+
     @property
     def comments(self):
         instance = self
@@ -54,6 +55,7 @@ class Blogs(models.Model):
         return qs
 
     class Meta:
+        verbose_name = 'Статья'
         verbose_name_plural = 'Статьи'
 
     def __str__(self):
