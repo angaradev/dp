@@ -9,6 +9,18 @@
 		</ul>
 	</div>
 </div>
+{% if  cart.items.all.count == 0 %}
+<div id="tt-pageContent">
+	<div class="container-indent nomargin">
+		<div class="tt-empty-cart">
+			<span class="tt-icon icon-f-39"></span>
+			<h1 class="tt-title">КОРЗИНА ПУСТА</h1>
+			<p>В Вашей корзине нет товаров.</p>
+			<a href="{% url 'newparts' %}" class="btn">ПРОДОЛЖИТЬ ПОКУПКИ</a>
+		</div>
+	</div>
+</div>
+{% else %}
 <div id="tt-pageContent">
 	<div class="container-indent">
 		<div class="container">
@@ -164,9 +176,13 @@
 							<a href="#" class="btn btn-lg"><span class="icon icon-check_circle"></span>PROCEED TO CHECKOUT</a>
 						</div>
 					</div>
+
 				</div>
+
 			</div>
+
 		</div>
 	</div>
 </div>
+{% endif %}
 {% endblock %}
