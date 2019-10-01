@@ -8,13 +8,16 @@
 		<ul>
 			<li><a href="{% url 'home' %}">Главная</a></li>
 			<li><a href="{% url 'newparts' %}">Каталог</a></li>
+			<li><a href="{% url 'subcat' bread_sub1.slug %}">{{ bread_sub1.name|title }}</a></li>
+			<li><a href="{% url 'subcat' bread_sub2.slug %}">{{ bread_sub2.name|title }}</a></li>
 			<li>{% for c in object.cat.all %}
-				<a href="{% url 'subcat' c.slug %}">{{ c.name }}</a>,
+				<a href="{% url 'subcat' c.slug %}">{{ c.name|title }}</a>,
 				{% endfor %}</li>
 		</ul>
 	</div>
+
 </div>
-<div id="tt-pageContent">
+<div itemscope itemtype="http://schema.org/Product" id="tt-pageContent">
 	<div class="container-indent">
 		<!-- mobile product slider  -->
 		<div class="tt-mobile-product-layout visible-xs">
@@ -64,18 +67,25 @@
 									<!--<li><span>Наличие:</span> В наличии</li>-->
 								</ul>
 							</div>
-							<h1 class="tt-title">{{ object.name|upper }}</h1>
+							<h1 itemprop = "name" class="tt-title">{{ object.name|upper }}</h1>
 							<div class="tt-price">
-								<span class="new-price">&#8381; {{ object.price }}</span>
+								<span itemprop = "price" class="new-price">&#8381; {{ object.price }}</span>
 								<span class="old-price"></span>
+
 							</div>
 							{% ratings object 16 16 %}
+							<div itemprop="aggregateRating"
+								itemscope itemtype="http://schema.org/AggregateRating">
+							   <span itemprop="ratingValue">{{ aver }}</span>/5
+							  </div>
+
 							<div class="tt-review">
 								<div class="tt-rating">
 
 								</div>
 							</div>
 							<div class="tt-wrapper">
+								{{ ratings }}
 								Внимание! Изображения запчастей могут не соответсвовать реальным! Мы обновляем базу изображений.
 								Для уточнения деталей звоните пожалуйста менеджеру!
 							</div>
@@ -110,10 +120,10 @@
 										{% if object.model %}
 										<li><span>Модель:</span> {{ object.model|upper }}</li>
 										{% endif %}
-										<li><span>Категории:</span>
+										<li itemprop="category"><span>Категории:</span>
 											{% for c in object.cat.all %}
-												<a href="{% url 'subcat' c.slug %}">{{ c.name }}</a>,
-											{% endfor %}
+												<a href="{% url 'subcat' c.slug %}">{{ c.name }},</a>
+											{% endfor %}</li>
 									</ul>
 								</div>
 							</div>
@@ -150,197 +160,45 @@
 				<h3 class="tt-title-small">ПОХОЖИЕ ПРОДУКТЫ</h3>
 			</div>
 				<div class="tt-carousel-products row arrow-location-right-top tt-alignment-img tt-layout-product-item slick-animated-show-js">
-				<div class="col-2 col-md-4 col-lg-3">
+				{% for similar in similar_products %}
+					<div class="col-2 col-md-4 col-lg-3">
 					<div class="tt-product thumbprod-center">
 						<div class="tt-image-box">
 							<a href="#" class="tt-btn-quickview" data-toggle="modal" data-target="#ModalquickView"	data-tooltip="Quick View" data-tposition="left"></a>
 							<a href="#" class="tt-btn-wishlist" data-tooltip="Add to Wishlist" data-tposition="left"></a>
 							<a href="#" class="tt-btn-compare" data-tooltip="Add to Compare" data-tposition="left"></a>
 							<a href="product.html">
-								<span class="tt-img"><img src="{% static 'images/product/product-16.jpg' %}" alt=""></span>
+								<span class="tt-img"><img src="{% static similar.image_path %}" alt=""></span>
 								<span class="tt-img-roll-over"><img src="{% static 'images/product/product-16-02.jpg' %}" alt=""></span>
 							</a>
 						</div>
 						<div class="tt-description">
 							<div class="tt-row">
 								<ul class="tt-add-info">
-									<li><a href="#">{{ c.name }}</a></li>
+									{% for cat_similar in object.cat.all %}
+									<li><a href="{% url 'subcat' cat_similar.slug  %}">{{ cat_similar }}</a></li>
+									{% endfor %}
+								</ul>
+							</div>
+							<h2 class="tt-title"><a href="product.html">{{ similar.name|title }}</a></h2>
+							<div class="tt-price">
+								{{ similar.price }}
+							</div>
+							<div class="tt-product-inside-hover">
+								<div class="tt-row-btn">
+									<a href="#" class="tt-btn-addtocart thumbprod-button-bg" data-toggle="modal" data-target="#modalAddToCartProduct">ADD TO CART</a>
+								</div>
+								<div class="tt-row-btn">
+									<a href="#" class="tt-btn-quickview" data-toggle="modal" data-target="#ModalquickView"></a>
+									<a href="#" class="tt-btn-wishlist"></a>
+									<a href="#" class="tt-btn-compare"></a>
+								</div>
+							</div>
+						</div>
+					</div>
 
-								</ul>
-							</div>
-							<h2 class="tt-title"><a href="product.html">Flared Shift Dress</a></h2>
-							<div class="tt-price">
-								$24
-							</div>
-							<div class="tt-product-inside-hover">
-								<div class="tt-row-btn">
-									<a href="#" class="tt-btn-addtocart thumbprod-button-bg" data-toggle="modal" data-target="#modalAddToCartProduct">ADD TO CART</a>
-								</div>
-								<div class="tt-row-btn">
-									<a href="#" class="tt-btn-quickview" data-toggle="modal" data-target="#ModalquickView"></a>
-									<a href="#" class="tt-btn-wishlist"></a>
-									<a href="#" class="tt-btn-compare"></a>
-								</div>
-							</div>
-						</div>
-					</div>
 				</div>
-				<div class="col-2 col-md-4 col-lg-3">
-					<div class="tt-product thumbprod-center">
-						<div class="tt-image-box">
-							<a href="#" class="tt-btn-quickview" data-toggle="modal" data-target="#ModalquickView"	data-tooltip="Quick View" data-tposition="left"></a>
-							<a href="#" class="tt-btn-wishlist" data-tooltip="Add to Wishlist" data-tposition="left"></a>
-							<a href="#" class="tt-btn-compare" data-tooltip="Add to Compare" data-tposition="left"></a>
-							<a href="product.html">
-								<span class="tt-img"><img src="{% static 'images/product/product-17.jpg' %}" alt=""></span>
-								<span class="tt-img-roll-over"><img src="{% static 'images/product/product-17-01.jpg' %}" alt=""></span>
-							</a>
-						</div>
-						<div class="tt-description">
-							<div class="tt-row">
-								<ul class="tt-add-info">
-									<li><a href="#">T-SHIRTS</a></li>
-								</ul>
-								<div class="tt-rating">
-									<i class="icon-star"></i>
-									<i class="icon-star"></i>
-									<i class="icon-star"></i>
-									<i class="icon-star-half"></i>
-									<i class="icon-star-empty"></i>
-								</div>
-							</div>
-							<h2 class="tt-title"><a href="product.html">Flared Shift Dress</a></h2>
-							<div class="tt-price">
-								$8
-							</div>
-							<div class="tt-product-inside-hover">
-								<div class="tt-row-btn">
-									<a href="#" class="tt-btn-addtocart thumbprod-button-bg" data-toggle="modal" data-target="#modalAddToCartProduct">ADD TO CART</a>
-								</div>
-								<div class="tt-row-btn">
-									<a href="#" class="tt-btn-quickview" data-toggle="modal" data-target="#ModalquickView"></a>
-									<a href="#" class="tt-btn-wishlist"></a>
-									<a href="#" class="tt-btn-compare"></a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-2 col-md-4 col-lg-3">
-					<div class="tt-product thumbprod-center">
-						<div class="tt-image-box">
-							<a href="#" class="tt-btn-quickview" data-toggle="modal" data-target="#ModalquickView"	data-tooltip="Quick View" data-tposition="left"></a>
-							<a href="#" class="tt-btn-wishlist" data-tooltip="Add to Wishlist" data-tposition="left"></a>
-							<a href="#" class="tt-btn-compare" data-tooltip="Add to Compare" data-tposition="left"></a>
-							<a href="product.html">
-								<span class="tt-img"><img src="{% static 'images/product/product-18.jpg' %}" alt=""></span>
-								<span class="tt-img-roll-over"><img src="{% static 'images/product/product-18-02.jpg' %}" alt=""></span>
-							</a>
-						</div>
-						<div class="tt-description">
-							<div class="tt-row">
-								<ul class="tt-add-info">
-									<li><a href="#">T-SHIRTS</a></li>
-								</ul>
-							</div>
-							<h2 class="tt-title"><a href="product.html">Flared Shift Dress</a></h2>
-							<div class="tt-price">
-								$46
-							</div>
-							<div class="tt-option-block">
-								<ul class="tt-options-swatch">
-									<li><a class="options-color tt-color-bg-01" href="#"></a></li>
-									<li><a class="options-color tt-color-bg-02" href="#"></a></li>
-								</ul>
-							</div>
-							<div class="tt-product-inside-hover">
-								<div class="tt-row-btn">
-									<a href="#" class="tt-btn-addtocart thumbprod-button-bg" data-toggle="modal" data-target="#modalAddToCartProduct">ADD TO CART</a>
-								</div>
-								<div class="tt-row-btn">
-									<a href="#" class="tt-btn-quickview" data-toggle="modal" data-target="#ModalquickView"></a>
-									<a href="#" class="tt-btn-wishlist"></a>
-									<a href="#" class="tt-btn-compare"></a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-2 col-md-4 col-lg-3">
-					<div class="tt-product thumbprod-center">
-						<div class="tt-image-box">
-							<a href="#" class="tt-btn-quickview" data-toggle="modal" data-target="#ModalquickView"	data-tooltip="Quick View" data-tposition="left"></a>
-							<a href="#" class="tt-btn-wishlist" data-tooltip="Add to Wishlist" data-tposition="left"></a>
-							<a href="#" class="tt-btn-compare" data-tooltip="Add to Compare" data-tposition="left"></a>
-							<a href="product.html">
-								<span class="tt-img"><img src="{% static 'images/product/product-19.jpg' %}" alt=""></span>
-								<span class="tt-img-roll-over"><img src="{% static 'images/product/product-19-02.jpg' %}" alt=""></span>
-							</a>
-						</div>
-						<div class="tt-description">
-							<div class="tt-row">
-								<ul class="tt-add-info">
-									<li><a href="#">T-SHIRTS</a></li>
-								</ul>
-								<div class="tt-rating">
-									<i class="icon-star"></i>
-									<i class="icon-star"></i>
-									<i class="icon-star"></i>
-									<i class="icon-star"></i>
-									<i class="icon-star"></i>
-								</div>
-							</div>
-							<h2 class="tt-title"><a href="product.html">Flared Shift Dress</a></h2>
-							<div class="tt-price">
-								$35
-							</div>
-							<div class="tt-product-inside-hover">
-								<div class="tt-row-btn">
-									<a href="#" class="tt-btn-addtocart thumbprod-button-bg" data-toggle="modal" data-target="#modalAddToCartProduct">В КОРЗИНУ</a>
-								</div>
-								<div class="tt-row-btn">
-									<a href="#" class="tt-btn-quickview" data-toggle="modal" data-target="#ModalquickView"></a>
-									<a href="#" class="tt-btn-wishlist"></a>
-									<a href="#" class="tt-btn-compare"></a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-2 col-md-4 col-lg-3">
-					<div class="tt-product thumbprod-center">
-						<div class="tt-image-box">
-							<a href="#" class="tt-btn-quickview" data-toggle="modal" data-target="#ModalquickView"	data-tooltip="Quick View" data-tposition="left"></a>
-							<a href="#" class="tt-btn-wishlist" data-tooltip="Add to Wishlist" data-tposition="left"></a>
-							<a href="#" class="tt-btn-compare" data-tooltip="Add to Compare" data-tposition="left"></a>
-							<a href="product.html">
-								<span class="tt-img"><img src="{% static 'images/product/product-14.jpg' %}" alt=""></span>
-								<span class="tt-img-roll-over"><img src="{% static 'images/product/product-14-02.jpg' %}" alt=""></span>
-							</a>
-						</div>
-						<div class="tt-description">
-							<div class="tt-row">
-								<ul class="tt-add-info">
-									<li><a href="#">T-SHIRTS</a></li>
-								</ul>
-							</div>
-							<h2 class="tt-title"><a href="product.html">Flared Shift Dress</a></h2>
-							<div class="tt-price">
-								$12
-							</div>
-							<div class="tt-product-inside-hover">
-								<div class="tt-row-btn">
-									<a href="#" class="tt-btn-addtocart thumbprod-button-bg" data-toggle="modal" data-target="#modalAddToCartProduct">В КОРЗИНУ</a>
-								</div>
-								<div class="tt-row-btn">
-									<a href="#" class="tt-btn-quickview" data-toggle="modal" data-target="#ModalquickView"></a>
-									<a href="#" class="tt-btn-wishlist"></a>
-									<a href="#" class="tt-btn-compare"></a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
+					{% endfor %}
 			</div>
 		</div>
 	</div>

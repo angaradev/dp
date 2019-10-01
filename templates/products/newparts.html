@@ -21,7 +21,15 @@
 	<div class="container">
 		<ul>
 			<li><a href="{% url 'home' %}">Главная</a></li>
-			<li>Новые запчасти</li>
+			{% if bread1 %}
+			<li><a href="{% url 'subcat' bread1.slug %}">{{ bread1.name|title }}</a></li>
+			{% endif %}
+			{% if bread2 %}
+			<li><a href="{% url 'subcat' bread2.slug %}">{{ bread2.name|title }}</a></li>
+			{% endif %}
+			{% if bread3 %}
+			<li><a href="{% url 'subcat' bread3.slug %}">{{ bread3.name|title }}</a></li>
+			{% endif %}
 		</ul>
 	</div>
 </div>
