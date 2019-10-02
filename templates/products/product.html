@@ -98,7 +98,7 @@
 										</div>
 									</div>
 									<div class="col-item">
-										<a href="{% url 'add_to_cart' object.id %}" class="btn btn-lg"><i class="icon-f-39"></i>В Корзину</a>
+                                        <a href="{% url 'add_to_cart' %}?product_id={{ object.id  }}" class="btn btn-lg cart_button" data-pk="{{ object.id  }}"><i class="icon-f-39"></i>В Корзину</a>
 									</div>
 
 									<!-- Button trigger modal -->
@@ -113,6 +113,11 @@
 <!--									<li><a class="btn-link" href="#"><i class="icon-n-08"></i>ADD TO COMPARE</a></li>-->
 <!--								</ul>-->
 <!--							</div>-->
+							<div class="tt-wrapper">
+								<div class="tt-add-info">
+									<a href="{% url 'cart' %}">Перейти в корзину</a>
+								</div>
+							</div>
 							<div class="tt-wrapper">
 								<div class="tt-add-info">
 									<ul>

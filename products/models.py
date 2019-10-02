@@ -66,9 +66,11 @@ class Products(models.Model):
         if self.main_img:
             f = os.path.join(self.cat_n, self.main_img)
         else:
-            files = os.listdir(os.path.join(working_dir, self.cat_n))
-            f = os.path.join(self.cat_n, files[0])
-        print(f)
+            try:
+                files = os.listdir(os.path.join(working_dir, self.cat_n))
+                f = os.path.join(self.cat_n, files[0])
+            except Exception as e:
+                f = '000_default/default.png'
         return f
 
 

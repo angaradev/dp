@@ -15,7 +15,7 @@ from .sitemaps import BlogsSitemap, StaticViewsSitemap, CategoriesSitemap, Produ
 from .sitemaps import ZapchastiCarSubcatSitemap
 from django.contrib.sitemaps.views import sitemap
 from django.views.generic import TemplateView
-from products.cart_views import cart_view, add_to_cart, remove_from_cart
+from products.cart_views import cart_view, add_to_cart, remove_from_cart, update_cart, clear_cart
 
 
 sitemaps = {
@@ -65,6 +65,8 @@ urlpatterns = [
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}),
     path('robots.txt', TemplateView.as_view(template_name='home/robots.txt', content_type='text/plain')),
     path('cart/', cart_view, name='cart'),
-    path('addtocart/<int:product_id>/', add_to_cart, name='add_to_cart'),
-    path('removefromcart/<int:product_id>/', remove_from_cart, name='remove_from_cart'),
+    path('addtocart/', add_to_cart, name='add_to_cart'),
+    path('removefromcart/', remove_from_cart, name='remove_from_cart'),
+    path('updatecart/', update_cart, name='update_cart'),
+    path('clearcart', clear_cart, name='clear_cart'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
