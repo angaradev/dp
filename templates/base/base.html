@@ -38,13 +38,7 @@
 					</div>
 				</div>
 				<div class="tt-col-right ml-auto">
-					<ul class="tt-social-icon">
-						<li><a class="icon-g-64" target="_blank" href="http://www.facebook.com/"></a></li>
-						<li><a class="icon-h-58" target="_blank" href="http://www.twitter.com/"></a></li>
-						<li><a class="icon-g-66" target="_blank" href="http://www.google.com/"></a></li>
-						<li><a class="icon-g-67" target="_blank" href="http://www.instagram.com/"></a></li>
-						<li><a class="icon-g-70" target="_blank" href="#"></a></li>
-					</ul>
+
 				</div>
 			</div>
 		</div>
@@ -53,7 +47,7 @@
 	<nav class="panel-menu mobile-main-menu">
 		<ul>
 			<li>
-				<a href="{% url 'home' %}">Главная</a>
+				<a href="{% url 'home' %}">ГЛАВНАЯ</a>
 			</li>
 			<li>
 				<a href="{% url 'newparts' %}">КАТАЛОГИ</a>
@@ -64,26 +58,25 @@
 
 			</li>
 			<li>
-				<a href="{% url 'contacts' %}">БЛОГ</a>
+				<a href="{% url 'contacts' %}">КОНТАКТЫ</a>
 
 			</li>
 			<li>
-				<a href="#">О Компании</a>
+				<a href="#">О КОМПАНИИ</a>
 				<ul>
 					<li>
-						<a href="#">Информация</a>
+						<a href="#">ИНФОРМАЦИЯ</a>
 						<ul>
-							<li><a href="#">О Нас</a></li>
-							<li><a href="#">Контакты</a></li>
-							<li><a href="#">Способы оплаты</a></li>
-							<li><a href="#">Доставка</a></li>
+							<li><a href="{% url 'about' %}">О КОМПАНИИ</a></li>
+							<li><a href="{% url 'payment' %}">СПОСОБЫ ОПЛАТЫ</a></li>
+							<li><a href="{% url 'delivery' %}">ДОСТАВКА</a></li>
 						</ul>
 					</li>
 					<li>
-						<a href="#">Документы</a>
+						<a href="#">ДОКУМЕНТЫ</a>
 						<ul>
-							<li><a href="portfolio-col-wide-two.html">Политика конфиденциальности</a></li>
-							<li><a href="portfolio-col-wide-three.html">Гарантии</a></li>
+							<li><a href="{% url 'policy' %}">ПОЛИТИКА КОНФИДЕНЦИАЛЬНОСТИ</a></li>
+							<li><a href="{% url 'guaranties' %}">ГАРАНТИИ</a></li>
 						</ul>
 					</li>
 				</ul>
@@ -118,9 +111,9 @@
 					</div>
 				</div>
 				<div class="tt-mobile-parent-menu-categories tt-parent-box">
-					<button class="tt-categories-toggle">
-						<i class="icon-categories"></i>
-					</button>
+<!--					<button class="tt-categories-toggle">-->
+<!--						<i class="icon-categories"></i>-->
+<!--					</button>-->
 				</div>
 				<!-- search -->
 				<div class="tt-mobile-parent-search tt-parent-box"></div>
@@ -293,7 +286,7 @@
 										<div class="dropdown-menu">
 											<div class="row tt-col-list">
 												<div class="col">
-													<h6 class="tt-title-submenu"><a href="#">Информация</a></h6>
+													<h6 class="tt-title-submenu">Информация</h6>
 													<ul class="tt-megamenu-submenu">
 														<li><a href="{% url 'about' %}">О Компании</a></li>
 														<li><a href="{% url 'delivery' %}">Доставка</a></li>
@@ -302,7 +295,7 @@
 													</ul>
 												</div>
 												<div class="col">
-													<h6 class="tt-title-submenu"><a href="#">Документы</a></h6>
+													<h6 class="tt-title-submenu">Документы</h6>
 													<ul class="tt-megamenu-submenu">
 														<li><a href="{% url 'policy' %}">Политика Конфиденциальности</a></li>
 														<li><a href="{% url 'guaranties' %}">Гарантии</a></li>
@@ -357,7 +350,7 @@
 							</button>
 							<div class="tt-dropdown-menu">
 								<div class="tt-mobile-add">
-									<h6 class="tt-title">SHOPPING CART</h6>
+									<h6 class="tt-title">Корзина</h6>
 									<button class="tt-close">Close</button>
 								</div>
 								<div class="tt-dropdown-inner">
@@ -458,16 +451,16 @@
 								</div>
 								<div class="tt-dropdown-inner">
 									<ul>
-										<li class="active"><a href="#">English</a></li>
-										<li><a href="#">Deutsch</a></li>
-										<li><a href="#">Español</a></li>
-										<li><a href="#">Français</a></li>
+										<li class="active"><a href="#">Русский</a></li>
+<!--										<li><a href="#">Русский</a></li>-->
+<!--										<li><a href="#">Español</a></li>-->
+<!--										<li><a href="#">Français</a></li>-->
 									</ul>
-									<ul>
-										<li class="active"><a href="#"><i class="icon-h-59"></i>USD - US Dollar</a></li>
-										<li><a href="#"><i class="icon-h-60"></i>EUR - Euro</a></li>
-										<li><a href="#"><i class="icon-h-61"></i>GBP - British Pound Sterling</a></li>
-									</ul>
+<!--									<ul>-->
+<!--										<li class="active"><a href="#"><i class="icon-h-59"></i>USD - US Dollar</a></li>-->
+<!--										<li><a href="#"><i class="icon-h-60"></i>EUR - Euro</a></li>-->
+<!--										<li><a href="#"><i class="icon-h-61"></i>GBP - British Pound Sterling</a></li>-->
+<!--									</ul>-->
 								</div>
 							</div>
 						</div>
@@ -507,10 +500,10 @@
 						</h4>
 						<div class="tt-collapse-content">
 							<ul class="tt-list">
-								<li><a href="listing-collection.html">Запчасти Дукато</a></li>
-								<li><a href="listing-collection.html">Запчасти Транзит</a></li>
-								<li><a href="listing-collection.html">Запчасти Боксер</a></li>
-								<li><a href="listing-collection.html">Запчасти Добло</a></li>
+								<li><a href="/zapchasti/fiat-ducato/">Запчасти Дукато</a></li>
+								<li><a href="/zapchasti/ford-transit/">Запчасти Транзит</a></li>
+								<li><a href="/zapchasti/peugeot-boxer/">Запчасти Боксер</a></li>
+								<li><a href="/zapchasti/iveco-daily/">Запчасти Ивеко Дэйли</a></li>
 							</ul>
 						</div>
 					</div>
@@ -538,9 +531,11 @@
 							Блог
 						</h4>
 						<div class="tt-collapse-content">
-							<p>
-								Последние статьи
-							</p>
+							<ul class="tt-list">
+								<li><a href="/blogs/prichiny-neravnomernogo-iznosa-tormozov/">Причины неравномерного износа</a></li>
+								<li><a href="/blogs/5-rekomenduemyh-masel-s-vjazkostju-5w30/">5 рекомендуемых масел</a></li>
+								<li><a href="/blogs/poterja-zazhiganija-chto-eto-znachit-i-kakovy-mogut-byt-posledstvija/">Потеря зажигания</a></li>
+							</ul>
 						</div>
 					</div>
 				</div>
@@ -570,7 +565,7 @@
 				<div class="tt-col-left">
 					<div class="tt-col-item tt-logo-col">
 						<!-- logo -->
-						<a class="tt-logo tt-logo-alignment" href="index.html">
+						<a class="tt-logo tt-logo-alignment" href="{% url 'home' %}">
 							<img src="{% static 'logo1.png' %}" alt="логотип компании дукатопартс">
 						</a>
 						<!-- /logo -->
