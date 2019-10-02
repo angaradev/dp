@@ -23,7 +23,7 @@
 		<div class="tt-mobile-product-layout visible-xs">
 			<div class="tt-mobile-product-slider arrow-location-center slick-animated-show-js">
 				{% for p in object.image_path %}
-				<h1>O</h1>
+
 				<div><img src="{% static p %}" alt=""></div>
 				{% endfor %}
 				<!--<div>
@@ -102,7 +102,7 @@
 									</div>
 
 									<!-- Button trigger modal -->
-									<div>
+									<div class="col-item">
 									<button type="button" class="btn btn-lg button-call-product" data-toggle="modal" data-target="#call_form">Обратный звонок</button>
 									</div>
 								</div>
@@ -164,9 +164,9 @@
 					<div class="col-2 col-md-4 col-lg-3">
 					<div class="tt-product thumbprod-center">
 						<div class="tt-image-box">
-							<a href="#" class="tt-btn-quickview" data-toggle="modal" data-target="#ModalquickView"	data-tooltip="Quick View" data-tposition="left"></a>
+<!--							<a href="#" class="tt-btn-quickview" data-toggle="modal" data-target="#ModalquickView"	data-tooltip="Quick View" data-tposition="left"></a>-->
 							<a href="#" class="tt-btn-wishlist" data-tooltip="Add to Wishlist" data-tposition="left"></a>
-							<a href="#" class="tt-btn-compare" data-tooltip="Add to Compare" data-tposition="left"></a>
+<!--							<a href="#" class="tt-btn-compare" data-tooltip="Add to Compare" data-tposition="left"></a>-->
 							<a href="product.html">
 								<span class="tt-img"><img src="{% static similar.image_path %}" alt=""></span>
 								<span class="tt-img-roll-over"><img src="{% static 'images/product/product-16-02.jpg' %}" alt=""></span>

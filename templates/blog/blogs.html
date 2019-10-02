@@ -32,19 +32,19 @@
 				<div class="col-sm-12 col-md-8 col-lg-9">
 					<div class="tt-listing-post">
 						{% for blog in objects %}
-						<div class="tt-post">
+						<div itemscope itemtype="http://schema.org/Blog" class="tt-post">
 							<div class="tt-post-img">
-								<a href="{% url 'blog' blog.slug %}"><img src="{% static 'images/loader.svg' %}" data-src="{{ blog.image.url }}" alt=""></a>
+								<a href="{% url 'blog' blog.slug %}"><img itemprop="image" src="{% static 'images/loader.svg' %}" data-src="{{ blog.image.url }}" alt=""></a>
 							</div>
 							<div class="tt-post-content">
 								<div class="tt-tag"><a href="{% url 'subcat' blog.category.slug %}">{{ blog.category|upper }}</a></div>
-								<h2 class="tt-title"><a href="{% url 'blog' blog.slug %}">{{ blog.title }}</a></h2>
-								<div class="tt-description">
+								<h2  itemprop="name" class="tt-title"><a href="{% url 'blog' blog.slug %}">{{ blog.title }}</a></h2>
+								<div itemprop="description" class="tt-description">
 									{{ blog.short_desc| truncatechars:200 }}
 								</div>
 								<div class="tt-meta">
 									<div class="tt-autor">
-										автор <span>Админ</span> от {{ blog.publish }}
+										автор <span >Админ</span> от <span itemprop="datePublished">{{ blog.publish }}</span>
 									</div>
 									<div class="tt-comments">
 										<a href="#"><i class="tt-icon icon-f-88"></i>7</a>

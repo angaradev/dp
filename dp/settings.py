@@ -58,6 +58,24 @@ SITE_ID = 1
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
+TAGS = [
+    'задн',
+    'передн',
+    'лев',
+    'прав',
+    'внутр',
+    'наружн',
+    'верхн',
+    'нижн',
+    'боков',
+    'коротк',
+    'длинн',
+    'всборе',
+    'комплект',
+    'низ',
+    'верх',
+]
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
