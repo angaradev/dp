@@ -1,4 +1,6 @@
 from django import forms
+from django.contrib.auth.models import User
+from .models import Profile
 from django.contrib.auth import (
         authenticate,
         get_user_model,
@@ -6,7 +8,34 @@ from django.contrib.auth import (
         logout,
         )
 
-User = get_user_model()
+
+class UserAccountForm(forms.ModelForm):
+    first_name = forms.CharField(widget=forms.TextInput(), required=False, label='')
+    last_name = forms.CharField(widget=forms.TextInput(), required=False, label='')
+    email = forms.CharField(widget=forms.TextInput(), required=False, label='')
+
+    class Meta:
+        model = User
+        fields = [
+                'first_name',
+                'last_name',
+                'email',
+                ]
+
+
+class ProfileForm(forms.ModelForm):
+    phone = forms.CharField(widget=forms.TextInput(), required=False, label='')
+    address = forms.CharField(widget=forms.TextInput(), required=False, label='')
+    country = forms.CharField(widget=forms.TextInput(), required=False, label='')
+
+    class Meta:
+        model = Profile
+        fields = [
+                'phone',
+                'address',
+                'country',
+                ]                
+
 
 
 class UserLoginForm(forms.Form):

@@ -63,3 +63,24 @@
     margin-left: 10px;
     font-weight: 100;
 }
+
+.bred {
+    color: hotpink;
+    font-weight: bold;
+    display: inline;
+}
+.bred-a {
+    color: #007bff;
+    font-weight: bold;
+    display: inline;
+    text-decoration: underline;
+}
+.bgreen {
+    color: MEDIUMSEAGREEN;
+    font-weight: bold;
+}
+
+.bblue {
+    color: #007bff;
+    font-weight: bold;
+}

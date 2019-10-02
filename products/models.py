@@ -93,6 +93,11 @@ class Cart(models.Model):
     timestamp = models.DateField(default=timezone.now)
 
 
+class Orders(models.Model):
+
+    pass
+
+
 
 
 

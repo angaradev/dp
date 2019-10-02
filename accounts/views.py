@@ -1,6 +1,8 @@
 from django.shortcuts import render
-from .forms import UserLoginForm, UserRegisterForm
+from .forms import UserLoginForm, UserRegisterForm, UserAccountForm, ProfileForm
 from django.shortcuts import redirect
+from django.contrib.auth.models import User
+
 
 
 from django.contrib.auth import(
@@ -12,6 +14,41 @@ from django.contrib.auth import(
 
 
 
+
+
+def account_view(request):
+    if request.user.is_authenticated:
+        user = User.objects.get(username=request.user.username) 
+        initial_data = {
+                'first_name': user.first_name,
+                'last_name': user.last_name,
+                'email': user.email,
+                }
+        initial_data_profile = {
+                'phone': user.profile.phone,
+                'address': user.profile.address,
+                'country': user.profile.country,
+                }
+        if request.method == 'POST':
+            print('In here') 
+            user_form = UserAccountForm(request.POST or None, instance=request.user, initial=initial_data)
+            profile_form = ProfileForm(request.POST or None, instance=request.user.profile, initial=initial_data_profile)
+            if user_form.is_valid() and profile_form.is_valid():
+                user_form.save()            
+                profile_form.save()
+        else:
+           user_form = UserAccountForm(initial=initial_data)
+           profile_form = ProfileForm(initial=initial_data_profile)
+    else:
+        return redirect('login')
+            
+    context = {
+            'user_form': user_form,
+            'profile_form': profile_form,
+            }
+    return render(request, 'accounts/account.html', context)
+
+
 def login_view(request):
     form = UserLoginForm(request.POST or None)
     if form.is_valid():
@@ -19,7 +56,7 @@ def login_view(request):
         password = form.cleaned_data.get('password')
         user = authenticate(username=username, password=password)
         login(request, user)
-        return redirect('blogs')
+        return redirect('account')
     context = {
                 'form': form,
             }
@@ -35,11 +72,12 @@ def register_view(request):
         user.set_password(password)
         user.save()
         new_user = authenticate(username=user.username, password=password)
-        login(request, new_user)
+        if login(request, new_user):
+            return redirect('account')
     context = {
                 'form': form,
             }
-    return redirect('home') 
+    return render(request, 'accounts/register.html', context)
 
 
 

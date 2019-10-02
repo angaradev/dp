@@ -6,7 +6,7 @@ from django.conf.urls.static import static
 from home.views import home, about
 from django.conf.urls import include
 from products.views import newparts, subcat, cars, cars_subcats, detailed, search
-from accounts.views import login_view, register_view, logout_view
+from accounts.views import login_view, register_view, logout_view, account_view
 from admin_photos.views import (admin_photos_view, admin_photos_statistic, admin_photo_listing,
 admin_detailed_view,upload_files, create_dirs, admin_photo_search, ChartData, make_stat)
 from home.views import home, about, payment, contacts, delivery, guaranties, policy, requsites, footer_form
@@ -34,8 +34,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('blogs/', blogs, name='blogs'),
     path('login/', login_view, name='login'),
-    path('logout', logout_view, name='logout'),
-    path('register', register_view, name='register'),
+    path('logout/', logout_view, name='logout'),
+    path('register/', register_view, name='register'),
+    path('account/', account_view, name='account'),
     path('blogs/<slug:slug>/', blog, name='blog'),
     path('', home, name='home'),
     path('newparts/', newparts, name='newparts'),

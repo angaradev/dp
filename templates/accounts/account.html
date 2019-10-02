@@ -1,19 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load extras %}
+{% load crispy_forms_tags %}
+{% block meta %}
+	{% if request.GET.page  %}
+		<link rel="canonical" href="{{ request.path }}" />
+	{% endif %}
+{% endblock meta %}
+{% block page_title %}Страница логина{% endblock page_title %}
+
+
+{% block page_keywords %}Страница логина{% endblock page_keywords %}
+
+{% block page_description %}Страница входа в аккаунт{% endblock page_description %}
+{% block page %}
 <div class="tt-breadcrumb">
 	<div class="container">
 		<ul>
-			<li><a href="index.html">Home</a></li>
-			<li>Account</li>
+			<li><a href="{% url 'home' %}">Главная</a></li>
+			<li>Аккаунт</li>
 		</ul>
 	</div>
 </div>
 <div id="tt-pageContent">
 	<div class="container-indent">
 		<div class="container container-fluid-custom-mobile-padding">
-			<h1 class="tt-title-subpages noborder">ACCOUNT</h1>
+
 			<div class="tt-shopping-layout">
-				<h2 class="tt-title-border">MY ACCOUNT</h2>
+				<h2 class="tt-title-border">Я вошел как <span class="bgreen">{{ request.user.username }}</span></h2>
 				<div class="tt-wrapper">
-					<h3 class="tt-title">ORDER HISTORY</h3>
+					<h3 class="tt-title">ИСТОРИЯ ЗАКАЗОВ</h3>
 					<div class="tt-table-responsive">
 						<table class="tt-table-shop-01">
 							<thead>
@@ -59,45 +75,45 @@
 						</table>
 					</div>
 				</div>
+				<form method="post" action="{% url 'account' %}">{% csrf_token %}
 				<div class="tt-wrapper">
-					<h3 class="tt-title">ACCOUNT DETAILS</h3>
+					<h3 class="tt-title">ИЗМЕНИТЬ ДАННЫЕ</h3>
+
 					<div class="tt-table-responsive">
 						<table class="tt-table-shop-02">
 							<tbody>
 								<tr>
-									<td>NAME:</td>
-									<td>Lorem ipsum dolor sit AMET conse ctetur </td>
+									<td>ИМЯ:</td>
+									<td>{{ user_form.first_name|as_crispy_field }} </td>
+								</tr>
+								<tr>
+									<td>ФАМИЛИЯ:</td>
+									<td>{{ user_form.last_name|as_crispy_field }} </td>
 								</tr>
 								<tr>
 									<td>E-MAIL:</td>
-									<td>Ut enim ad minim veniam, quis nostrud </td>
+									<td>{{ user_form.email|as_crispy_field }}{{ form.value }}</td>
 								</tr>
 								<tr>
-									<td>ADDRESS:</td>
-									<td>Eexercitation ullamco laboris nisi ut aliquip ex ea</td>
+									<td>ТЕЛЕФОН:</td>
+									<td>{{ profile_form.phone|as_crispy_field }} </td>
 								</tr>
 								<tr>
-									<td>ADDRESS 2:</td>
-									<td>Commodo consequat. Duis aute irure dol</td>
+									<td>АДРЕС:</td>
+									<td>{{ profile_form.address|as_crispy_field }}</td>
 								</tr>
 								<tr>
-									<td>COUNTRY:</td>
-									<td>Lorem ipsum dolor sit amet conse ctetur</td>
-								</tr>
-								<tr>
-									<td>ZIP:</td>
-									<td>555</td>
-								</tr>
-								<tr>
-									<td>PHONE:</td>
-									<td>888888888</td>
+									<td>СТРАНА:</td>
+									<td>{{ profile_form.country|as_crispy_field }}</td>
 								</tr>
 							</tbody>
 						</table>
 					</div>
-					<a href="#" class="btn btn-border">VIEW ADDRESS 2</a>
+					<button type="submit" class="btn btn-border">СОХРАНИТЬ ИЗМЕНЕНИЯ</button>
 				</div>
+				</form>
 			</div>
 		</div>
 	</div>
 </div>
+{% endblock %}
