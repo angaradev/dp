@@ -206,7 +206,7 @@ a[x-apple-data-detectors] {
                        <table style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;width:500px;" class="cke_show_border" cellspacing="1" cellpadding="1" border="0" align="left">
                          {% for cart_item in cart.items.all %}
                            <tr style="border-collapse:collapse;">
-                          <td style="padding:5px 10px 5px 0;Margin:0;" width="80%" align="left"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#333333;">{{ cart_item.product.name }}</p></td>
+                          <td style="padding:5px 10px 5px 0;Margin:0;" width="80%" align="left"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#333333;">{{ cart_item.product.name|title }}</p></td>
                           <td style="padding:5px 0;Margin:0;" width="20%" align="left"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#333333;">&#x20bd; {{ cart_item.product.price }}</p></td>
                          </tr>
                            {% endfor %}
@@ -237,21 +237,36 @@ a[x-apple-data-detectors] {
              </tr>
              <tr style="border-collapse:collapse;">
               <td align="left" style="Margin:0;padding-left:35px;padding-right:35px;padding-top:40px;padding-bottom:40px;">
-                  {% if order.adress %}
+                  {% if order.address %}
                <!--[if mso]><table width="530" cellpadding="0" cellspacing="0"><tr><td width="255" valign="top"><![endif]-->
-<!--               <table class="es-left" cellspacing="0" cellpadding="0" align="left" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:left;">-->
-<!--                 <tr style="border-collapse:collapse;">-->
-<!--                  <td class="es-m-p20b" width="255" align="left" style="padding:0;Margin:0;">-->
-<!--                   <table width="100%" cellspacing="0" cellpadding="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">-->
-<!--                     <tr style="border-collapse:collapse;">-->
-<!--                      <td align="left" style="padding:0;Margin:0;padding-bottom:15px;"><h4 style="Margin:0;line-height:120%;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;">Адрес доставки</h4></td>-->
-<!--                     </tr>-->
-<!--                     <tr style="border-collapse:collapse;">-->
-<!--                      <td align="left" style="padding:0;Margin:0;padding-bottom:10px;"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#333333;">Соловьиная Роща дом 8</p><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#333333;">Офис 9</p><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#333333;">Cambridge, MA 02139</p></td>-->
-<!--                     </tr>-->
-<!--                   </table></td>-->
-<!--                 </tr>-->
-<!--               </table>-->
+               <table class="es-left" cellspacing="0" cellpadding="0" align="left" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:left;">
+                 <tr style="border-collapse:collapse;">
+                  <td class="es-m-p20b" width="255" align="left" style="padding:0;Margin:0;">
+                   <table width="100%" cellspacing="0" cellpadding="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
+                     <tr style="border-collapse:collapse;">
+                      <td align="left" style="padding:0;Margin:0;padding-bottom:15px;"><h4 style="Margin:0;line-height:120%;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;">Адрес доставки</h4></td>
+                     </tr>
+                     <tr style="border-collapse:collapse;">
+                      <td align="left" style="padding:0;Margin:0;padding-bottom:10px;"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#333333;">{{ order.address }}</p><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#333333;">Офис 9</p><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#333333;">Cambridge, MA 02139</p></td>
+                     </tr>
+                   </table></td>
+                 </tr>
+               </table>
+                  {% elif request.user.profile.address %}
+               <!--[if mso]><table width="530" cellpadding="0" cellspacing="0"><tr><td width="255" valign="top"><![endif]-->
+               <table class="es-left" cellspacing="0" cellpadding="0" align="left" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:left;">
+                 <tr style="border-collapse:collapse;">
+                  <td class="es-m-p20b" width="255" align="left" style="padding:0;Margin:0;">
+                   <table width="100%" cellspacing="0" cellpadding="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
+                     <tr style="border-collapse:collapse;">
+                      <td align="left" style="padding:0;Margin:0;padding-bottom:15px;"><h4 style="Margin:0;line-height:120%;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;">Адрес доставки</h4></td>
+                     </tr>
+                     <tr style="border-collapse:collapse;">
+                      <td align="left" style="padding:0;Margin:0;padding-bottom:10px;"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#333333;">{{ request.user.profile.address }}</p></td>
+                     </tr>
+                   </table></td>
+                 </tr>
+               </table>
                   {% endif %}
                <!--[if mso]></td><td width="20"></td><td width="255" valign="top"><![endif]-->
                <table class="es-right" cellspacing="0" cellpadding="0" align="right" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:right;">
