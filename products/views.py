@@ -380,7 +380,11 @@ def detailed(request, pk):
 
 def search(request):
     qs = Products.objects.filter(name__icontains="фильтр").distinct()
-    
+
+    sale_prod = [2274, 2582, 2027]
+    brakes = Products.objects.filter(id__in=sale_prod)
+    brakes = get_image_path(brakes)
+
     search = request.GET.get('search')
 
     def search_splitter(search):
@@ -459,5 +463,6 @@ def search(request):
                 'cars': qs_cars, 
                 'search_categories': ca,
                 'brands': qs_brand,
+                'brakes': brakes,
             }
     return render(request, 'products/search.html', context)
