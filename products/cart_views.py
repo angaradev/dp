@@ -76,6 +76,8 @@ def order_view(request):
                 instance.cart = cart
                 instance.save()
                 order_n = Orders.objects.get(cart=cart)
+                if email:
+                    send_html_email_customer()
                 del request.session['cart_id']
                 del request.session['total']
                 return redirect('order_success', order_n.order_n)
