@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load crispy_forms_tags %}
 {% block page %}
 <div class="tt-breadcrumb">
 	<div class="container">
@@ -12,94 +13,153 @@
 <div id="tt-pageContent">
 	<div class="container-indent">
 		<div class="container container-fluid-custom-mobile-padding">
-			<h1 class="tt-title-subpages noborder">ACCOUNT</h1>
+			<!--<h1 class="tt-title-subpages noborder">ЗАКАЗ</h1>-->
 			<div class="tt-shopping-layout">
-				<h2 class="tt-title">ORDER #001</h2>
-				<a href="account.html" class="tt-link-back">
-					<i class="icon-e-19"></i> RETURN TO ACCOUNT PAGE
+				<h2 class="tt-title">ЗАКАЗ #{{ order.id }}</h2>
+				<a href="{% url 'account' %}" class="tt-link-back">
+					<i class="icon-e-19"></i> МОЙ АККАУНТ
 				</a>
-				<div class="tt-data">November 20, 2016</div>
+				<div class="tt-data">{{ order.created }}</div>
 				<div class="tt-wrapper">
 					<div class="tt-table-responsive">
 						<table class="tt-table-shop-03">
 							<thead>
 								<tr>
-									<th>PRODUCT</th>
-									<th>PRICE</th>
-									<th>QUANTITY</th>
-									<th>TOTAL</th>
+									<th>ПРОДУКТ</th>
+									<th>ЦЕНА</th>
+									<th>КОЛИЧЕСТВО</th>
+									<th>ВСЕГО</th>
 								</tr>
 							</thead>
 							<tbody>
+								{% for item in cart.items.all %}
 								<tr>
-									<td>Lorem ipsum dolor sit amet conse ctetur </td>
-									<td>$100456</td>
-									<td>1</td>
-									<td>$100456</td>
+									<td>{{ item.product.name }} </td>
+									<td>&#x20bd; {{ item.product.price }}</td>
+									<td>{{ item.quantity}}</td>
+									<td>&#x20bd; {{ item.item_total }}</td>
 								</tr>
-								<tr>
-									<td>Ut enim ad minim veniam, quis nostrud </td>
-									<td>$100</td>
-									<td>1</td>
-									<td>$100</td>
-								</tr>
-								<tr>
-									<td>Eexercitation ullamco laboris nisi ut aliquip ex ea </td>
-									<td>$100</td>
-									<td>1</td>
-									<td>$100</td>
-								</tr>
-								<tr>
-									<td>Commodo consequat</td>
-									<td>$100</td>
-									<td>1</td>
-									<td>$100</td>
-								</tr>
-								<tr>
+								{% endfor %}
+								<!--<tr>
 									<td colspan="3"><strong>SUBTOTAL</strong></td>
 									<td>$300</td>
-								</tr>
-								<tr>
+								</tr>-->
+								<!--<tr>
 									<td colspan="3"><strong>INTERNATIONAL SHIPPING</strong></td>
 									<td>$18</td>
-								</tr>
+								</tr>-->
 								<tr>
-									<td colspan="3"><strong>TOTAL</strong></td>
-									<td><strong>$45</strong></td>
+									<td colspan="3"><strong>ИТОГО</strong></td>
+									<td><strong>&#x20bd; {{ cart.cart_total }}</strong></td>
 								</tr>
 							</tbody>
 						</table>
 					</div>
 				</div>
+				{% if request.user.is_authenticated %}
 				<div class="tt-wrapper">
-					<div class="tt-shop-info">
+					<div class="row">
+					<div class="col-xs-12 col-md-6">
 						<div class="tt-item">
-							<h6 class="tt-title">BILLING ADDRESS:</h6>
-							<div class="tt-description">
-								<strong>Payment status: pendibg</strong>
-								<p>
-									Ut enim ad minim veniam, quis nostrud
-									Eexercitation ullamco laboris nisi ut aliquip ex ea
-									Commodo consequat
-								</p>
+							<h2 class="tt-title">ВЫ ВОШЛИ КАК {{ request.user.username|upper }}</h2>
+							<p>
+								Если у Вас уже есть аккаунт, войдите для оформления заказа. Или зарегестрируйтесь и Вы сможете видеть историю заказов, адреса доставки.
+							</p>
+							<div class="form-group">
+								<a href="{% url 'login' %}" class="btn btn-top btn-border">СТРАНИЦА ВХОДА</a>
 							</div>
-						</div>
-						<div class="tt-item">
-							<h6 class="tt-title">SHIPPING ADDRESS:</h6>
-							<div class="tt-description">
-								<strong><a href="#">Payment status: pendibg</a></strong>
-								<p>
-									Ut enim ad minim veniam, quis nostrud
-									Eexercitation ullamco laboris nisi ut aliquip ex ea
-									Commodo consequat
-								</p>
-							</div>
+
 						</div>
 					</div>
+					<div class="col-xs-12 col-md-6">
+						<h6 class="tt-title">ИЗМЕНИТЬ ДАННЫЕ</h6>
+					<div class="form-default">
+						<form method="post" action=".">{% csrf_token %}
+							<input type="hidden" name="action" value="order">
+							<div class="form-group">
+								<label for="shopPhone" class="control-label">ТЕЛЕФОН *</label>
+								{{ order_form.phone|as_crispy_field }}
+							</div>
+							<div class="form-group">
+								<label for="shopEmail" class="control-label">EMAIL</label>
+								{{ order_form.email|as_crispy_field }}
+							</div>
+							<div class="form-group">
+								<label for="shopAddress" class="control-label">АДРЕС ДОСТАВКИ</label>
+								{{ order_form.address|as_crispy_field }}
+							</div>
+							<div class="form-group">
+								<label for="shopAddress" class="control-label">КОММЕНТАРИИ К ЗАКАЗУ</label>
+								{{ order_form.comments|as_crispy_field }}
+							</div>
+
+							<div class="row tt-offset-21">
+								<div class="col-auto">
+									<button type="submit" class="btn">ОФОРМИТЬ ЗАКАЗ</button>
+								</div>
+								<!--<div class="col-auto align-self-center">
+									or	<a href="#" class="tt-link">Cancel</a>
+								</div>-->
+							</div>
+						</form>
+					</div>
+					</div>
+				</div>
+				</div>
+				{% else %}
+				<div class="tt-wrapper">
+					<div class="row">
+					<div class="col-xs-12 col-md-6">
+						<div class="tt-item">
+							<h2 class="tt-title">УЖЕ ЕСТЬ АКАУНТ</h2>
+							<p>
+								Если у Вас уже есть аккаунт, войдите для оформления заказа. Или зарегестрируйтесь и Вы сможете видеть историю заказов, адреса доставки.
+							</p>
+							<div class="form-group">
+								<a href="{% url 'login' %}" class="btn btn-top btn-border">СТРАНИЦА ВХОДА</a>
+							</div>
+
+						</div>
+					</div>
+					<div class="col-xs-12 col-md-6">
+						<h6 class="tt-title">ОФОРМИТЬ ЗАКАЗ БЕЗ РЕГИСТРАЦИИ</h6>
+						<p>Обязательное поле только ТЕЛЕФОН. Остальные поля можно не заполнять.</p>
+					<div class="form-default">
+						<form method="post" action=".">{% csrf_token %}
+							<input type="hidden" name="action" value="order">
+							<div class="form-group">
+								<label for="shopPhone" class="control-label">ТЕЛЕФОН *</label>
+								{{ order_form.phone|as_crispy_field }}
+							</div>
+							<div class="form-group">
+								<label for="shopEmail" class="control-label">EMAIL</label>
+								{{ order_form.email|as_crispy_field }}
+							</div>
+							<div class="form-group">
+								<label for="shopAddress" class="control-label">АДРЕС ДОСТАВКИ</label>
+								{{ order_form.address|as_crispy_field }}
+							</div>
+							<div class="form-group">
+								<label for="shopAddress" class="control-label">КОММЕНТАРИИ К ЗАКАЗУ</label>
+								{{ order_form.comments|as_crispy_field }}
+							</div>
+
+							<div class="row tt-offset-21">
+								<div class="col-auto">
+									<button type="submit" class="btn">ОФОРМИТЬ ЗАКАЗ</button>
+								</div>
+								<!--<div class="col-auto align-self-center">
+									or	<a href="#" class="tt-link">Cancel</a>
+								</div>-->
+							</div>
+						</form>
+					</div>
+					</div>
+				</div>
+				{% endif %}
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
-{% endif %}
 {% endblock %}

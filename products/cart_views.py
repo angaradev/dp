@@ -1,20 +1,108 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect, JsonResponse
-from .models import Products, Categories, Cart, CartItem
+from .models import Products, Categories, Cart, CartItem, Orders
 from django.db.models import Count, Min, Max
 from django.db.models import Q, Subquery
 from django.conf import settings
 import os
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMessage
 from decimal import Decimal
+from django.contrib.auth.models import User
+from .forms import OrderForm
+from django.template.loader import render_to_string
 
+
+
+    
+
+
+
+
+
+def order_success(request, order_n):
+    context = {
+            'order_n': order_n,
+            }
+    return render(request, 'cart/success.html', context)
+
+
+def order_view(request):
+    cart_id = request.session.get('cart_id', None)
+    if cart_id:
+        cart = Cart.objects.get(id=cart_id)
+    else:
+        cart = None
+    action = request.POST.get('action', None)
+    order = None
+    if request.user.is_authenticated:
+        user = User.objects.get(id=request.user.id)
+        user_id = request.user.id
+        email   = user.email
+        address = user.profile.address
+        phone   = user.profile.phone
+        initial_data = {
+                'email': email,
+                'address': address,
+                'phone': phone,
+                }
+        print(initial_data)        
+                
+                
+    else:
+        initial_data = None
+        user = None
+        user_id = None
+        email = request.POST.get('email', None)
+        phone = request.POST.get('phone', None)
+        address = request.POST.get('address', None)
+    
+    # Определяю функцию для отправки писем заказа
+    def send_html_email_customer():
+        subject = 'Заказ запчастей на DucatoParts'
+        sender = settings.SHOP_EMAIL_FROM
+        receiver = email
+        context = { 'cart': cart, 'order': order }
+        html_msg = render_to_string('cart/order_email.html', context)  
+        msg = EmailMessage(subject=subject, body=html_msg, from_email=sender, bcc=receivers)
+        msg.content_subtype = 'html'
+        return msg.send()
+
+    order_form = OrderForm(request.POST or None, initial=initial_data)
+    if request.session['cart_id']:
+        comments = request.POST.get('comments', None)
+        if action == 'order':
+            if order_form.is_valid():
+                instance = order_form.save(commit=False)
+                instance.cart = cart
+                instance.save()
+                order_n = Orders.objects.get(cart=cart)
+                del request.session['cart_id']
+                del request.session['total']
+                return redirect('order_success', order_n.order_n)
+                
+
+
+
+
+        
+    context = {
+            'cart': cart,
+            'order_form': order_form,
+            'order_user': user,
+            }
+    return render(request, 'cart/checkout.html', context)
 
 
 def cart_view(request):
 
-    cart_id = request.session.get('cart_id')
-    cart = Cart.objects.get(id=cart_id)
-    request.session['total'] = cart.items.count()
+    cart_id = request.session.get('cart_id', None)
+    if cart_id:
+        cart = Cart.objects.get(id=cart_id)
+        request.session['total'] = cart.items.count()
+    else:
+        cart = None
+        if request.session.get('total'):
+            del request.session['total'] 
 
     context = {
             'cart': cart,

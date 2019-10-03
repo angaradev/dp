@@ -27,50 +27,26 @@
 		<div class="container container-fluid-custom-mobile-padding">
 
 			<div class="tt-shopping-layout">
-				<h2 class="tt-title-border">Я вошел как <span class="bgreen">{{ request.user.username }}</span></h2>
+				<div class="bblue acc-font">{% if request.user.first_name %}{{ request.user.first_name|upper }}{% else %}{{ request.user.username|upper }}{% endif %}<a href="{% url 'logout' %}" class="float-right">выйти</a></div>
 				<div class="tt-wrapper">
 					<h3 class="tt-title">ИСТОРИЯ ЗАКАЗОВ</h3>
 					<div class="tt-table-responsive">
 						<table class="tt-table-shop-01">
 							<thead>
 								<tr>
-									<th>ORDER</th>
-									<th>DATE</th>
-									<th>PAYMENT STATUS</th>
-									<th>FULFILLMENT STATUS</th>
-									<th>TOTAL</th>
+									<th>ЗАКАЗ #</th>
+									<th>ДАТА</th>
+									<th>СУММА</th>
 								</tr>
 							</thead>
 							<tbody>
+								{% for order in orders %}
 								<tr>
-									<td><a href="shopping_order.html">#001</a></td>
-									<td>November 20. 2016</td>
-									<td>Processing</td>
-									<td>Processing</td>
-									<td>$40 fot 1 item</td>
+									<td>{{ order.order_n }}</td>
+									<td>{{ order.created }}</td>
+									<td>&#x20bd; {{ order.cart.cart_total }}</td>
 								</tr>
-								<tr>
-									<td><a href="shopping_order.html">#001</a></td>
-									<td>November 20. 2016</td>
-									<td>Processing</td>
-									<td>Processing</td>
-									<td>$40 fot 1 item</td>
-								</tr>
-								<tr>
-									<td><a href="shopping_order.html">#001</a></td>
-									<td>November 20. 2016</td>
-									<td>Processing</td>
-									<td>Processing</td>
-									<td>$40 fot 1 item</td>
-								</tr>
-								<tr>
-									<td><a href="shopping_order.html">#001</a></td>
-									<td>November 20. 2016</td>
-									<td>Processing</td>
-									<td>Processing</td>
-									<td>$40 fot 1 item</td>
-								</tr>
-
+								{% endfor %}
 							</tbody>
 						</table>
 					</div>

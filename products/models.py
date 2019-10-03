@@ -4,6 +4,8 @@ from django.urls.base import reverse
 from django.utils import timezone
 from django.conf import settings
 import os
+from django.db.models.signals import pre_save
+from .utils import random_string_generator
 
 
 class Categories(models.Model):
@@ -83,6 +85,10 @@ class CartItem(models.Model):
     quantity = models.PositiveIntegerField(default=1)
     item_total = models.DecimalField(max_digits=9, decimal_places=2, default=0.00)
 
+    class Meta:
+        verbose_name = 'Товар в корзине'
+        verbose_name_plural = 'Товары в корзине'
+
     def __str__(self):
         return 'Cart item for product {}'.format(self.product.name)
 
@@ -92,16 +98,37 @@ class Cart(models.Model):
     cart_total = models.DecimalField(max_digits=9, decimal_places=2, default=0.00)
     timestamp = models.DateField(default=timezone.now)
 
+    class Meta:
+        verbose_name = 'Корзина'
+        verbose_name_plural = 'Корзины'
+
 
 class Orders(models.Model):
 
-    pass
+    user_bound  = models.PositiveIntegerField(blank=True, null=True)
+    email       = models.EmailField(max_length=200, blank=True, null=True)
+    phone       = models.CharField(max_length=20)
+    address     = models.CharField(max_length=500, blank=True, null=True)
+    created     = models.DateField(auto_now_add=True)
+    cart        = models.OneToOneField(Cart, on_delete=models.CASCADE, default=1)
+    comments    = models.CharField(max_length=500, blank=True, null=True)
+    order_n     = models.CharField(max_length=50, blank=True, null=True) 
+
+    class Meta:
+        verbose_name = 'Заказ'
+        verbose_name_plural = 'Заказы'
+
+    def __str__(self):
+        return self.phone
+
+
+def create_order_n(sender, instance, *args, **kwargs):
+    instance.order_n = random_string_generator(4)
+
+pre_save.connect(create_order_n, sender=Orders)
 
 
 
-
-
-    
 
 
 

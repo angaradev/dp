@@ -9,7 +9,7 @@
 		</ul>
 	</div>
 </div>
-{% if  cart.items.all.count == 0 %}
+{% if  cart.items.all.count == 0 or not cart %}
 <div id="tt-pageContent">
 	<div class="container-indent nomargin">
 		<div class="tt-empty-cart">
@@ -122,7 +122,7 @@
 									</tr>
 								</tfoot>
 							</table>
-							<a href="#" class="btn btn-lg"><span class="icon icon-check_circle"></span>ОФОРМИТЬ ЗАКАЗ</a>
+							<a href="{% url 'order' %}" class="btn btn-lg"><span class="icon icon-check_circle"></span>ОФОРМИТЬ ЗАКАЗ</a>
 						</div>
 					</div>
 

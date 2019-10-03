@@ -20,8 +20,9 @@ except ImportError:
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 LOGIN_URL = 'login'
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
+SHOP_EMAILS_MANAGERS = ['angara77@gmail.com', 'angara99@gmail.com']
+SHOP_EMAIL_FROM = 'angara99@gmail.com'
+SHOP_TEL = '+7(495) 646-99-53'
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
