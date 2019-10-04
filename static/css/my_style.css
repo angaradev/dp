@@ -90,3 +90,35 @@
     border-bottom: 1px solid #e9e7e7;
     font-weight: 300;
 }
+.search-tags {
+    background-color: #fff;
+    border: 1px solid #2879fe;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 4px;
+    color: #777777;
+}
+.search-tags:hover {
+    font-weight: bold;
+    border: 2px solid #2879fe;
+}
+
+.upper-tags {
+    padding: 10px;
+}
+.upper-tags ul>li {
+    display: inline;
+    margin-left: 5px;
+}
+
+.tag-class li a{
+    margin-right: 20px;
+}
+.xmark {
+    font-weight: 100;
+    color: hotpink;
+    font-size: 16px;
+}
+.xbrand{
+    cursor: pointer;
+}

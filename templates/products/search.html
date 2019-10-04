@@ -112,9 +112,19 @@
 							<button class="btn btn-outline-success mt-4 mb-4" type="submit">Показать</button>
 						</div>
 					</div>
+						<div class="tt-collapse open">
+						<h3 class="tt-collapse-title">ТЭГИ</h3>
+						<div class="tt-collapse-content">
+							<ul class="tt-list-inline">
+								{% for tag in tags %}
+								<li><button name="tag" value="{{ tag }}" type="submit" class="search-tags">{{ tag }}</button></li>
+								{% endfor %}
+							</ul>
+						</div>
+					</div>
 					</form>
 					<div class="tt-collapse open">
-						<h3 class="tt-collapse-title">ПОПУЛЯРНЫЕ ЗАПРОСЫ</h3>
+						<h3 class="tt-collapse-title mt-4">ПОПУЛЯРНЫЕ ЗАПРОСЫ</h3>
 						<div class="tt-collapse-content">
 							<div class="tt-aside">
 								{% for br in brakes %}
@@ -135,28 +145,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="tt-collapse open">
-						<h3 class="tt-collapse-title">ТЭГИ</h3>
-						<div class="tt-collapse-content">
-							<ul class="tt-list-inline">
-								<li><a href="#">Dresses</a></li>
-								<li><a href="#">Shirts &amp; Tops</a></li>
-								<li><a href="#">Polo Shirts</a></li>
-								<li><a href="#">Sweaters</a></li>
-								<li><a href="#">Blazers</a></li>
-								<li><a href="#">Vests</a></li>
-								<li><a href="#">Jackets</a></li>
-								<li><a href="#">Outerwear</a></li>
-								<li><a href="#">Activewear</a></li>
-								<li><a href="#">Pants</a></li>
-								<li><a href="#">Jumpsuits</a></li>
-								<li><a href="#">Shorts</a></li>
-								<li><a href="#">Jeans</a></li>
-								<li><a href="#">Skirts</a></li>
-								<li><a href="#">Swimwear</a></li>
-							</ul>
-						</div>
-					</div>
+
 				</div>
 				<div class="col-md-12 col-lg-9 col-xl-9">
 					<div class="content-indent container-fluid-custom-mobile-padding-02">

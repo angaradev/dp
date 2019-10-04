@@ -346,7 +346,7 @@
 						<div class="tt-cart tt-dropdown-obj" data-tooltip="Cart" data-tposition="bottom">
 							<button class="tt-dropdown-toggle">
 								<i class="icon-f-39"></i>
-								<span class="tt-badge-cart">{{ request.session.total }}</span>
+								<span class="tt-badge-cart" {% if not request.session.total %}style="display: none;"{% endif %}>{{ request.session.total }}</span>
 							</button>
 							<div class="tt-dropdown-menu">
 								<div class="tt-mobile-add">
@@ -796,6 +796,8 @@
 <script src="{% static 'external/form/jquery.form.js' %}"></script>
 <script src="{% static 'external/form/jquery.validate.min.js' %}"></script>
 <script src="{% static 'external/form/jquery.form-init.js' %}"></script>
+{% block custom_js %}
+{% endblock %}
 
 </body>
 </html>

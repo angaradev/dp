@@ -23,7 +23,7 @@ def show_cars():
 def show_brands(pk, car, cat):
     for k, v in kwargs.items():
         pass
-    qs = Products.objects.filter(cat = 2502).values('brand').annotate(dbrand=Count('brand'))
+    qs = Products.objects.filter(cat=cat).values('brand').annotate(dbrand=Count('brand'))
     return qs
 
 def show_price(price_min, price_max):
@@ -65,7 +65,7 @@ def get_image_path(qs):
 
 
 def newparts(request):
-    qs = Products.objects.all()[:100]
+    qs = Products.objects.all()[:200]
     qs = get_image_path(qs)
     cats = Categories.objects.filter(parent_id=0)
     try:
@@ -117,7 +117,7 @@ def cars(request, car):
             'objects': objects,
             'cars': show_cars(),
             'categories': cats,
-            'single_car': car,
+            'car': car,
             'brakes': brakes,
             }
     return render(request, 'products/newparts.html', context)
@@ -171,12 +171,13 @@ def cars_subcats(request, car, slug, **kwargs):
             'objects': objects,
             'cars': show_cars(),
             'categories': cats,
-            'single_car': car,
+            'car': car,
             'brands': brands,
             'title_h1': h1,
             'car': car,
             'brand': brand,
             'brakes': brakes,
+            'cat': cats_tmp,
             }
     
     return render(request, 'products/newparts.html', context)
@@ -256,6 +257,7 @@ def subcat(request, slug, **kwargs):
             'bread1': bread1,
             'bread2': bread2,
             'bread3': bread3,
+            'cat': cats_tmp,
             }
     
     return render(request, 'products/newparts.html', context)
@@ -379,13 +381,13 @@ def detailed(request, pk):
 
 
 def search(request):
-    qs = Products.objects.filter(name__icontains="фильтр").distinct()
+    #qs = Products.objects.filter(name__icontains="фильтр").distinct()
 
-    sale_prod = [2274, 2582, 2027]
+    sale_prod = settings.SALES_ON_SEARCH 
     brakes = Products.objects.filter(id__in=sale_prod)
     brakes = get_image_path(brakes)
 
-    search = request.GET.get('search')
+    search = request.GET.get('search', None)
 
     def search_splitter(search):
         from .stemmer import Porter
@@ -397,36 +399,50 @@ def search(request):
             new_search_list.append(n_w)
         return(new_search_list)
 
-    search_list = search_splitter(search)
-
-    if len(search_list) == 1:
-        qs_s = f'Products.objects.filter(name__icontains="{search}").distinct().filter('
-    else:
-        qs_s = f'Products.objects.filter('
-        for word in search_list:
-            qs_s += f'Q(name__icontains="{word}") & '
-#        qs_s = qs_s.rstrip()
-#        qs_s = qs_s.rstrip('&').rstrip()
-#        qs_s += ').distinct()'
-#        print(qs_s)
-
     cars_l = request.GET.getlist('car')
     cats_l = request.GET.getlist('cat')
     brands_l = request.GET.getlist('brand')
-    if cars_l:
-        qs_s += f'Q(car__in={cars_l}) & '
-    if cats_l:
-        qs_s += f'Q(cat__in={cats_l}) & '
-    if brands_l:
-        qs_s += f'Q(brand__in={brands_l}) & '
-    else:
-        pass
-    qs_s = qs_s.rstrip()
-    qs_s = qs_s.rstrip('&').rstrip()
-    qs_s += ')'
-    print(qs_s)
-    qs = eval(qs_s)
+    tag = request.GET.get('tag')
 
+    if search is None:
+        qs_s = f'Products.objects.all().distinct().filter('
+        if cars_l:
+            qs_s += f'Q(car__in={cars_l}) & '
+        if cats_l:
+            qs_s += f'Q(cat__in={cats_l}) & '
+        if brands_l:
+            qs_s += f'Q(brand__in={brands_l}) & '
+        else:
+            pass
+        qs_s = qs_s.rstrip()
+        qs_s = qs_s.rstrip('&').rstrip()
+        qs_s += ')[:100]'
+        qs = eval(qs_s)        
+    else:
+        search_list = search_splitter(search)
+
+        if len(search_list) == 1:
+            qs_s = f'Products.objects.filter(name__icontains="{search}").distinct().filter('
+        else:
+            qs_s = f'Products.objects.filter('
+            for word in search_list:
+                qs_s += f'Q(name__icontains="{word}") & '
+
+        if cars_l:
+            qs_s += f'Q(car__in={cars_l}) & '
+        if cats_l:
+            qs_s += f'Q(cat__in={cats_l}) & '
+        if brands_l:
+            qs_s += f'Q(brand__in={brands_l}) & '
+        else:
+            pass
+        qs_s = qs_s.rstrip()
+        qs_s = qs_s.rstrip('&').rstrip()
+        qs_s += ')'
+        qs = eval(qs_s)
+
+    if tag:
+        qs = qs.filter(name__icontains=tag)
     qs_cars = qs.values('car').annotate(scount=Count('car'))
 
     qs_brand = qs.values('brand').annotate(bcount=Count('brand'))
@@ -446,7 +462,6 @@ def search(request):
         if not p:
             continue
         ca.append({'cat': c, 'ccount': p.count()})
-    
 
     try:
         p = Paginator(qs, 20)
@@ -456,9 +471,11 @@ def search(request):
         pass
     if request.GET.get('load_all') == 'all':
         objects = qs
+
     
     objects = get_image_path(objects)
     context = {
+                'tags': settings.TAGS_LIST,
                 'objects': objects,
                 'cars': qs_cars, 
                 'search_categories': ca,

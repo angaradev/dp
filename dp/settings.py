@@ -15,6 +15,7 @@ SHOP_TEL = '+7(495) 646-99-53'
 SHOP_ADDRESS_LINE_1 = 'г.МОСКВА, ул. Соловьиная-Роща 8 к2'
 SHOP_ADDRESS_LINE_2 = '1 этаж, офис 9'
 
+SALES_ON_SEARCH = [2274, 2582, 2027] 
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -50,7 +51,7 @@ SITE_ID = 1
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
-TAGS = [
+TAGS_LIST = [
     'задн',
     'передн',
     'лев',

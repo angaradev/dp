@@ -4,17 +4,10 @@
 	{% if request.GET.load_all == 'all'  %}
 		<link rel="canonical" href="{{ request.path }}" />
 	{% endif %}
-{% endblock %}	<h1 class="tt-title">
-								{% if title_h1 %}
-									{{ title_h1|title }} для
-									{% if car %}
-									{{ car|upper }}
-									{% endif %}
-									{% if brand %}
-								<br>производитель
-									{{ brand }}
-									{% endif %}
-								{% endif %}
+{% endblock %}
+{% block page_title %}{% if title_h1 %}{{ title_h1|title }}{% if car %} для {{ car|upper }}{% endif %}{% if brand %} производитель {{ brand }}{% endif %}{% else %}{% if car %} Запчасти для {{ car|upper }}{% else %} Запчасти для Коммерческого Транспорта {% endif %} {% endif %} | DucatoParts.ru{% endblock %}
+{% block page_description %}Автозапчасти для коммерческого транспорта с доставкой. {% if title_h1 %}{{ title_h1|title }}{% if car %} для {{ car|upper }}{% endif %}{% if brand %} производитель {{ brand }}{% endif %}{% else %}{% if car %} Запчасти для {{ car|upper }}{% else %} Запчасти для Коммерческого Транспорта {% endif %} {% endif %}{% endblock %}
+
 
 {% block page %}
 <div class="tt-breadcrumb">
@@ -30,6 +23,23 @@
 			{% if bread3 %}
 			<li><a href="{% url 'subcat' bread3.slug %}">{{ bread3.name|title }}</a></li>
 			{% endif %}
+		</ul>
+	</div>
+</div>
+<div class="upper-tags">
+	<div class="container">
+		<ul class="tag-class">
+			{% if car %}
+			<li><span class="xmark">&#x274C; </span><a href="{% url 'newparts' %}" id="car" >{{ car|upper }}</a></li>
+			{% endif %}
+			{% if cat.slug %}
+			<li><span class="xmark">&#x274C; </span><a href="{% if car %}{% url 'car_page' car %}{% else %}{% url 'newparts' %}{% endif %}" id="cat" class="nav-link active show"> {{ cat.name|upper }}</a></li>
+			{% endif %}
+			{% if request.GET.brand %}
+			<li><span class="xmark">&#x274C; </span><a id="brand" class="xbrand" >{{ request.GET.brand }}</a></li>
+			{% endif %}
+
+
 		</ul>
 	</div>
 </div>
@@ -71,11 +81,11 @@
 					<div class="tt-collapse open">
 						<h3 class="tt-collapse-title">КАТЕГОРИИ ЗАПЧАСТЕЙ</h3>
 						<div class="tt-collapse-content">
-							<div class="tt-clear-cross">&#215;<a href="/zapchasti/{{ single_car }}/"> Очистить</a></div>
+							<div class="tt-clear-cross">&#215;<a href="/zapchasti/{{ car }}/"> Очистить</a></div>
 							<ul class="tt-list-row">
 								{% for cat in categories %}
 								{% if 'zapchasti' in request.path %}
-								<li><a href="/zapchasti/{{ single_car }}/{{ cat.slug }}">{{ cat.name|title }} {{ single_car|title }} ({{ cat.prod_count }})</a></li>
+								<li><a href="/zapchasti/{{ car }}/{{ cat.slug }}">{{ cat.name|title }} {{ car|title }} ({{ cat.prod_count }})</a></li>
 								{% else %}
 								<li><a href="{% url 'subcat' cat.slug %}">{{ cat.name|title }}</a></li>
 								{% endif %}
@@ -149,7 +159,7 @@
 							</div>
 						</div>
 					</div>
-					<div class="tt-collapse open">
+					<!--<div class="tt-collapse open">
 						<h3 class="tt-collapse-title">TAGS</h3>
 						<div class="tt-collapse-content">
 							<ul class="tt-list-inline">
@@ -170,7 +180,7 @@
 								<li><a href="#">Swimwear</a></li>
 							</ul>
 						</div>
-					</div>
+					</div>-->
 <!--					<div class="tt-content-aside">-->
 <!--						<a href="listing-left-column.html" class="tt-promo-03">-->
 <!--							<img src="{% static 'images/custom/listing_promo_img_07.jpg' %}" alt="">-->
@@ -182,13 +192,19 @@
 						<div class="tt-filters-options">
 							<h1 class="tt-title">
 								{% if title_h1 %}
-									{{ title_h1|title }} для
+									{{ title_h1|title }}
 									{% if car %}
-									{{ car|upper }}
+									 для {{ car|upper }}
 									{% endif %}
 									{% if brand %}
 								<br>производитель
 									{{ brand }}
+									{% endif %}
+								{% else %}
+									{% if car %}
+									 Запчасти для {{ car|upper }}
+									{% else %}
+										Запчасти для Коммерческого Транспорта
 									{% endif %}
 								{% endif %}
 								<span class="tt-title-total"></span>
@@ -275,4 +291,8 @@
 		</div>
 	</div>
 </div>
+{% endblock %}
+{% block custom_js %}
+<script src="{% static 'js/url_remove.js' %}"></script>
+
 {% endblock %}
