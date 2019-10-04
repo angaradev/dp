@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from blogs.views import blogs, blog
+from blogs.views import blogs, blog, oldblog
 from django.conf import settings
 from django.conf.urls.static import static
 from home.views import home, about
@@ -45,6 +45,7 @@ urlpatterns = [
     path('register/', register_view, name='register'),
     path('account/', account_view, name='account'),
     path('blogs/<slug:slug>/', blog, name='blog'),
+    path('oldblogs/<slug:slug>/', oldblog, name='oldblog'),
     path('', home, name='home'),
     path('newparts/', newparts, name='newparts'),
     path('subcat/<slug:slug>/', subcat, name='subcat'),

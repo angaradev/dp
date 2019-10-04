@@ -40,6 +40,8 @@ class Blogs(models.Model):
     category            = models.ForeignKey(Categories, related_name='category', on_delete=models.CASCADE, default=1)
     publish             = models.DateField(auto_now=True)
     number_views        = models.IntegerField(default=0)
+    page_title          = models.CharField(max_length=500, blank=True, null=True)
+    page_description    = models.CharField(max_length=500, blank=True, null=True)
 
 
     @property
@@ -70,3 +72,43 @@ def blog_pre_save_receiver(sender, instance, *args, **kwargs):
 
 pre_save.connect(blog_pre_save_receiver, sender=Blogs)
 #pre_save.connect(blog_pre_save_receiver, sender=BlogCategories)
+
+
+
+
+
+class OldBlogs(models.Model):
+    title               = models.CharField(max_length=120)
+    slug                = models.SlugField(blank=True, unique=True, max_length=255)
+    short_desc          = models.TextField(null=True, blank=True)
+    text                = models.TextField()
+    image               = models.ImageField(upload_to=upload_image_path, null=True, blank=True)
+    category            = models.ForeignKey(Categories, on_delete=models.CASCADE, default=1)
+    publish             = models.DateField(auto_now=True)
+    number_views        = models.IntegerField(default=0)
+    page_title          = models.CharField(max_length=500, blank=True, null=True)
+    page_description    = models.CharField(max_length=500, blank=True, null=True)
+
+
+    @property
+    def comments(self):
+        instance = self
+        qs = Comment.objects.filter_by_instance(instance)
+        return qs
+
+    @property
+    def get_content_type(self):
+        instance = self
+        qs = ContentType.objects.get_for_model(instance.__class__)
+        return qs
+
+    class Meta:
+        verbose_name = 'Старая Статья'
+        verbose_name_plural = 'Старые Статьи'
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse('oldblog', kwargs={'slug': self.slug})
+
