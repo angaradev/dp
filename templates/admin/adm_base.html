@@ -114,9 +114,9 @@
                             <label class="form-check-label container nav-link" for="checked-all">
                                 <input class="form-check-input" type="radio" name="checked"
                                        value="All" id="checked-all"
-                                {% if request.GET.checked == 'All' %} checked {% endif %}
+                                {% if request.GET.checked == 'All' or request.session.checked == 'All' %} checked {% endif %}
                                 >
-                                <span class="{% if request.GET.checked == 'All' %}car-active{% endif %}">ВСЕ</span>
+                                <span class="{% if request.GET.checked == 'All' or request.session.checked == 'All' %}car-active{% endif %}">ВСЕ</span>
                                 <span class="checkmark"></span>
                             </label>
                         </li>
@@ -124,17 +124,17 @@
                             <label class="form-check-label container nav-link" for="check-yes">
                                 <input class="form-check-input" type="radio" name="checked"
                                        value="True" id="check-yes"
-                                {% if request.GET.checked == 'True' %} checked {% endif %}
+                                {% if request.GET.checked == 'True' or request.session.checked == 'True' %} checked {% endif %}
                                 >
-                                <span class="{% if request.GET.checked == 'True' %}car-active{% endif %}">ПРОВЕРЕННЫЕ</span>
+                                <span class="{% if request.GET.checked == 'True' or request.session.checked == 'True' %}car-active{% endif %}">ПРОВЕРЕННЫЕ</span>
                                 <span class="checkmark"></span>
                             </label>
                         </li>
                         <li>
                             <label class="form-check-label container nav-link" for="check-no">
                                 <input class="form-check-input" type="radio" name="checked"
-                                       value="False" id="check-no" {% if request.GET.checked == 'False' %} checked {% endif %}>
-                                <span class="{% if request.GET.checked == 'False' %}car-active{% endif %}">НЕПРОВЕРЕННЫЕ</span>
+                                       value="False" id="check-no" {% if request.GET.checked == 'False' or request.session.checked == 'False' %} checked {% endif %}>
+                                <span class="{% if request.GET.checked == 'False' or request.session.checked == 'False' %}car-active{% endif %}">НЕПРОВЕРЕННЫЕ</span>
                                 <span class="checkmark"></span>
                             </label>
                         </li>
@@ -151,9 +151,9 @@
                         <label class="form-check-label container nav-link" for="check-all">
                                 <input class="form-check-input" type="radio" name="car"
                                        value="all" id="check-all"
-                                {% if car == 'all' %} checked {% endif %}
+                                {% if car == 'all' or request.session.car == 'all' %} checked {% endif %}
                                 >
-                                <span class="{% if car == 'all' %}car-active{% endif %}">ВСЕ МАШИНЫ</span>
+                                <span class="{% if car == 'all' or request.session.car == 'all' %}car-active{% endif %}">ВСЕ МАШИНЫ</span>
                                 <span class="checkmark"></span>
                             </label>
 
@@ -163,9 +163,9 @@
                         <label class="form-check-label container nav-link" for="check-{{ c.car }}">
                                 <input class="form-check-input" type="radio" name="car"
                                        value="{{ c.car }}" id="check-{{ c.car }}"
-                                {% if car == c.car %} checked {% endif %}
+                                {% if car == c.car or request.session.car == c.car  %} checked {% endif %}
                                 >
-                                <span class="{% if car == c.car %}car-active{% endif %}">{{ c.car|upper }} ({{ c.dcount }})</span>
+                                <span class="{% if car == c.car or request.session.car == c.car %}car-active{% endif %}">{{ c.car|upper }} ({{ c.dcount }})</span>
                                 <span class="checkmark"></span>
                             </label>
 

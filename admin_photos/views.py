@@ -24,7 +24,6 @@ from .models import PhotoStatistic
 @login_required
 def make_stat(request):
     qs = Products.objects.values('img_check')
-    print(count(qs))
     return redirect('home')
 
 
@@ -36,7 +35,6 @@ class ChartData(APIView):
     def get(self, request, format=None):
         
         d = Products.objects.values('img_check')
-        print(d)
         checked = d.filter(img_check=True).count()
         unchecked = d.filter(img_check=False).count()
         labels = [f'Сделано {checked}', f'Осталось {unchecked}']
@@ -117,8 +115,14 @@ def admin_photos_view(request):
 @login_required
 def admin_photo_listing(request, pk):
 
-    car = request.GET.get('car')
-    checked = request.GET.get('checked')
+    
+    
+    car = request.GET.get('car', None)
+    if not car:
+        car = request.session.get('car', None)
+    checked = request.GET.get('checked', None)
+    if not checked:
+        checked = request.session.get('checked', None)
 
     cat = categories_tree(pk)
     li = []
@@ -134,17 +138,18 @@ def admin_photo_listing(request, pk):
         pqs = qs
     elif (car and car != 'all') and (checked and checked != 'All'):
         pqs = qs.filter(car=car).filter(img_check=checked).distinct()
+
     elif car != 'all' and (checked == 'All' or checked is None):
         pqs = qs.filter(car=car).distinct()
     elif car == 'all' and (checked and checked != 'All'):
-        print('in here', checked)
         pqs = qs.filter(img_check=checked).distinct()
-        print(pqs)
     elif car == 'all' and (not checked and checked != 'All'):
-        print('in here', checked)
         pqs = qs
     
 
+    request.session['car'] = car
+    request.session['checked'] = checked
+    print(request.session.get('checked'), request.session.get('car'))
     
     objects = get_image_path(pqs)
     

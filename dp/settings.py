@@ -23,8 +23,6 @@ LOGIN_URL = 'login'
 SHOP_EMAILS_MANAGERS = ['angara77@gmail.com', 'angara99@gmail.com']
 SHOP_EMAIL_FROM = 'angara99@gmail.com'
 SHOP_TEL = '+7(495) 646-99-53'
-SHOP_ADDRESS_LINE_1 = 'г. Москва, улица Соловьиная Роща'
-SHOP_ADDRESS_LINE_2 = 'дом 8 корпус 2 офис 9'
 
 
 # SECURITY WARNING: don't run with debug turned on in production!

@@ -56,7 +56,7 @@ def order_view(request):
         subject = 'Заказ запчастей на DucatoParts'
         sender = settings.SHOP_EMAIL_FROM
         receiver = email
-        shop_address = [settings.SHOP_ADDRESS_LINE1, settings.SHOP_ADDRESS_LINE2]
+        shop_address = [settings.SHOP_ADDRESS_LINE_1, settings.SHOP_ADDRESS_LINE_2]
         context = { 'cart': cart, 'order': order }
         html_msg = render_to_string('cart/order_email.html', context)  
         msg = EmailMessage(subject=subject, body=html_msg, from_email=sender, bcc=(receiver,))
