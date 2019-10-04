@@ -52,15 +52,15 @@ def order_view(request):
         address = request.POST.get('address', None)
     
     # Определяю функцию для отправки писем заказа
-    def send_html_email_customer(order, receiver, template):
+    def send_html_email(order, receiver, template):
         subject = 'Заказ запчастей на DucatoParts'
         sender = settings.SHOP_EMAIL_FROM
         receiver = email
         shop_address = [settings.SHOP_ADDRESS_LINE_1, settings.SHOP_ADDRESS_LINE_2]
         context = { 'cart': cart, 'order': order }
         html_msg = render_to_string(template, context)  
-        if type(receiver) is not list:
-            receiver = list(receiver)
+        if not isinstance(receiver, list):
+            receiver = [receiver,]
         msg = EmailMessage(subject=subject, body=html_msg, from_email=sender, bcc=receiver)
         msg.content_subtype = 'html'
         return msg.send()
@@ -75,8 +75,8 @@ def order_view(request):
                 instance.save()
                 order_n = Orders.objects.get(cart=cart)
                 if email:
-                    send_html_email_customer(order_n, email, 'cart/order_email.html')
-                    send_html_email(order_n,settings.SHOP_EMAILS_MANAGERS , 'cart/order_email_manager.html')
+                    send_html_email(order_n, email, 'cart/order_email.html')
+                send_html_email(order_n, settings.SHOP_EMAILS_MANAGERS, 'cart/order_email_manager.html')
                 del request.session['cart_id']
                 del request.session['total']
                 return redirect('order_success', order_n.order_n)
