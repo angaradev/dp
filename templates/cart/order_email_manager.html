@@ -294,7 +294,7 @@ a[x-apple-data-detectors] {
                       <td align="left" style="padding:0;Margin:0;padding-bottom:15px;"><h4 style="Margin:0;line-height:120%;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;">Email покупателя</h4></td>
                      </tr>
                      <tr style="border-collapse:collapse;">
-                      <td align="left" style="padding:0;Margin:0;padding-bottom:10px;"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#333333;">{{ order.address }}</p></td>
+                      <td align="left" style="padding:0;Margin:0;padding-bottom:10px;"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#333333;">{{ order.email }}</p></td>
                      </tr>
                    </table></td>
                  </tr>
@@ -329,31 +329,30 @@ a[x-apple-data-detectors] {
                    </table></td>
                  </tr>
                </table>
-               <!--[if mso]></td></tr></table><![endif]--></td>
-             </tr>
-           </table></td>
-         </tr>
-       </table>
-       <table class="es-content" cellspacing="0" cellpadding="0" align="center" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;table-layout:fixed !important;width:100%;">
-         <tr style="border-collapse:collapse;">
-          <td align="center" style="padding:0;Margin:0;">
-           <table class="es-content-body" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-color:#3979fe;" width="600" cellspacing="0" cellpadding="0" bgcolor="#3979fe" align="center">
-             <tr style="border-collapse:collapse;">
-              <td align="left" style="Margin:0;padding-top:35px;padding-bottom:35px;padding-left:35px;padding-right:35px;">
-               <table width="100%" cellspacing="0" cellpadding="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
+                  {% if order.comments %}
+               <!--[if mso]><table width="530" cellpadding="0" cellspacing="0"><tr><td width="255" valign="top"><![endif]-->
+               <table class="es-left" cellspacing="0" cellpadding="0" align="left" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:left;">
                  <tr style="border-collapse:collapse;">
-                  <td width="530" valign="top" align="center" style="padding:0;Margin:0;">
+                  <td class="es-m-p20b" width="255" align="left" style="padding:0;Margin:0;">
                    <table width="100%" cellspacing="0" cellpadding="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
                      <tr style="border-collapse:collapse;">
-                         <td align="center" style="padding:0;Margin:0;padding-top:25px;"><a target="_blank" style="-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;font-size:18px;text-decoration:none;color:#FFFFFF;line-height:22px;" href="https://ducatoparts.ru"><h2 style="Margin:0;line-height:29px;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;font-size:24px;font-style:normal;font-weight:bold;color:#ffffff;">Новые поступления уже на сайте! </a></h2></td>
+                      <td align="left" style="padding:0;Margin:0;padding-bottom:15px;"><h4 style="Margin:0;line-height:120%;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;">Комментарий к заказу</h4></td>
+                     </tr>
+                     <tr style="border-collapse:collapse;">
+                      <td align="left" style="padding:0;Margin:0;padding-bottom:10px;"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#333333;">{{ order.comments }}</p></td>
                      </tr>
                    </table></td>
                  </tr>
-               </table></td>
+               </table>
+                  {% endif %}
+               <!--[if mso]></td></tr></table><![endif]--></td>
              </tr>
+
+
            </table></td>
          </tr>
        </table>
+
        <table class="es-footer" cellspacing="0" cellpadding="0" align="center" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;table-layout:fixed !important;width:100%;background-color:transparent;background-repeat:repeat;background-position:center top;">
          <tr style="border-collapse:collapse;">
           <td align="center" style="padding:0;Margin:0;">
