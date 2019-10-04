@@ -172,7 +172,7 @@
 <!--							<a href="#" class="tt-btn-quickview" data-toggle="modal" data-target="#ModalquickView"	data-tooltip="Quick View" data-tposition="left"></a>-->
 							<a href="#" class="tt-btn-wishlist" data-tooltip="Add to Wishlist" data-tposition="left"></a>
 <!--							<a href="#" class="tt-btn-compare" data-tooltip="Add to Compare" data-tposition="left"></a>-->
-							<a href="product.html">
+							<a href="{% url 'detailed' similar.pk %}">
 								<span class="tt-img"><img src="{% static similar.image_path %}" alt=""></span>
 								<span class="tt-img-roll-over"><img src="{% static 'images/product/product-16-02.jpg' %}" alt=""></span>
 							</a>
@@ -185,7 +185,7 @@
 									{% endfor %}
 								</ul>
 							</div>
-							<h2 class="tt-title"><a href="product.html">{{ similar.name|title }}</a></h2>
+							<h2 class="tt-title"><a href="{% url 'detailed' similar.pk %}">{{ similar.name|title }}</a></h2>
 							<div class="tt-price">
 								{{ similar.price }}
 							</div>
