@@ -47,7 +47,9 @@ class Blogs(models.Model):
     @property
     def comments(self):
         instance = self
+        print('in here')
         qs = Comment.objects.filter_by_instance(instance)
+        
         return qs
 
     @property
@@ -57,7 +59,8 @@ class Blogs(models.Model):
         return qs
 
     class Meta:
-        verbose_name = 'Статья'
+        default_related_name = 'blogs'
+        verbose_name = 'blogs'
         verbose_name_plural = 'Статьи'
 
     def __str__(self):
@@ -83,9 +86,10 @@ class OldBlogs(models.Model):
     short_desc          = models.TextField(null=True, blank=True)
     text                = models.TextField()
     image               = models.ImageField(upload_to=upload_image_path, null=True, blank=True)
-    category            = models.ForeignKey(Categories, on_delete=models.CASCADE, default=1)
+    category            = models.ForeignKey(Categories, on_delete=models.CASCADE, default=1,
+            related_name='old_categories')
     publish             = models.DateField(auto_now=True)
-    number_views        = models.IntegerField(default=0)
+    number_views        = models.IntegerField(default=1)
     page_title          = models.CharField(max_length=500, blank=True, null=True)
     page_description    = models.CharField(max_length=500, blank=True, null=True)
 
@@ -103,12 +107,17 @@ class OldBlogs(models.Model):
         return qs
 
     class Meta:
-        verbose_name = 'Старая Статья'
+        default_related_name = 'oldblogs'
+        verbose_name = 'oldblogs'
         verbose_name_plural = 'Старые Статьи'
 
     def __str__(self):
         return self.title
 
     def get_absolute_url(self):
-        return reverse('oldblog', kwargs={'slug': self.slug})
+        return reverse('oldblog', kwargs={'pk': self.id})
+
+def old_blog_pre_save_receiver(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = unique_slug_generator(instance)
 

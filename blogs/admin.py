@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Blogs
+from .models import Blogs, OldBlogs
 
 
 class BlogsAdmin(admin.ModelAdmin):
@@ -10,5 +10,6 @@ class BlogsAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Blogs)
+admin.site.register(OldBlogs)
 
 
