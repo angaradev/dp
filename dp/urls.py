@@ -19,6 +19,12 @@ from products.cart_views import cart_view, add_to_cart, remove_from_cart, update
 from products.cart_views import order_success
 
 
+handler404 = 'dp.views.error404'
+handler500 = 'dp.views.error500'
+handler403 = 'dp.views.error403'
+handler400 = 'dp.views.error400'
+
+
 sitemaps = {
         'blogs': BlogsSitemap,
         'static': StaticViewsSitemap,
