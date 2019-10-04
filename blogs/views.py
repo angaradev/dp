@@ -141,13 +141,46 @@ def blog(request, slug):
 
 
 
+def oldblogs(request):
+    req_cat = request.GET.get('category')
+    
+    if req_cat:
+        
+        qs = OldBlogs.objects.filter(category=req_cat)
+    else: 
+            qs = OldBlogs.objects.all()
+
+    if request.GET.get('arch'):
+        req_arch = request.GET.get('arch').split(' ')[0]
+        qs = qs.filter(publish__year=req_arch)
+
+    search_blog = request.GET.get('search_blog')
+    if search_blog:
+        qs = qs.filter( Q(title__icontains=search_blog) | Q(text__icontains=search_blog) )
+    p = Paginator(qs, 6)
+    page = request.GET.get('page')
+    objects = p.get_page(page)
+    resents = qs.order_by('-publish')[:4]
+    archeves = qs.annotate(year=TruncYear('publish')).values('year').annotate(year_count=Count('id'))
+
+    cats = qs.annotate(cat_count=Count('category'))
+    context = {
+            'categories': Categories.objects.filter(parent_id=0),
+            'objects': objects,
+            'cars': show_cars(),
+            'categs': cats,
+            'resents': resents,
+            'archeves': archeves,
+
+            }
+    return render(request, 'blog/blogs.html', context)
 
 def oldblog(request, slug):
-    obj = Blogs.objects.get(slug=slug)
+    obj = OldBlogs.objects.get(slug=slug)
     obj.number_views += 1
     obj.save()
     
-    related = Blogs.objects.filter(category=obj.category).exclude(slug=slug)[:2]
+    related = OldBlogs.objects.filter(category=obj.category).exclude(slug=slug)[:2]
     comments = Comment.objects.filter_by_instance(obj)
     if request.user.is_authenticated:
         value = str(request.user).upper()

@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from blogs.views import blogs, blog, oldblog
+from blogs.views import blogs, blog, oldblog, oldblogs
 from django.conf import settings
 from django.conf.urls.static import static
 from home.views import home, about
@@ -40,6 +40,7 @@ sitemaps = {
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('blogs/', blogs, name='blogs'),
+    path('oldblogs/', oldblogs, name='oldblogs'),
     path('login/', login_view, name='login'),
     path('logout/', logout_view, name='logout'),
     path('register/', register_view, name='register'),
