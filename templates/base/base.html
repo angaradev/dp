@@ -13,6 +13,8 @@
 	<link rel="stylesheet" href="{% static 'css/theme.css' %}">
 	<link rel="stylesheet"  href="https://cdn.jsdelivr.net/npm/pretty-checkbox@3.0/dist/pretty-checkbox.min.css">
 	<link rel="stylesheet" href="{% static 'css/my_style.css' %}">
+	<link rel="stylesheet" href="{% static 'css/my_style_vasya.css' %}">
+
 </head>
 <body>
 <div id="loader-wrapper">
@@ -156,57 +158,7 @@
 							<i class="icon-f-85"></i>
 							<input class="tt-search-input" type="search" name="search" {% if request.GET.search %} value="{{ request.GET.search }}{% endif %}" placeholder="Поиск..." aria-label="SEARCH PRODUCTS..." autocomplete="off">
 							<button type="submit" class="tt-btn-search">Поиск</button>
-							<div class="search-results">
-								<ul>
-									<li>
-							            <a href="product.html">
-							            	<div class="thumbnail"><img src="{% static 'images/loader.svg' %}" data-src="{% static 'images/product/product-03.jpg' %}" alt=""></div>
-							            	<div class="tt-description">
-							            		<div class="tt-title">Flared Shift Bag</div>
-							            		<div class="tt-price">
-													<span class="new-price">$14</span>
-													<span class="old-price">$24</span>
-												</div>
-							            	</div>
-							            </a>
-							        </li>
-							        <li>
-							           <a href="product.html">
-							            	<div class="thumbnail"><img src="{% static 'images/loader.svg' %}" data-src="{% static 'images/product/product-02.jpg' %}" alt=""></div>
-							            	<div class="tt-description">
-							            		<div class="tt-title">Flared Shift Bag</div>
-							            		<div class="tt-price">
-													$24
-												</div>
-							            	</div>
-							            </a>
-							        </li>
-							        <li>
-							           <a href="product.html">
-							            	<div class="thumbnail"><img src="{% static 'images/loader.svg' %}" data-src="{% static 'images/product/product-01.jpg' %}" alt=""></div>
-							            	<div class="tt-description">
-							            		<div class="tt-title">Flared Shift Bag</div>
-							            		<div class="tt-price">
-													$14
-												</div>
-							            	</div>
-							            </a>
-							        </li>
-							        <li>
-							           <a href="product.html">
-							            	<div class="thumbnail"><img src="{% static 'images/loader.svg' %}" data-src="{% static 'images/product/product-04.jpg' %}" alt=""></div>
-							            	<div class="tt-description">
-							            		<div class="tt-title">Flared Shift Bag</div>
-							            		<div class="tt-price">
-													$24
-												</div>
-							            	</div>
-							            </a>
-							        </li>
-								</ul>
 
-								<button type="button" class="tt-view-all">View all products</button>
-							</div>
 						</form>
 						<!-- /tt-search -->
 					</div>
@@ -442,29 +394,6 @@
 					</div>
 					<!-- /tt-account -->
 					<!-- tt-langue and tt-currency -->
-					<div class="tt-desctop-parent-multi tt-parent-box">
-						<div class="tt-multi-obj tt-dropdown-obj">
-							<button class="tt-dropdown-toggle" data-tooltip="Settings" data-tposition="bottom"><i class="icon-f-79"></i></button>
-							<div class="tt-dropdown-menu">
-								<div class="tt-mobile-add">
-									<button class="tt-close">Close</button>
-								</div>
-								<div class="tt-dropdown-inner">
-									<ul>
-										<li class="active"><a href="#">Русский</a></li>
-<!--										<li><a href="#">Русский</a></li>-->
-<!--										<li><a href="#">Español</a></li>-->
-<!--										<li><a href="#">Français</a></li>-->
-									</ul>
-<!--									<ul>-->
-<!--										<li class="active"><a href="#"><i class="icon-h-59"></i>USD - US Dollar</a></li>-->
-<!--										<li><a href="#"><i class="icon-h-60"></i>EUR - Euro</a></li>-->
-<!--										<li><a href="#"><i class="icon-h-61"></i>GBP - British Pound Sterling</a></li>-->
-<!--									</ul>-->
-								</div>
-							</div>
-						</div>
-					</div>
 					<!-- /tt-langue and tt-currency -->
 				</div>
 			</div>
