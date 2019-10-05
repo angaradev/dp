@@ -18,6 +18,40 @@ $(document).ready(function(){
         $(this).closest("form").submit();
     });
     // Конец кода отправки по чекбоксу
+    
+    // Working on wishlist
+    var wish_button = $('.tt-btn-wishlist');
+    wish_button.on('click', function(e){
+        e.preventDefault();
+        var pk = $(this).attr('data-pk');
+        data = {
+            product_id: pk
+        }
+    $.ajax({
+        type: "GET",
+        url: "/addtowish/",
+        data: data,
+        success: function(data){
+            }
+        });
+    });
+
+    var remove_wish = $('.remove-wish');
+    remove_wish.on('click', function(e){
+        e.preventDefault();
+        let pk = $(this).attr('data-pk');
+        data = {
+            product_id: pk
+        }
+        $.ajax({
+            type: "GET",
+            url: "/removefromwish/",
+            data: data,
+            success: function(data){
+                $('#wish-item-' + pk).css('display', 'none');
+            }
+        });
+    });
 
     var cart_button = $('.cart_button');
     cart_button.on('click', function(e){
@@ -32,6 +66,10 @@ $(document).ready(function(){
         data: data,
         success: function(data){
             $('.tt-badge-cart').html(data.cartItemCount);
+            //let button = $('[data_pk='+ pk + ']');
+            let button = $('#cart_button-' + pk);
+            button.text('Товар в корзине');
+            button.addClass('inactive-cart-button');
             }
         });
     });
@@ -79,6 +117,8 @@ $(document).ready(function(){
     clear_cart.on('click', function(e){
        return confirm("Точно хотите очистить корзину?");
     });
+
+    //Вытягиваем данные для маленькой корзины. Хотя что-то лень мне это делать, оставим как есть пока
 });
 
 

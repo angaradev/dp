@@ -148,15 +148,51 @@ def add_to_cart(request):
                     }
             request.session['total'] = cart.items.count()
             return JsonResponse(json_data)
-            
+
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
+# Wishlist logic
+def add_to_wish(request):
+    product_id = request.GET.get('product_id', None)
+    if product_id:
+        if not 'wish_list' in request.session or not request.session['wish_list']:
+            request.session['wish_list'] = [product_id]
+        else:
+            wish_list = request.session['wish_list']
+            if product_id not in wish_list:
+                wish_list.append(product_id)
+            request.session['wish_list'] = wish_list
+        json_data = {
+                'wish_list': request.session['wish_list']
+                }
+    return JsonResponse(json_data)
+
+def see_wish(request):
+    wish_list = request.session.get('wish_list', None)
+    objects = None
+    if wish_list:
+        objects = Products.objects.filter(id__in=wish_list)
+    context = {
+            'objects': objects,
+            }
+    return render(request, 'cart/wishlist.html', context)
+    
+def remove_wish(request):
+    product_id = request.GET.get('product_id', None)
+    if product_id:
+        wish_list = request.session['wish_list']
+        if product_id in wish_list:
+            wish_list.remove(product_id)
+            request.session['wish_list'] = wish_list
+        if request.is_ajax:
+            return JsonResponse({'wish_list': wish_list})
+        else:
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        
 
 
 def remove_from_cart(request):
-
-
     product_id = int(request.GET.get('product_id'))
 
     if request.session.get('cart_id'):
@@ -173,7 +209,7 @@ def remove_from_cart(request):
         cart.cart_total = new_cart_total
         cart.save()
 
-        if request.is_ajax():
+        if request.is_ajax:
             json_data = {
                     'cartItemCount': cart.items.count(),
                     'cart_total': new_cart_total,

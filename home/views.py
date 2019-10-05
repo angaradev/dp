@@ -1,16 +1,16 @@
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail
-from products.models import Categories, Products
+from products.models import Categories, Products, Cart
 from products.views import get_image_path
 from blogs.models import Blogs
 from email_form.forms import EmailFormLight, EmailFormOneField
 from email_form.models import EmailModel
 from django.db.models import Count, Min, Max
+from django.conf import settings
 
 
 def home(request):
-    ls = {'brakes': [2774, 2582, 2560, 2027], 'fuel': [1596, 3160, 1556, 1529], 'body': [2257, 2252, 3508, 3757], 'engine': [3136, 3035, 1932, 1027]}
-
+    ls = settings.SALES_ON_HOME 
     brakes = Products.objects.filter(id__in=ls['brakes'])
     fuel = Products.objects.filter(id__in=ls['fuel'])
     body = Products.objects.filter(id__in=ls['body'])
@@ -24,6 +24,11 @@ def home(request):
     fuel = get_image_path(fuel)
     engine = get_image_path(engine)
     body = get_image_path(body)
+    
+    cart = None
+    if request.session.get('cart_id', None):
+        cart = Cart.objects.get(id=request.session.get('cart_id'))
+
     context = {
             'brakes': brakes,
             'fuel': fuel,
@@ -32,6 +37,7 @@ def home(request):
             'articles': articles,
             'categories': cats,
             'cars': cars,
+            'cart': cart,
             }
 
     return render(request, 'home/home.html', context)

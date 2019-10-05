@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block page %}
+<div class="tt-breadcrumb">
+	<div class="container">
+		<ul>
+			<li><a href="index.html">Home</a></li>
+			<li>Shopping Cart</li>
+		</ul>
+	</div>
+</div>
+<div id="tt-pageContent">
+	<div class="container-indent">
+		<div class="container">
+			<h1 class="tt-title-subpages noborder">БЛОКНОТ {% if not objects %} ПУСТ {% endif %}</h1>
+			<div class="tt-wishlist-box" id="js-wishlist-removeitem">
+				<div class="tt-wishlist-list">
+					{% for object in objects %}
+					<div class="tt-item">
+						<div class="tt-col-description">
+							<div class="tt-img">
+								<img src="{% static object.get_image_path %} " alt="{{ object.name }}">
+							</div>
+							<div class="tt-description">
+								<h2 class="tt-title"><a href="{% url 'detailed' object.id %}">{{ object.name|truncatechars:50|upper }}</a></h2>
+								<div class="tt-price">
+									<span class="new-price">&#x20bd; {{ object.price }}</span>
+								</div>
+							</div>
+						</div>
+						<div class="tt-col-btn">
+							<a href="{% url 'add_to_cart' %}?product_id={{ object.id  }}" class="tt-btn-addtocart cart_button" data-pk="{{ object.id }}" data-toggle="modal" data-target="#modalAddToCartProduct"><i class="icon-f-39"></i>В КОРЗИНУ</a>
+							<a class="btn-link" href="{% url 'detailed' object.id %}" data-toggle="modal" data-target="#ModalquickView-{{ object.id }}"><i class="icon-f-73"></i>ПОСМОТРЕТЬ ПРОДУКТ</a>
+							<a class="btn-link js-removeitem remove-wish" id="wish-item-{{ object.id }}" data-pk="{{ object.id }}" href=""><i class="icon-h-02"></i>УДАЛИТЬ</a>
+						</div>
+					</div>
+					{% include 'snippets/modal_product.html' %}
+					{% endfor %}
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

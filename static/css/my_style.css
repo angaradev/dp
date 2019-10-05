@@ -122,3 +122,6 @@
 .xbrand{
     cursor: pointer;
 }
+.inactive-cart-button, .inactive-cart-button:hover {
+    background-color: #777777;
+}

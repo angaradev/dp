@@ -16,6 +16,7 @@ SHOP_ADDRESS_LINE_1 = 'г.МОСКВА, ул. Соловьиная-Роща 8 к
 SHOP_ADDRESS_LINE_2 = '1 этаж, офис 9'
 
 SALES_ON_SEARCH = [2274, 2582, 2027] 
+SALES_ON_HOME = {'brakes': [2774, 2582, 2560, 2027], 'fuel': [1596, 3160, 1556, 1529], 'body': [2257, 2252, 3508, 3757], 'engine': [3136, 3035, 1932, 1027]}
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

@@ -16,7 +16,7 @@ from .sitemaps import ZapchastiCarSubcatSitemap
 from django.contrib.sitemaps.views import sitemap
 from django.views.generic import TemplateView
 from products.cart_views import cart_view, add_to_cart, remove_from_cart, update_cart, clear_cart, order_view
-from products.cart_views import order_success
+from products.cart_views import order_success, add_to_wish, remove_wish, see_wish
 
 
 handler404 = 'dp.views.error404'
@@ -75,8 +75,11 @@ urlpatterns = [
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}),
     path('robots.txt', TemplateView.as_view(template_name='home/robots.txt', content_type='text/plain')),
     path('cart/', cart_view, name='cart'),
+    path('wish/', see_wish, name='wish'),
     path('addtocart/', add_to_cart, name='add_to_cart'),
+    path('addtowish/', add_to_wish, name='add_to_wish'),
     path('removefromcart/', remove_from_cart, name='remove_from_cart'),
+    path('removefromwish/', remove_wish, name='remove_wish'),
     path('updatecart/', update_cart, name='update_cart'),
     path('clearcart', clear_cart, name='clear_cart'),
     path('order/', order_view, name='order'),
