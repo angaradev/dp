@@ -164,7 +164,8 @@ def add_to_wish(request):
                 wish_list.append(product_id)
             request.session['wish_list'] = wish_list
         json_data = {
-                'wish_list': request.session['wish_list']
+                'wish_list': request.session['wish_list'],
+                'wish_list_count': len(wish_list)
                 }
     return JsonResponse(json_data)
 
@@ -186,7 +187,11 @@ def remove_wish(request):
             wish_list.remove(product_id)
             request.session['wish_list'] = wish_list
         if request.is_ajax:
-            return JsonResponse({'wish_list': wish_list})
+            json_data = {
+                    'wish_list': wish_list,
+                    'wish_list_count': len(wish_list),
+                    } 
+            return JsonResponse(json_data)
         else:
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
         

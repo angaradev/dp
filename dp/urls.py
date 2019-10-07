@@ -12,7 +12,7 @@ admin_detailed_view,upload_files, create_dirs, admin_photo_search, ChartData, ma
 from home.views import home, about, payment, contacts, delivery, guaranties, policy, requsites, footer_form
 from admin_photos.cron_stat import make_stat
 from .sitemaps import BlogsSitemap, StaticViewsSitemap, CategoriesSitemap, ProductsSitemap, ZapchastiCarSitemap
-from .sitemaps import ZapchastiCarSubcatSitemap
+from .sitemaps import ZapchastiCarSubcatSitemap, OldBlogsSitemap
 from django.contrib.sitemaps.views import sitemap
 from django.views.generic import TemplateView
 from products.cart_views import cart_view, add_to_cart, remove_from_cart, update_cart, clear_cart, order_view
@@ -27,6 +27,7 @@ handler400 = 'dp.views.error400'
 
 sitemaps = {
         'blogs': BlogsSitemap,
+        'oldblogs': OldBlogsSitemap,
         'static': StaticViewsSitemap,
         'categories': CategoriesSitemap,
         'zapchasti': ZapchastiCarSitemap,

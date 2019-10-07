@@ -14,7 +14,6 @@
 	<link rel="stylesheet"  href="https://cdn.jsdelivr.net/npm/pretty-checkbox@3.0/dist/pretty-checkbox.min.css">
 	<link rel="stylesheet" href="{% static 'css/my_style.css' %}">
 	<link rel="stylesheet" href="{% static 'css/my_style_vasya.css' %}">
-
 </head>
 <body>
 <div id="loader-wrapper">
@@ -102,7 +101,7 @@
 	<div class="tt-mobile-header">
 		<div class="container-fluid">
 			<div class="header-tel-info">
-				<i class="icon-f-93"></i> 777 2345 7885
+				<i class="icon-f-93"></i> {{ shop_info.shop_tel }}
 			</div>
 		</div>
 		<div class="container-fluid tt-top-line">
@@ -165,7 +164,7 @@
 				</div>
 				<div class="tt-col-obj obj-move-right">
 					<div class="header-tel-info">
-						<i class="icon-f-93"></i> 777 2345 7885
+						<i class="icon-f-93"></i> {{ shop_info.shop_tel }}
 					</div>
 				</div>
 			</div>
@@ -177,10 +176,11 @@
 						<button class="tt-dropdown-toggle">
 							КАТЕГОРИИ
 						</button>
+						{% if categories %}
 						<div class="tt-dropdown-menu">
 							<nav>
 								<ul>
-									{% if categories %}
+
 										{% for h_cat in categories %}
 										<li>
 											<a href="{% url 'subcat' h_cat.slug %}">
@@ -189,10 +189,11 @@
 											</a>
 										</li>
 										{% endfor %}
-									{% endif %}
+
 								</ul>
 							</nav>
 						</div>
+						{% endif %}
 					</div>
 				</div>
 				<div class="tt-col-obj tt-obj-menu">
@@ -207,9 +208,9 @@
 									</li>
 									<li class="dropdown tt-megamenu-col-01">
 										<a href="{% url 'newparts' %}">КАТАЛОГИ</a>
+										{% if cars %}
 										<div class="dropdown-menu">
 												<ul class="tt-megamenu-submenu">
-													{% if cars %}
 														{% for h_car in cars %}
 														<li>
 															<a href="{% url 'car_page' h_car.car %}">
@@ -217,9 +218,9 @@
 															</a>
 														</li>
 														{% endfor %}
-													{% endif %}
 												</ul>
 										</div>
+										{% endif %}
 									</li>
 									<li class="dropdown tt-megamenu-col-01">
 										<a href="{% url 'blogs' %}">БЛОГ</a>
@@ -293,12 +294,12 @@
 						</div>
 					</div>
 					<!-- /tt-search -->
-					<!-- tt-cart -->
+                    <!-- tt-cart -->
 					<div class="tt-desctop-parent-cart tt-parent-box">
 						<div id="small-cart" class="tt-cart tt-dropdown-obj" data-tooltip="КОРЗИНА" data-tposition="bottom">
 							<button class="tt-dropdown-toggle">
 								<i class="icon-f-39"></i>
-								<span class="tt-badge-cart" {% if not request.session.total %}style="display: none;"{% endif %}>{{ request.session.total }}</span>
+								<span class="tt-badge-cart" {% if not request.session.total %}style="visibility: hidden;"{% endif %}>{{ request.session.total }}</span>
 							</button>
 							<div class="tt-dropdown-menu">
 								<div class="tt-mobile-add">
@@ -318,7 +319,7 @@
 												<div class="tt-item">
 													<a href="product.html">
 														<div class="tt-item-img">
-                                                            <img src="{% static 'images/loader.svg' %}" data-src="{% static cart_item.product.get_image_path %}" alt="">
+                                                            <img src="{% static 'images/loader.svg' %}" data-src="{% static cart_item.product.image_path %}" alt="">
 														</div>
 														<div class="tt-item-descriptions">
                                                             <h2 class="tt-title">{{ cart_item.product.name|truncatechars:50|title }}</h2>
@@ -355,19 +356,26 @@
 						</div>
 					</div>
 					<!-- /tt-cart -->
+                    <div class="tt-desctop-parent-wish tt-parent-box">
+						<div class="tt-wish tt-dropdown-obj">
+							<button id="show-wish" class="tt-dropdown-toggle"  data-tooltip="ИЗБРАННОЕ" data-tposition="bottom"><i class="icon-n-072"></i>
+									<span class="tt-badge-wish" {% if not request.session.wish_list %}style="visibility: hidden;"{% endif %}>{{ request.session.wish_list|length }}</span>
+							</button>
+						</div>
+					</div>
 					<!-- tt-account -->
 					<div class="tt-desctop-parent-account tt-parent-box">
 						<div class="tt-account tt-dropdown-obj">
-							<button class="tt-dropdown-toggle"  data-tooltip="My Account" data-tposition="bottom"><i class="icon-f-94"></i></button>
+							<button class="tt-dropdown-toggle"  data-tooltip="МОЙ АКАУНТ" data-tposition="bottom"><i class="icon-f-94"></i></button>
 							<div class="tt-dropdown-menu">
 								<div class="tt-mobile-add">
-									<button class="tt-close">Close</button>
+									<button class="tt-close">Закрыть</button>
 								</div>
 								<div class="tt-dropdown-inner">
 									<ul>
 									    <li><a href="{% url 'login' %}"><i class="icon-f-94"></i>Мой акаунт</a></li>
-									    <li><a href="{% url 'wish' %}"><i class="icon-n-072"></i>Мои товары</a></li>
-									    <li><a href="page404.html"><i class="icon-f-68"></i>Оформить заказ</a></li>
+									    <li><a href="{% url 'wish' %}"><i class="icon-n-072"></i>Избранное</a></li>
+									    <li><a href="{% url 'order' %}"><i class="icon-f-68"></i>Оформить заказ</a></li>
 									    <li><a href="{% url 'login' %}"><i class="icon-f-76"></i>Войти</a></li>
 									    <li><a href="{% url 'register' %}"><i class="icon-f-94"></i>Зарегестрироваться</a></li>
 										<li><a href="{% url 'logout' %}"><i class="icon-f-77"></i>Выйти</a></li>
@@ -376,9 +384,6 @@
 							</div>
 						</div>
 					</div>
-					<!-- /tt-account -->
-					<!-- tt-langue and tt-currency -->
-					<!-- /tt-langue and tt-currency -->
 				</div>
 			</div>
 		</div>
@@ -393,6 +398,7 @@
 				<div class="tt-stuck-mobile-menu-categories"></div>
 				<div class="tt-stuck-parent-search tt-parent-box"></div>
 				<div class="tt-stuck-parent-cart tt-parent-box"></div>
+				<div class="tt-stuck-parent-wish tt-parent-box"></div>
 				<div class="tt-stuck-parent-account tt-parent-box"></div>
 				<div class="tt-stuck-parent-multi tt-parent-box"></div>
 			</div>

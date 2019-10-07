@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail
 from products.models import Categories, Products, Cart
-from products.views import get_image_path
 from blogs.models import Blogs
 from email_form.forms import EmailFormLight, EmailFormOneField
 from email_form.models import EmailModel
@@ -20,24 +19,14 @@ def home(request):
 
     cats = Categories.objects.filter(parent_id=0)
 
-    brakes = get_image_path(brakes)
-    fuel = get_image_path(fuel)
-    engine = get_image_path(engine)
-    body = get_image_path(body)
-    
-    cart = None
-    if request.session.get('cart_id', None):
-        cart = Cart.objects.get(id=request.session.get('cart_id'))
-
     context = {
+            'articles': articles,
+            'categories': cats,
+            'cars': cars,
             'brakes': brakes,
             'fuel': fuel,
             'body': body,
             'engine': engine,
-            'articles': articles,
-            'categories': cats,
-            'cars': cars,
-            'cart': cart,
             }
 
     return render(request, 'home/home.html', context)

@@ -47,26 +47,9 @@ def categories_tree(pk):
     return cats        
     
 
-def get_image_path(qs):
-
-    working_dir = settings.STATICFILES_DIRS[1] 
-    for obj in qs:
-        try:
-            if  obj.main_img:
-                f = os.path.join(obj.cat_n, obj.main_img)
-            else:
-                files  =  os.listdir(os.path.join(working_dir, obj.cat_n))
-                f = os.path.join(obj.cat_n, files[0])
-
-            setattr(obj, 'image_path', f) 
-        except Exception as e:
-            print(e)
-    return qs
-
 
 def newparts(request):
     qs = Products.objects.all()[:200]
-    qs = get_image_path(qs)
     cats = Categories.objects.filter(parent_id=0)
     try:
         p = Paginator(qs, 20)
@@ -75,17 +58,12 @@ def newparts(request):
     except:
         pass
     if request.GET.get('load_all') == 'all':
-        objects = get_image_path(objects)
+        objects = objects
 
-    sale_prod = [2274, 2582, 2027]
-    brakes = Products.objects.filter(id__in=sale_prod)
-    brakes = get_image_path(brakes)
     context = {
             'objects': objects, 
             'categories': cats,
             'cars': show_cars(),
-            'brakes': brakes,
-           # 'brands': show_brands(),
             }
     return render(request, 'products/newparts.html', context)
 
@@ -107,18 +85,12 @@ def cars(request, car):
         pass
     if request.GET.get('load_all') == 'all':
         objects = qs
-    objects = get_image_path(objects)
-
-    sale_prod = [2274, 2582, 2027]
-    brakes = Products.objects.filter(id__in=sale_prod)
-    brakes = get_image_path(brakes)
 
     context = {
             'objects': objects,
             'cars': show_cars(),
             'categories': cats,
             'car': car,
-            'brakes': brakes,
             }
     return render(request, 'products/newparts.html', context)
 
@@ -161,11 +133,6 @@ def cars_subcats(request, car, slug, **kwargs):
     if request.GET.get('load_all') == 'all':
         objects = qs
     
-    objects = get_image_path(objects)
-
-    sale_prod = [2274, 2582, 2027]
-    brakes = Products.objects.filter(id__in=sale_prod)
-    brakes = get_image_path(brakes)
 
     context = {
             'objects': objects,
@@ -176,7 +143,6 @@ def cars_subcats(request, car, slug, **kwargs):
             'title_h1': h1,
             'car': car,
             'brand': brand,
-            'brakes': brakes,
             'cat': cats_tmp,
             }
     
@@ -240,11 +206,6 @@ def subcat(request, slug, **kwargs):
     if request.GET.get('load_all') == 'all':
         objects = qs
     
-    objects = get_image_path(objects)
-    sale_prod = [2274, 2582, 2027]
-    brakes = Products.objects.filter(id__in=sale_prod)
-    brakes = get_image_path(brakes)
-            
 
     context = {
             'objects': objects,
@@ -253,7 +214,6 @@ def subcat(request, slug, **kwargs):
             'brands': brands,
             'title_h1': h1,
             'brand': brand,
-            'brakes': brakes,
             'bread1': bread1,
             'bread2': bread2,
             'bread3': bread3,
@@ -275,16 +235,6 @@ def detailed(request, pk):
         aver = 0
     # Похожие товары
     similar_products = Products.objects.filter(cat=obj.cat.first().id)
-
-    # Redefine function inside to returning lists of files in the directories
-    def get_image_path_detailed(obj):
-        working_dir = settings.STATICFILES_DIRS[1] 
-        files  =  os.listdir(os.path.join(working_dir, obj.cat_n))[:10]
-        img_list = []
-        for f in files:
-            img_list.append(os.path.join(obj.cat_n, f))
-        setattr(obj, 'image_path', img_list ) 
-        return obj
 
 
     comments = Comment.objects.filter_by_instance(obj)
@@ -364,7 +314,7 @@ def detailed(request, pk):
 
 
     context = {
-            'object': get_image_path_detailed(obj),
+            'object': obj,
             'categories': cats,
             'cars': show_cars(),
             'comments': comments,
@@ -373,7 +323,7 @@ def detailed(request, pk):
             'email_form': e_form,
             'bread_sub1': bread_sub1,
             'bread_sub2': bread_sub2,
-            'similar_products': get_image_path(similar_products),
+            'similar_products': similar_products,
             'aver': aver,
 
             }
@@ -385,7 +335,6 @@ def search(request):
 
     sale_prod = settings.SALES_ON_SEARCH 
     brakes = Products.objects.filter(id__in=sale_prod)
-    brakes = get_image_path(brakes)
 
     search = request.GET.get('search', None)
 
@@ -473,7 +422,6 @@ def search(request):
         objects = qs
 
     
-    objects = get_image_path(objects)
     context = {
                 'tags': settings.TAGS_LIST,
                 'objects': objects,

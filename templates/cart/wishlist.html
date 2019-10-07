@@ -12,14 +12,14 @@
 <div id="tt-pageContent">
 	<div class="container-indent">
 		<div class="container">
-			<h1 class="tt-title-subpages noborder">БЛОКНОТ {% if not objects %} ПУСТ {% endif %}</h1>
+			<h1 class="tt-title-subpages noborder">ИЗБРАННОЕ {% if not objects %} ПУСТ {% endif %}</h1>
 			<div class="tt-wishlist-box" id="js-wishlist-removeitem">
 				<div class="tt-wishlist-list">
 					{% for object in objects %}
 					<div class="tt-item">
 						<div class="tt-col-description">
 							<div class="tt-img">
-								<img src="{% static object.get_image_path %} " alt="{{ object.name }}">
+								<img src="{% static object.image_path %} " alt="{{ object.name }}">
 							</div>
 							<div class="tt-description">
 								<h2 class="tt-title"><a href="{% url 'detailed' object.id %}">{{ object.name|truncatechars:50|upper }}</a></h2>

@@ -10,10 +10,12 @@ LOGIN_URL = 'login'
 
 SHOP_EMAILS_MANAGERS = ['angara77@gmail.com', 'angara99@gmail.com']
 SHOP_EMAIL_FROM = 'angara99@gmail.com'
-SHOP_TEL = '+7(495) 646-99-53'
+SHOP_TEL = '+7 (495) 646-99-53'
 
 SHOP_ADDRESS_LINE_1 = 'г.МОСКВА, ул. Соловьиная-Роща 8 к2'
 SHOP_ADDRESS_LINE_2 = '1 этаж, офис 9'
+
+SHOP_CONTACT_INFO = {'shop_email': SHOP_EMAIL_FROM, 'shop_tel': SHOP_TEL, 'shop_address': SHOP_ADDRESS_LINE_1 + " " + SHOP_ADDRESS_LINE_2}
 
 SALES_ON_SEARCH = [2274, 2582, 2027] 
 SALES_ON_HOME = {'brakes': [2774, 2582, 2560, 2027], 'fuel': [1596, 3160, 1556, 1529], 'body': [2257, 2252, 3508, 3757], 'engine': [3136, 3035, 1932, 1027]}
@@ -22,6 +24,7 @@ SALES_ON_HOME = {'brakes': [2774, 2582, 2560, 2027], 'fuel': [1596, 3160, 1556, 
 DEBUG = True
 
 ALLOWED_HOSTS = ['dp.loc', 'localhost']
+
 
 
 # Application definition
@@ -97,6 +100,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'dp.context_processor.small_cart',
+                'dp.context_processor.sales_products',
+                'dp.context_processor.contact_info',
             ],
         },
     },

@@ -45,6 +45,7 @@ class Products(models.Model):
     seller = models.CharField(max_length=100, blank=True, null=True)
     main_img = models.CharField(max_length=500, blank=True, null=True)
     img_check = models.BooleanField(default=False)
+    description = models.TextField(blank=True)
     
     def get_absolute_url(self):
        return reverse('detailed', kwargs={'pk': self.id})
@@ -63,7 +64,7 @@ class Products(models.Model):
         return qs
 
     @property
-    def get_image_path(self):
+    def image_path(self):
         working_dir = settings.STATICFILES_DIRS[1]
         if self.main_img:
             f = os.path.join(self.cat_n, self.main_img)
@@ -74,6 +75,20 @@ class Products(models.Model):
             except Exception as e:
                 f = '000_default/default.png'
         return f
+
+    @property
+    def image_path_all(self):
+            working_dir = settings.STATICFILES_DIRS[1] 
+            files  =  os.listdir(os.path.join(working_dir, self.cat_n))[:15]
+            img_list = []
+            for f in files:
+                img_list.append(os.path.join(self.cat_n, f))
+            if not img_list:
+                f = ['000_default/default.png' for _ in range(5)]
+            else:
+                f = img_list
+            return f
+
 
 
 

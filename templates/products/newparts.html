@@ -81,7 +81,9 @@
 					<div class="tt-collapse open">
 						<h3 class="tt-collapse-title">КАТЕГОРИИ ЗАПЧАСТЕЙ</h3>
 						<div class="tt-collapse-content">
+							{% if car %}
 							<div class="tt-clear-cross">&#215;<a href="/zapchasti/{{ car }}/"> Очистить</a></div>
+							{% endif %}
 							<ul class="tt-list-row">
 								{% for cat in categories %}
 								{% if 'zapchasti' in request.path %}
@@ -91,7 +93,6 @@
 								{% endif %}
 								{% endfor %}
 								<li class="active"><a href="#">{{ cat.name }}</a></li>
-
 							</ul>
 						</div>
 					</div>
@@ -116,7 +117,7 @@
 						<div class="tt-collapse-content">
 							<div class="tt-aside">
 								{% for br in brakes %}
-								<a class="tt-item" href="product.html">
+								<a class="tt-item" href="{% url 'detailed' br.id %}">
 									<div class="tt-img">
 										<span class="tt-img-default"><img src="{% static br.image_path %}" alt="{{ br.name }}"></span>
 										<span class="tt-img-roll-over"><img src="{% static br.image_path %}" alt="{{ br.name }}"></span>
@@ -236,11 +237,9 @@
 							<div class="col-6 col-md-4 col-lg-3 tt-col-item">
 								<div class="tt-product thumbprod-center">
 									<div class="tt-image-box">
-										<a href="#" class="tt-btn-quickview" data-toggle="modal" data-target="#ModalquickView"	data-tooltip="Quick View" data-tposition="left"></a>
-                                        <a href="#" id="add-wish-{{ object.id }}" class="tt-btn-wishlist"
-                                                                                  data-tooltip="Добавить в блокнот"
-                                                                                  data-tposition="left" data-pk="{{ object.id }}"></a>
-							<a href="#" class="tt-btn-compare" data-tooltip="Add to Compare" data-tposition="left"></a>
+										<a href="#" class="tt-btn-quickview" data-toggle="modal" data-target="#ModalquickView-{{ object.id }}"	data-tooltip="Быстрый просмотр" data-tposition="left"></a>
+                                        <a href="#" id="add-wish-{{ object.id }}" class="tt-btn-wishlist" data-tooltip="Добавить в Избранное"  data-tposition="left" data-pk="{{ object.id }}"></a>
+							<!--<a href="#" class="tt-btn-compare" data-tooltip="Add to Compare" data-tposition="left"></a>-->
 										<a href="{% url 'detailed' object.pk %}">
 											<!--<span class="tt-img"><img src="{% static 'images/loader.svg' %}" data-src="{% static 'images/product/product-18.jpg' %}" alt=""></span>-->
                                             <span class="tt-img"><img src="{% static 'images/loader.svg' %}" data-src="{% static object.image_path %}" alt=""></span>
@@ -264,7 +263,7 @@
 										<div class="tt-product-inside-hover">
 											<div class="tt-row-btn">
 												<a href="{% url 'add_to_cart' %}?product_id={{ object.id  }}"
-               id="cart_button-{{ object.id }}"  class="tt-btn-addtocart thumbprod-button-bg cart_button" data-toggle="modal" data-target="#modalAddToCartProduct" data-pk="{{ object.id  }}">В КОРЗИНУ</a>
+               id="cart_button-{{ object.id }}"  class="tt-btn-addtocart thumbprod-button-bg cart_button" data-toggle="modal" data-target="#modalAddToCartProduct-{{ object.id }}" data-pk="{{ object.id  }}">В КОРЗИНУ</a>
 											</div>
 <!--											<div class="tt-row-btn">-->
 <!--												<a href="#" class="tt-btn-quickview" data-toggle="modal" data-target="#ModalquickView"></a>-->
@@ -275,6 +274,7 @@
 									</div>
 								</div>
 							</div>
+							{% include 'snippets/modal_product.html' %}
 							{% endfor %}
 
 						</div>

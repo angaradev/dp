@@ -11,24 +11,24 @@
 					<div class="row">
 						<div class="col-12 col-md-5 col-lg-6">
 							<div class="tt-mobile-product-slider arrow-location-center">
-								<div><img src="{% static 'images/loader.svg' %}" data-src="{% static object.get_image_path %}" alt="{{ object.name }}"></div>
-								<div><img src="{% static 'images/loader.svg' %}" data-src="{% static 'images/product/product-01-02.jpg' %}" alt=""></div>
-								<div><img src="{% static 'images/loader.svg' %}" data-src="{% static 'images/product/product-01-03.jpg' %}" alt=""></div>
-								<div><img src="{% static 'images/loader.svg' %}" data-src="{% static 'images/product/product-01-04.jpg' %}" alt=""></div>
-								<div>
+								{% for im in object.image_path_all %}
+								<div><img src="{% static 'images/loader.svg' %}" data-src="{% static im %}" alt="{{ object.name }}"></div>
+								{% endfor %}
+
+								<!--<div>
 									<div class="tt-video-block">
 										<a href="#" class="link-video"></a>
 										<video class="movie" src="{% static 'video/video.mp4' %}" poster="{% static 'video/video_img.jpg' %}"></video>
 									</div>
-								</div>
+								</div>-->
 							</div>
 						</div>
 						<div class="col-12 col-md-7 col-lg-6">
 							<div class="tt-product-single-info">
 								<div class="tt-add-info">
 									<ul>
-										<li><span>SKU:</span> 001</li>
-										<li><span>Availability:</span> 40 in Stock</li>
+										<li><span>ПРОИЗВОДИТЕЛЬ:</span> {{ object.brand }}</li>
+										<li><span>Наличие:</span> больше 2</li>
 									</ul>
 								</div>
 								<h2 class="tt-title">{{ object.name|truncatechars:50|upper }}</h2>
@@ -40,7 +40,9 @@
                                     {% ratings object 16 16 %}
 								</div>
 								<div class="tt-wrapper">
-									Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.
+									{% if object.description %}
+									{{ object.description }}
+									{% endif %}
 								</div>
 								<div class="tt-wrapper">
 									<div class="tt-row-custom-01">

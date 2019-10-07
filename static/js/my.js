@@ -6,9 +6,6 @@ jQuery(function($){
         event.preventDefault();
         $(this).parent().children('.comment-reply').fadeToggle();
     });
-
-
-
 });
 
 
@@ -20,6 +17,11 @@ $(document).ready(function(){
     // Конец кода отправки по чекбоксу
     
     // Working on wishlist
+    var show_wish = $('#show-wish');
+    show_wish.on('click', function(){
+        window.location.href = '/wish/';
+    });
+
     var wish_button = $('.tt-btn-wishlist');
     wish_button.on('click', function(e){
         e.preventDefault();
@@ -32,6 +34,9 @@ $(document).ready(function(){
         url: "/addtowish/",
         data: data,
         success: function(data){
+            $('.tt-badge-wish').html(data.wish_list_count);
+            $('#add-wish-product-' + pk).html('<i class="icon-n-072"></i>ДОБАВЛЕНО В ИЗБРАННОЕ');
+            $('#add-wish-' + pk).adClass('inactive-heart');
             }
         });
     });
@@ -48,6 +53,7 @@ $(document).ready(function(){
             url: "/removefromwish/",
             data: data,
             success: function(data){
+                $('.tt-badge-wish').html(data.wish_list_count);
                 $('#wish-item-' + pk).css('display', 'none');
             }
         });
@@ -70,6 +76,7 @@ $(document).ready(function(){
             let button = $('#cart_button-' + pk);
             button.text('Товар в корзине');
             button.addClass('inactive-cart-button');
+            $('.tt-badge-cart').css('visibility', 'visible');
             }
         });
     });
@@ -119,6 +126,9 @@ $(document).ready(function(){
     });
 
     //Вытягиваем данные для маленькой корзины. Хотя что-то лень мне это делать, оставим как есть пока
+    //Все таки сделаю
+    //
+    let small_cart = $('#small-cart');
 });
 
 

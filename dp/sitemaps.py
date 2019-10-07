@@ -1,5 +1,5 @@
 from django.contrib.sitemaps import Sitemap
-from blogs.models import Blogs
+from blogs.models import Blogs, OldBlogs
 from products.models import Categories, Products
 from django.shortcuts import reverse
 
@@ -10,6 +10,13 @@ class BlogsSitemap(Sitemap):
 
     def items(self):
         return Blogs.objects.all()
+
+
+class OldBlogsSitemap(Sitemap):
+
+    def items(self):
+        return OldBlogs.objects.all()
+
 
 
 class StaticViewsSitemap(Sitemap):
