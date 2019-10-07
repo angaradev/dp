@@ -40,7 +40,6 @@ def order_view(request):
                 'address': address,
                 'phone': phone,
                 }
-        print(initial_data)        
                 
                 
     else:
@@ -163,10 +162,15 @@ def add_to_wish(request):
             if product_id not in wish_list:
                 wish_list.append(product_id)
             request.session['wish_list'] = wish_list
-        json_data = {
-                'wish_list': request.session['wish_list'],
-                'wish_list_count': len(wish_list)
-                }
+        if request.session.get('wish_list'):
+            json_data = {
+                    'wish_list': request.session['wish_list'],
+                    'wish_list_count': len(request.session.get('wish_list'))
+                    }
+        else:
+            json_data = {
+                    'wish_list': request.session.get('wish_list', None)
+                    }
     return JsonResponse(json_data)
 
 def see_wish(request):
@@ -180,6 +184,7 @@ def see_wish(request):
     return render(request, 'cart/wishlist.html', context)
     
 def remove_wish(request):
+    wish_list = None
     product_id = request.GET.get('product_id', None)
     if product_id:
         wish_list = request.session['wish_list']
@@ -195,6 +200,10 @@ def remove_wish(request):
         else:
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
         
+def clear_wish(request):
+    del request.session['wish_list']
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
 
 
 def remove_from_cart(request):

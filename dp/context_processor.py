@@ -3,7 +3,6 @@ from django.conf import settings
 
 def small_cart(request):
     cart_id = request.session.get('cart_id', None)
-    print('cart_id', cart_id)
     if cart_id:
         context = {'cart': Cart.objects.get(id=cart_id)}
     else:

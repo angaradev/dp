@@ -15,6 +15,14 @@ $(document).ready(function(){
         $(this).closest("form").submit();
     });
     // Конец кода отправки по чекбоксу
+
+
+
+    // Это код для правых фильтров сортировки 
+    $('form[name="sorting"]').on('change', function() {
+        $(this).submit();
+    });
+    // Конец кода отправки сортрировки 
     
     // Working on wishlist
     var show_wish = $('#show-wish');
@@ -36,7 +44,7 @@ $(document).ready(function(){
         success: function(data){
             $('.tt-badge-wish').html(data.wish_list_count);
             $('#add-wish-product-' + pk).html('<i class="icon-n-072"></i>ДОБАВЛЕНО В ИЗБРАННОЕ');
-            $('#add-wish-' + pk).adClass('inactive-heart');
+            $('.tt-badge-wish').css('visibility', 'visible');
             }
         });
     });

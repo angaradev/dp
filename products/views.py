@@ -46,13 +46,30 @@ def categories_tree(pk):
         cats = Categories.objects.filter(parent_id__in=c_l)
     return cats        
     
-
+def pag_def(show):
+    if show == '40':
+        return 40
+    elif show == '60':
+        return 60
+    elif show == 'all':
+        return 200
+    else:
+        return 20
 
 def newparts(request):
-    qs = Products.objects.all()[:200]
+    sort = request.GET.get('sort', None)
+    show = request.GET.get('show', None)
+    if sort == '2':
+        qs = Products.objects.all().order_by('price')[:200]
+    elif sort == '3':
+        qs = Products.objects.all().order_by('-price')[:200]
+    else:
+        qs = Products.objects.all()[:200]
+
+    pag = pag_def(show)
     cats = Categories.objects.filter(parent_id=0)
     try:
-        p = Paginator(qs, 20)
+        p = Paginator(qs, pag)
         page = request.GET.get('page')
         objects = p.get_page(page)
     except:
@@ -69,7 +86,15 @@ def newparts(request):
 
 
 def cars(request, car):
-    qs = Products.objects.filter(car=car).order_by('?')[:50]
+    sort = request.GET.get('sort', None)
+    show = request.GET.get('show', None)
+    if sort == '3':
+        qs = Products.objects.filter(car=car).order_by('-price')[:200]
+    elif sort == '2':
+        qs = Products.objects.filter(car=car).order_by('price')[:200]
+    else: 
+        qs = Products.objects.filter(car=car).order_by('?')[:200]
+    pag = pag_def(show)
     cats_tmp = Categories.objects.filter(parent_id=0)
     cats = []
     for c in cats_tmp:
@@ -78,7 +103,7 @@ def cars(request, car):
             setattr(c, 'prod_count', nums)
             cats.append(c)
     try:
-        p = Paginator(qs, 20)
+        p = Paginator(qs, pag)
         page = request.GET.get('page')
         objects = p.get_page(page)
     except:
@@ -122,10 +147,20 @@ def cars_subcats(request, car, slug, **kwargs):
         else:
             qs = Products.objects.filter(car=car, cat__in=cats_list).distinct()
     
+    sort = request.GET.get('sort', None)
+    show = request.GET.get('show', None)
+    if sort == '2':
+        qs = qs.order_by('price')
+    elif sort == '3':
+        qs = qs.order_by('-price')
+    else:
+        qs = qs 
+
+    pag = pag_def(show)
     brands = qs.values('brand').annotate(brand_count=Count('brand')) 
     h1 = cats_tmp.name
     try:
-        p = Paginator(qs, 20)
+        p = Paginator(qs, pag)
         page = request.GET.get('page')
         objects = p.get_page(page)
     except:
@@ -194,11 +229,22 @@ def subcat(request, slug, **kwargs):
             qs = Products.objects.filter(cat__in=cats_list, brand=brand).distinct()
         else:
             qs = Products.objects.filter(cat__in=cats_list).distinct()
+
+    sort = request.GET.get('sort', None)
+    show = request.GET.get('show', None)
+    if sort == '2':
+        qs = qs.order_by('price')
+    elif sort == '3':
+        qs = qs.order_by('-price')
+    else:
+        qs = qs 
+
+    pag = pag_def(show)
     
     brands = qs.values('brand').annotate(brand_count=Count('brand')) 
     h1 = cats_tmp.name
     try:
-        p = Paginator(qs, 20)
+        p = Paginator(qs, pag)
         page = request.GET.get('page')
         objects = p.get_page(page)
     except:
@@ -263,7 +309,6 @@ def detailed(request, pk):
         parent_obj = None
         try:
             parent_id = request.POST.get('parent_id')
-            print(parent_id)
         except:
             parent_id = None
 
@@ -411,9 +456,18 @@ def search(request):
         if not p:
             continue
         ca.append({'cat': c, 'ccount': p.count()})
+    sort = request.GET.get('sort', None)
+    show = request.GET.get('show', None)
+    if sort == '3':
+        qs = qs.order_by('-price')
+    elif sort == '2':
+        qs = qs.order_by('price')
+    else: 
+        qs = qs.order_by('?')
+    pag = pag_def(show)
 
     try:
-        p = Paginator(qs, 20)
+        p = Paginator(qs, pag)
         page = request.GET.get('page')
         objects = p.get_page(page)
     except:

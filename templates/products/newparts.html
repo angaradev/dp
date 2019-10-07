@@ -213,17 +213,7 @@
 							<div class="tt-btn-toggle">
 								<a href="#">ФИЛЬТР</a>
 							</div>
-							<div class="tt-sort">
-								<select>
-									<option value="Default Sorting">Сортировать</option>
-								</select>
-								<select>
-									<option value="Show">Показать</option>
-									<option value="9">9</option>
-									<option value="16">16</option>
-									<option value="32">32</option>
-								</select>
-							</div>
+							{% include 'snippets/sort.html' %}
 							<div class="tt-quantity">
 								<a href="#" class="tt-col-one" data-value="tt-col-one"></a>
 								<a href="#" class="tt-col-two" data-value="tt-col-two"></a>

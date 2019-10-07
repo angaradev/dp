@@ -141,14 +141,14 @@ def blog(request, slug):
 
 
 
-def oldblogs(request, pk):
+def oldblogs(request):
     req_cat = request.GET.get('category')
     
     if req_cat:
         
         qs = OldBlogs.objects.filter(category=req_cat)
     else: 
-            qs = OldBlogs.objects.all()
+            qs = OldBlogs.objects.all()#filter(id__in=[1,2])
 
     if request.GET.get('arch'):
         req_arch = request.GET.get('arch').split(' ')[0]
@@ -180,7 +180,7 @@ def oldblog(request, pk):
     obj.number_views += 1
     obj.save()
     
-    related = OldBlogs.objects.filter(category=obj.category).exclude(id=pk)[:2]
+    related = OldBlogs.objects.filter(category=obj.category).exclude(id=pk)
     comments = Comment.objects.filter_by_instance(obj)
     if request.user.is_authenticated:
         value = str(request.user).upper()

@@ -224,7 +224,16 @@
 									</li>
 									<li class="dropdown tt-megamenu-col-01">
 										<a href="{% url 'blogs' %}">БЛОГ</a>
-
+										<div class="dropdown-menu">
+											<div class="row tt-col-list">
+												<div class="col">
+													<h6 class="tt-title-submenu"><a href="{% url 'blogs' %}">Новые статьи</a></h6>
+												</div>
+												<div class="col">
+													<h6 class="tt-title-submenu"><a href="{% url 'oldblogs' %}">Старые статьи</a></h6>
+												</div>
+											</div>
+										</div>
 									</li>
 									<li class="dropdown tt-megamenu-col-01">
 										<a href="{% url 'contacts' %}">КОНТАКТЫ</a>

@@ -1,0 +1,33 @@
+<div class="tt-sort">
+    <form name="sorting" action="." method="get">
+    <select name="sort">
+        <option value="1" {% if request.GET.sort == '1' %}selected="selected"{% endif %}>По названию</option>
+        <option value="2" {% if request.GET.sort == '2' %}selected="selected"{% endif %}>Сначала дешевые</option>
+        <option value="3" {% if request.GET.sort == '3' %}selected="selected"{% endif %}>Сначала дорогие</option>
+    </select>
+    <select name="show">
+        <option value="20" {% if request.GET.show == '20' %}selected="selected"{% endif %}>Показать 20</option>
+        <option value="40" {% if request.GET.show == '40' %}selected="selected"{% endif %}>Показать 40</option>
+        <option value="60" {% if request.GET.show == '60' %}selected="selected"{% endif %}>Показать 60</option>
+        <option value="all" {% if request.GET.show == 'all' %}selected="selected"{% endif %}>Показать Все</option>
+    </select>
+    {% if request.car %}
+    <input name="car" type="hidden" value="{{ car }}" >
+    {% endif %}
+    {% if request.brand %}
+    <input name="brand" type="hidden" value="{{ brand }}" >
+    {% endif %}
+    {% if request.cat %}
+    <input name="cat" type="hidden" value="{{ cat }}" >
+    {% endif %}
+    {% if request.GET.show %}
+    <input name="show" type="hidden" value="{{ request.GET.show }}" >
+    {% endif %}
+    {% if request.GET.sort %}
+    <input name="sort" type="hidden" value="{{ request.GET.sort }}" >
+    {% endif %}
+    {% if request.GET.search %}
+    <input name="search" type="hidden" value="{{ request.GET.search }}" >
+    {% endif %}
+    </form>
+</div>
