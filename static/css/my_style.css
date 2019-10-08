@@ -167,3 +167,6 @@
     content: "\e90e";
     /*content: "\e9fa";*/
 }
+.icon-women:before {
+    content: "\e9fa";
+}
