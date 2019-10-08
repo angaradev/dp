@@ -172,7 +172,7 @@ def get_image_path_all(obj):
             img_list.append({ 'path': os.path.join(obj.cat_n, f), 'img_name': f})
         except Exception as e:
             print(e)
-    setattr(obj, 'image_path', img_list ) 
+    setattr(obj, 'image_path_adm', img_list ) 
     return obj
 
 
