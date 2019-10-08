@@ -4,7 +4,6 @@ from django.contrib.auth.decorators import login_required
 from products.models import Categories, Products
 from django.db.models import Count, Sum
 from django.db.models import Subquery 
-from products.views import categories_tree, get_image_path
 import os
 from django.conf import settings 
 from django.views.generic.edit import FormView
@@ -151,7 +150,7 @@ def admin_photo_listing(request, pk):
     request.session['checked'] = checked
     print(request.session.get('checked'), request.session.get('car'))
     
-    objects = get_image_path(pqs)
+    objects = pqs
     
     cars = show_cars()
     context = {
@@ -311,7 +310,7 @@ def admin_photo_search(request):
 
 
         
-    objects = get_image_path(pqs)
+    objects = pqs
     
     cars = show_cars()
     context = {

@@ -34,17 +34,25 @@
 						{% for blog in objects %}
 						<div itemscope itemtype="http://schema.org/Blog" class="tt-post">
 							<div class="tt-post-img">
+								{% if 'articles' in request.path %}
+								<a href="{% url 'oldblog' blog.id %}"><img itemprop="image" src="{% static 'images/loader.svg' %}" data-src="{{ blog.image.url }}" alt=""></a>
+								{% else %}
 								<a href="{% url 'blog' blog.slug %}"><img itemprop="image" src="{% static 'images/loader.svg' %}" data-src="{{ blog.image.url }}" alt=""></a>
+								{% endif %}
 							</div>
 							<div class="tt-post-content">
 								<div class="tt-tag"><a href="{% url 'subcat' blog.category.slug %}">{{ blog.category|upper }}</a></div>
+								{% if 'articles' in request.path %}
+								<h2  itemprop="name" class="tt-title"><a href="{% url 'oldblog' blog.id %}">{{ blog.title }}</a></h2>
+								{% else %}
 								<h2  itemprop="name" class="tt-title"><a href="{% url 'blog' blog.slug %}">{{ blog.title }}</a></h2>
+								{% endif %}
 								<div itemprop="description" class="tt-description">
-									{{ blog.short_desc| truncatechars:200 }}
+									{{ blog.short_desc|striptags| truncatechars:200 }}
 								</div>
 								<div class="tt-meta">
 									<div class="tt-autor">
-										автор <span >Админ</span> от <span itemprop="datePublished">{{ blog.publish }}</span>
+										автор <span >Админ</span> от <span itemprop="datePublished">{{ blog.publish }}</span> <span>&#128065; {{ blog.number_views }}</span>
 									</div>
 									<div class="tt-comments">
 										<a href="#"><i class="tt-icon icon-f-88"></i>7</a>
@@ -81,7 +89,7 @@
 								</div>
 							</div>
 						</div>-->
-						<div class="tt-post">
+						<!--<div class="tt-post">
 							<div class="tt-post-img">
 								<div class="tt-video-block">
 									<a href="#" class="link-video"></a>
@@ -106,7 +114,7 @@
 									<a href="blog-single-post.html" class="btn">READ MORE</a>
 								</div>
 							</div>
-						</div>
+						</div>-->
 
 						<div class="tt-pagination">
 							<!-- <a href="#" class="btn-pagination btn-prev"></a> -->
@@ -161,11 +169,18 @@
 								{% for resent in resents %}
 								<div class="item">
 									<div class="tt-tag"><a href="{% url 'subcat' resent.category.slug %}">{{ resent.category|upper }}</a></div>
-									<a href="#">
-										<div class="tt-title">{{ resent.title|title }}</div>
+									{% if 'articles' in request.path %}
+									<a href="{% url 'oldblog' resent.id %}"><div class="tt-title">{{ resent.title|title }}</div>
 										<div class="tt-description">
-											{{ resent.short_desc|truncatechars:100}}
+											{{ resent.short_desc|striptags|truncatechars:100}}
 										</div>
+									{% else %}
+									<a href="{% url 'blog' resent.slug %}"><div class="tt-title">{{ resent.title|title }}</div>
+										<div class="tt-description">
+											{{ resent.short_desc|striptags|truncatechars:100}}
+										</div>
+									{% endif %}
+
 									</a>
 									<div class="tt-info">
 										by <span>Admin</span> {{ resent.publish }}

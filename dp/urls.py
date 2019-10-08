@@ -12,11 +12,11 @@ admin_detailed_view,upload_files, create_dirs, admin_photo_search, ChartData, ma
 from home.views import home, about, payment, contacts, delivery, guaranties, policy, requsites, footer_form
 from admin_photos.cron_stat import make_stat
 from .sitemaps import BlogsSitemap, StaticViewsSitemap, CategoriesSitemap, ProductsSitemap, ZapchastiCarSitemap
-from .sitemaps import ZapchastiCarSubcatSitemap
+from .sitemaps import ZapchastiCarSubcatSitemap, OldBlogsSitemap
 from django.contrib.sitemaps.views import sitemap
 from django.views.generic import TemplateView
 from products.cart_views import cart_view, add_to_cart, remove_from_cart, update_cart, clear_cart, order_view
-from products.cart_views import order_success
+from products.cart_views import order_success, add_to_wish, remove_wish, see_wish, clear_wish
 
 
 handler404 = 'dp.views.error404'
@@ -27,6 +27,7 @@ handler400 = 'dp.views.error400'
 
 sitemaps = {
         'blogs': BlogsSitemap,
+        'oldblogs': OldBlogsSitemap,
         'static': StaticViewsSitemap,
         'categories': CategoriesSitemap,
         'zapchasti': ZapchastiCarSitemap,
@@ -40,13 +41,13 @@ sitemaps = {
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('blogs/', blogs, name='blogs'),
-    path('articles/', oldblogs, name='oldblogs'),
     path('login/', login_view, name='login'),
     path('logout/', logout_view, name='logout'),
     path('register/', register_view, name='register'),
     path('account/', account_view, name='account'),
     path('blogs/<slug:slug>/', blog, name='blog'),
     path('articles/<int:pk>/', oldblog, name='oldblog'),
+    path('articles/', oldblogs, name='oldblogs'),
     path('', home, name='home'),
     path('newparts/', newparts, name='newparts'),
     path('subcat/<slug:slug>/', subcat, name='subcat'),
@@ -75,10 +76,14 @@ urlpatterns = [
     path('sitemap.xml', sitemap, {'sitemaps': sitemaps}),
     path('robots.txt', TemplateView.as_view(template_name='home/robots.txt', content_type='text/plain')),
     path('cart/', cart_view, name='cart'),
+    path('wish/', see_wish, name='wish'),
     path('addtocart/', add_to_cart, name='add_to_cart'),
+    path('addtowish/', add_to_wish, name='add_to_wish'),
     path('removefromcart/', remove_from_cart, name='remove_from_cart'),
+    path('removefromwish/', remove_wish, name='remove_wish'),
     path('updatecart/', update_cart, name='update_cart'),
     path('clearcart', clear_cart, name='clear_cart'),
+    path('clearwish', clear_wish, name='clear_wish'),
     path('order/', order_view, name='order'),
     path('ordersuccess/<str:order_n>/', order_success, name='order_success'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

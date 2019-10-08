@@ -45,8 +45,8 @@
 				<div class="col-6 hidden-xs">
 					<div class="product-images-static hidden-xs">
 						<ul  data-scrollzoom="false">
-							{% for p in object.image_path %}
-							<li><img class="zoom-product" src="{% static p %}" alt=""></li>
+							{% for p in object.image_path_all %}
+							<li><img class="zoom-product" src="{% static p %}" alt="object.name"></li>
 							{% endfor %}
 
 							<!--<li>
@@ -107,16 +107,11 @@
 									</div>
 								</div>
 							</div>
-<!--							<div class="tt-wrapper">-->
-<!--								<ul class="tt-list-btn">-->
-<!--									<li><a class="btn-link" href="#"><i class="icon-n-072"></i>ADD TO WISH LIST</a></li>-->
-<!--									<li><a class="btn-link" href="#"><i class="icon-n-08"></i>ADD TO COMPARE</a></li>-->
-<!--								</ul>-->
-<!--							</div>-->
 							<div class="tt-wrapper">
-								<div class="tt-add-info">
-									<a href="{% url 'cart' %}">Перейти в корзину</a>
-								</div>
+								<ul class="tt-list-btn">
+									<li><a id="add-wish-product-{{ object.id }}" data-pk="{{ object.id }}" class="btn-link tt-btn-wishlist" href="#"><i class="icon-n-072"></i>ДОБАВИТЬ В ИЗБРАННОЕ</a></li>
+									<li><a class="btn-link" href="{% url 'cart' %}"><i class="icon-f-39"></i>ПЕРЕЙТИ В КОРЗИНУ</a></li>
+								</ul>
 							</div>
 							<div class="tt-wrapper">
 								<div class="tt-add-info">
@@ -132,16 +127,16 @@
 									</ul>
 								</div>
 							</div>
-
+							{% if object.description %}
 							<div class="tt-collapse-block">
 								<div class="tt-item">
 									<div class="tt-collapse-title">ОПИСАНИЕ</div>
 									<div class="tt-collapse-content">
+										{{ object.description }}
 									</div>
 								</div>
-
-
 							</div>
+							{% endif %}
 						</div>
 					</div>
 				</div>

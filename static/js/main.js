@@ -34,9 +34,14 @@
         $ttSearchObjPopupResults = $ttSearchObj.find('.search-results'),
         //header cart
         $ttcartObj = $ttHeader.find('.tt-cart'),
+        $ttwishObj = $ttHeader.find('.tt-wish'),
+
         $ttDesctopParentCart = $ttHeader.find('.tt-desctop-parent-cart'),
+        $ttDesctopParentWish = $ttHeader.find('.tt-desctop-parent-wish'),
+        $ttMobileParentWish = $ttHeader.find('.tt-mobile-parent-wish'),
         $ttMobileParentCart = $ttHeader.find('.tt-mobile-parent-cart'),
         $ttStuckParentCart = $ttHeader.find('.tt-stuck-parent-cart'),
+        $ttStuckParentWish = $ttHeader.find('.tt-stuck-parent-wish'),
         //header account
         $ttAccountObj = $ttHeader.find('.tt-account'),
         $ttDesctopParentAccount = $ttHeader.find('.tt-desctop-parent-account'),
@@ -2373,6 +2378,7 @@
           // $('body').trigger('showStuck');
           window.innerWidth < 1025 ? $ttStuckParentMenu.append($ttMobileParentMenuChildren.detach()) : $ttStuckParentMenu.append($ttDesctopMenu.detach());
           $ttStuckParentCart.append($ttcartObj.detach());
+          $ttStuckParentWish.append($ttwishObj.detach());
           $ttStuckParentMulti.append($ttMultiObj.detach());
           $ttStuckParentAccount.append($ttAccountObj.detach());
           $ttStuckParentSearch.append($ttSearchObj.detach());
@@ -2398,6 +2404,7 @@
           }
           $ttDesctopParentMenu.append($ttDesctopMenu.detach());
           $ttDesctopParentCart.append($ttcartObj.detach());
+          $ttDesctopParentWish.append($ttwishObj.detach());
           $ttDesctopParentMulti.append($ttMultiObj.detach());
           $ttDesctopParentAccount.append($ttAccountObj.detach());
           $ttDesctopParentSearch.append($ttSearchObj.detach());
@@ -2448,6 +2455,18 @@
             if ($ttDesctopParentAccount.children().lenght) return false;
             if ($('.stuck').length) return false;
             $ttDesctopParentAccount.append($ttAccountObj.detach());
+        };
+    };
+     //header account
+    function mobileParentWish() {
+        if (window.innerWidth < 1025) {
+            if ($ttMobileParentWish.children().lenght) return false;
+            if ($('.stuck').length) return false;
+            $ttMobileParentWish.append($ttwishObj.detach());
+        } else {
+            if ($ttDesctopParentWish.children().lenght) return false;
+            if ($('.stuck').length) return false;
+            $ttDesctopParentWish.append($ttwishObj.detach());
         };
     };
     //header langue and currency(*all in one module)

@@ -46,52 +46,55 @@ def categories_tree(pk):
         cats = Categories.objects.filter(parent_id__in=c_l)
     return cats        
     
-
-def get_image_path(qs):
-
-    working_dir = settings.STATICFILES_DIRS[1] 
-    for obj in qs:
-        try:
-            if  obj.main_img:
-                f = os.path.join(obj.cat_n, obj.main_img)
-            else:
-                files  =  os.listdir(os.path.join(working_dir, obj.cat_n))
-                f = os.path.join(obj.cat_n, files[0])
-
-            setattr(obj, 'image_path', f) 
-        except Exception as e:
-            print(e)
-    return qs
-
+def pag_def(show):
+    if show == '40':
+        return 40
+    elif show == '60':
+        return 60
+    elif show == 'all':
+        return 200
+    else:
+        return 20
 
 def newparts(request):
-    qs = Products.objects.all()[:200]
-    qs = get_image_path(qs)
+    sort = request.GET.get('sort', None)
+    show = request.GET.get('show', None)
+    if sort == '2':
+        qs = Products.objects.all().order_by('price')[:200]
+    elif sort == '3':
+        qs = Products.objects.all().order_by('-price')[:200]
+    else:
+        qs = Products.objects.all()[:200]
+
+    pag = pag_def(show)
     cats = Categories.objects.filter(parent_id=0)
     try:
-        p = Paginator(qs, 20)
+        p = Paginator(qs, pag)
         page = request.GET.get('page')
         objects = p.get_page(page)
     except:
         pass
     if request.GET.get('load_all') == 'all':
-        objects = get_image_path(objects)
+        objects = objects
 
-    sale_prod = [2274, 2582, 2027]
-    brakes = Products.objects.filter(id__in=sale_prod)
-    brakes = get_image_path(brakes)
     context = {
             'objects': objects, 
             'categories': cats,
             'cars': show_cars(),
-            'brakes': brakes,
-           # 'brands': show_brands(),
             }
     return render(request, 'products/newparts.html', context)
 
 
 def cars(request, car):
-    qs = Products.objects.filter(car=car).order_by('?')[:50]
+    sort = request.GET.get('sort', None)
+    show = request.GET.get('show', None)
+    if sort == '3':
+        qs = Products.objects.filter(car=car).order_by('-price')[:200]
+    elif sort == '2':
+        qs = Products.objects.filter(car=car).order_by('price')[:200]
+    else: 
+        qs = Products.objects.filter(car=car).order_by('?')[:200]
+    pag = pag_def(show)
     cats_tmp = Categories.objects.filter(parent_id=0)
     cats = []
     for c in cats_tmp:
@@ -100,25 +103,19 @@ def cars(request, car):
             setattr(c, 'prod_count', nums)
             cats.append(c)
     try:
-        p = Paginator(qs, 20)
+        p = Paginator(qs, pag)
         page = request.GET.get('page')
         objects = p.get_page(page)
     except:
         pass
     if request.GET.get('load_all') == 'all':
         objects = qs
-    objects = get_image_path(objects)
-
-    sale_prod = [2274, 2582, 2027]
-    brakes = Products.objects.filter(id__in=sale_prod)
-    brakes = get_image_path(brakes)
 
     context = {
             'objects': objects,
             'cars': show_cars(),
             'categories': cats,
             'car': car,
-            'brakes': brakes,
             }
     return render(request, 'products/newparts.html', context)
 
@@ -150,10 +147,20 @@ def cars_subcats(request, car, slug, **kwargs):
         else:
             qs = Products.objects.filter(car=car, cat__in=cats_list).distinct()
     
+    sort = request.GET.get('sort', None)
+    show = request.GET.get('show', None)
+    if sort == '2':
+        qs = qs.order_by('price')
+    elif sort == '3':
+        qs = qs.order_by('-price')
+    else:
+        qs = qs 
+
+    pag = pag_def(show)
     brands = qs.values('brand').annotate(brand_count=Count('brand')) 
     h1 = cats_tmp.name
     try:
-        p = Paginator(qs, 20)
+        p = Paginator(qs, pag)
         page = request.GET.get('page')
         objects = p.get_page(page)
     except:
@@ -161,11 +168,6 @@ def cars_subcats(request, car, slug, **kwargs):
     if request.GET.get('load_all') == 'all':
         objects = qs
     
-    objects = get_image_path(objects)
-
-    sale_prod = [2274, 2582, 2027]
-    brakes = Products.objects.filter(id__in=sale_prod)
-    brakes = get_image_path(brakes)
 
     context = {
             'objects': objects,
@@ -176,7 +178,6 @@ def cars_subcats(request, car, slug, **kwargs):
             'title_h1': h1,
             'car': car,
             'brand': brand,
-            'brakes': brakes,
             'cat': cats_tmp,
             }
     
@@ -228,11 +229,22 @@ def subcat(request, slug, **kwargs):
             qs = Products.objects.filter(cat__in=cats_list, brand=brand).distinct()
         else:
             qs = Products.objects.filter(cat__in=cats_list).distinct()
+
+    sort = request.GET.get('sort', None)
+    show = request.GET.get('show', None)
+    if sort == '2':
+        qs = qs.order_by('price')
+    elif sort == '3':
+        qs = qs.order_by('-price')
+    else:
+        qs = qs 
+
+    pag = pag_def(show)
     
     brands = qs.values('brand').annotate(brand_count=Count('brand')) 
     h1 = cats_tmp.name
     try:
-        p = Paginator(qs, 20)
+        p = Paginator(qs, pag)
         page = request.GET.get('page')
         objects = p.get_page(page)
     except:
@@ -240,11 +252,6 @@ def subcat(request, slug, **kwargs):
     if request.GET.get('load_all') == 'all':
         objects = qs
     
-    objects = get_image_path(objects)
-    sale_prod = [2274, 2582, 2027]
-    brakes = Products.objects.filter(id__in=sale_prod)
-    brakes = get_image_path(brakes)
-            
 
     context = {
             'objects': objects,
@@ -253,7 +260,6 @@ def subcat(request, slug, **kwargs):
             'brands': brands,
             'title_h1': h1,
             'brand': brand,
-            'brakes': brakes,
             'bread1': bread1,
             'bread2': bread2,
             'bread3': bread3,
@@ -275,16 +281,6 @@ def detailed(request, pk):
         aver = 0
     # Похожие товары
     similar_products = Products.objects.filter(cat=obj.cat.first().id)
-
-    # Redefine function inside to returning lists of files in the directories
-    def get_image_path_detailed(obj):
-        working_dir = settings.STATICFILES_DIRS[1] 
-        files  =  os.listdir(os.path.join(working_dir, obj.cat_n))[:10]
-        img_list = []
-        for f in files:
-            img_list.append(os.path.join(obj.cat_n, f))
-        setattr(obj, 'image_path', img_list ) 
-        return obj
 
 
     comments = Comment.objects.filter_by_instance(obj)
@@ -313,7 +309,6 @@ def detailed(request, pk):
         parent_obj = None
         try:
             parent_id = request.POST.get('parent_id')
-            print(parent_id)
         except:
             parent_id = None
 
@@ -364,7 +359,7 @@ def detailed(request, pk):
 
 
     context = {
-            'object': get_image_path_detailed(obj),
+            'object': obj,
             'categories': cats,
             'cars': show_cars(),
             'comments': comments,
@@ -373,7 +368,7 @@ def detailed(request, pk):
             'email_form': e_form,
             'bread_sub1': bread_sub1,
             'bread_sub2': bread_sub2,
-            'similar_products': get_image_path(similar_products),
+            'similar_products': similar_products,
             'aver': aver,
 
             }
@@ -385,7 +380,6 @@ def search(request):
 
     sale_prod = settings.SALES_ON_SEARCH 
     brakes = Products.objects.filter(id__in=sale_prod)
-    brakes = get_image_path(brakes)
 
     search = request.GET.get('search', None)
 
@@ -462,9 +456,18 @@ def search(request):
         if not p:
             continue
         ca.append({'cat': c, 'ccount': p.count()})
+    sort = request.GET.get('sort', None)
+    show = request.GET.get('show', None)
+    if sort == '3':
+        qs = qs.order_by('-price')
+    elif sort == '2':
+        qs = qs.order_by('price')
+    else: 
+        qs = qs.order_by('?')
+    pag = pag_def(show)
 
     try:
-        p = Paginator(qs, 20)
+        p = Paginator(qs, pag)
         page = request.GET.get('page')
         objects = p.get_page(page)
     except:
@@ -473,7 +476,6 @@ def search(request):
         objects = qs
 
     
-    objects = get_image_path(objects)
     context = {
                 'tags': settings.TAGS_LIST,
                 'objects': objects,
