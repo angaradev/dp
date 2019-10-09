@@ -1,6 +1,9 @@
-from django.shortcuts import render
-
+from django.shortcuts import render, redirect
+from .models import Tableredirectcat
+from products.models import Categories
+from django.http import HttpResponsePermanentRedirect
 
 def subcat_redirect(request, pk):
-    print(pk)
-    return render(request, 'home/home.html', {})
+    qs = Tableredirectcat.objects.get(id_old=pk)
+    nqs = Categories.objects.get(id=qs.id_new)
+    return redirect('subcat', nqs.slug) 
