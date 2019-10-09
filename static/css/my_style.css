@@ -170,3 +170,6 @@
 .icon-women:before {
     content: "\e9fa";
 }
+.search-h1 {
+    font-size: 16px;
+}

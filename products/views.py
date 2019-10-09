@@ -389,7 +389,10 @@ def search(request):
         search_list = search.split(' ')
         new_search_list = []
         for word in search_list:
-            n_w = s.stem(word)
+            try:
+                n_w = s.stem(word)
+            except:
+                n_w = word
             new_search_list.append(n_w)
         return(new_search_list)
 
@@ -474,6 +477,19 @@ def search(request):
         pass
     if request.GET.get('load_all') == 'all':
         objects = qs
+    
+    # Обработка слов в нормальный падеж
+    def words(count):
+        if count:
+            if count % 10 == 1:
+                word = 'запчасть'
+            elif (count % 10 >= 2 and count % 10 <=4) or (count >= 2 and count <= 4):
+                word = 'запчасти'
+            elif count % 10 > 4 or count > 4:
+                word = 'запчастей'
+            return word
+        else:
+            return None
 
     
     context = {
@@ -483,5 +499,7 @@ def search(request):
                 'search_categories': ca,
                 'brands': qs_brand,
                 'brakes': brakes,
+                'total_items': p.count,
+                'zapchasti_word': words(p.count),
             }
     return render(request, 'products/search.html', context)
