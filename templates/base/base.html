@@ -205,6 +205,7 @@
 									<li class="dropdown tt-megamenu-col-02 selected">
 										<a href="{% url 'home' %}">ГЛАВНАЯ</a>
 
+
 									</li>
 									<li class="dropdown tt-megamenu-col-01">
 										<a href="{% url 'newparts' %}">КАТАЛОГИ</a>
@@ -324,6 +325,7 @@
 										</a> -->
 										<div class="tt-cart-content">
 											<div class="tt-cart-list">
+												{% if cart %}
                                                 {% for cart_item in cart.items.all %}
 												<div class="tt-item">
 													<a href="product.html">
@@ -344,6 +346,7 @@
 													</div>
 												</div>
                                                 {% endfor %}
+
 											</div>
 											<div class="tt-cart-total-row">
 												<div class="tt-cart-total-title">ВСЕГО:</div>
@@ -357,6 +360,7 @@
 													<a href="{% url 'cart' %}" class="btn-link-02 tt-hidden-mobile">В корзину</a>
 													<a href="{% url 'cart' %}" class="btn btn-border tt-hidden-desctope">В КОРЗИНУ</a>
 												</div>
+												{% endif %}
 											</div>
 										</div>
 									</div>

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail
-from products.models import Categories, Products, Cart
+from products.models import Categories, Products
 from blogs.models import Blogs
 from email_form.forms import EmailFormLight, EmailFormOneField
 from email_form.models import EmailModel
@@ -27,7 +27,7 @@ def home(request):
             'fuel': fuel,
             'body': body,
             'engine': engine,
-            }
+                       }
 
     return render(request, 'home/home.html', context)
 

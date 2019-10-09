@@ -86,4 +86,5 @@ urlpatterns = [
     path('clearwish', clear_wish, name='clear_wish'),
     path('order/', order_view, name='order'),
     path('ordersuccess/<str:order_n>/', order_success, name='order_success'),
+    path('subcategory/', include(('interlink.urls', 'interlink'), namespace='interl')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
