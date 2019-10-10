@@ -22,7 +22,7 @@
 		<!-- mobile product slider  -->
 		<div class="tt-mobile-product-layout visible-xs">
 			<div class="tt-mobile-product-slider arrow-location-center slick-animated-show-js">
-				{% for p in object.image_path %}
+				{% for p in object.image_path_all %}
 
 				<div><img src="{% static p %}" alt=""></div>
 				{% endfor %}

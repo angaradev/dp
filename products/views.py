@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from .models import Products, Categories
 from django.db.models import Count, Min, Max
 from django.db.models import Q, Subquery
@@ -155,6 +155,8 @@ def cars_subcats(request, car, slug, **kwargs):
         qs = qs.order_by('-price')
     else:
         qs = qs 
+    if not qs:
+        raise Http404
 
     pag = pag_def(show)
     brands = qs.values('brand').annotate(brand_count=Count('brand')) 
