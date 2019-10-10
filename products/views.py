@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
 from .models import Products, Categories
 from django.db.models import Count, Min, Max
@@ -272,7 +272,7 @@ def subcat(request, slug, **kwargs):
 
 def detailed(request, pk):
     cats = Categories.objects.filter(parent_id=0)
-    obj = Products.objects.get(id=pk)
+    obj = get_object_or_404(Products, id=pk)
     bread_sub2 = Categories.objects.get(id=obj.cat.first().parent_id)
     bread_sub1 = Categories.objects.get(id=bread_sub2.parent_id)
     try:
