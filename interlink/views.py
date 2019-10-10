@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import RedireCtcat, RedirectProductOldToNew 
+from .models import RedireCtcat, RedirectProductOldToNew, RedirectProductOldToNewDictionary
 from products.models import Categories
 from django.http import Http404
 
@@ -37,7 +37,14 @@ def subcat_jumper_redirect(request, pk):
 def analog_part_brand(request, old_url):
     qs = RedirectProductOldToNew.objects.filter(url=old_url).first()
     if not qs:
-        raise Http404()
+        cat_qs = RedirectProductOldToNewDictionary.objects.filter(url=old_url).first()
+        # Это костыль для категорий которых нет у нас но есть в словаре
+        if cat_qs.id_new == 0 or cat_qs.id_new > 2504:
+            return redirect('newparts', permanent=True)
+        cat = Categories.objects.get(id=cat_qs.id_new)
+        return redirect('subcat', cat.slug, permanent=True) 
+        if not cat_qs:
+            raise Http404()
     return redirect('detailed', qs.id_new, permanent=True) 
 
 

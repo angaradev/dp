@@ -254,7 +254,8 @@ def subcat(request, slug, **kwargs):
     if request.GET.get('load_all') == 'all':
         objects = qs
     
-
+    if len(objects) == 0:
+        print(cats_tmp.name)
     context = {
             'objects': objects,
             'cars': show_cars(),
