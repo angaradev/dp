@@ -9,7 +9,7 @@ from .models import EmailModel
 #     text = forms.CharField(widget=forms.Textarea, label='Ваше сообщение')
 #
 class EmailFormLight(forms.Form):
-    name = forms.CharField(label='Ваше Имя', required=False)
+    email_name = forms.CharField(label='Ваше Имя', required=False)
     phone = forms.CharField(label='Ваш телефон')
 
 

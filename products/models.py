@@ -7,7 +7,7 @@ from django.conf import settings
 import os
 from django.db.models.signals import pre_save
 from .utils import random_string_generator
-
+from urllib.parse import quote
 
 class Categories(models.Model):
     name = models.CharField(max_length=100, null=True)
