@@ -148,7 +148,6 @@ def admin_photo_listing(request, pk):
 
     request.session['car'] = car
     request.session['checked'] = checked
-    print(request.session.get('checked'), request.session.get('car'))
     
     objects = pqs
     
@@ -172,7 +171,6 @@ def get_image_path_all(obj):
             img_list.append({ 'path': os.path.join(obj.cat_n, f), 'img_name': f})
         except Exception as e:
             print(e)
-            img_list.append({ 'path': os.path.join('000_default', 'default.png'), 'img_name': f})
     setattr(obj, 'image_path_adm', img_list ) 
     return obj
 
