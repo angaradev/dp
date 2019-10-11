@@ -40,12 +40,12 @@
     <div class="col-12">
         <form method="get" action=".">
             <button type="submit" style="z-index:20;" class="btn btn-danger btn-sm float">Удалить Все короме Выделенных</button>
+            <h6>{{ images.name|title }}</h6>
                 <div class="row">
                     {% for img in images.image_path_adm %}
                     <div class="col-2">
                         <hr>
                         <div class="text-center">
-
                             {% if images.main_img == img.img_name %}
                             <a href="" class="btn btn-outline-primary btn-sm">Главная</a>
                             {% else %}
