@@ -9,7 +9,7 @@ from products.views import newparts, subcat, cars, cars_subcats, detailed, searc
 from accounts.views import login_view, register_view, logout_view, account_view
 from admin_photos.views import (admin_photos_view, admin_photos_statistic, admin_photo_listing,
 admin_detailed_view,upload_files, create_dirs, admin_photo_search, ChartData, make_stat)
-from home.views import home, about, payment, contacts, delivery, guaranties, policy, requsites, footer_form
+from home.views import home, about, payment, contacts, delivery, guaranties, policy, requsites
 from admin_photos.cron_stat import make_stat
 from .sitemaps import BlogsSitemap, StaticViewsSitemap, CategoriesSitemap, ProductsSitemap, ZapchastiCarSitemap
 from .sitemaps import ZapchastiCarSubcatSitemap, OldBlogsSitemap
@@ -18,7 +18,7 @@ from django.views.generic import TemplateView
 from products.cart_views import cart_view, add_to_cart, remove_from_cart, update_cart, clear_cart, order_view
 from products.cart_views import order_success, add_to_wish, remove_wish, see_wish, clear_wish
 from interlink.views import subcat_ducato_redirect, subcat_boxer_redirect, subcat_jumper_redirect, analog_part_brand
-from email_form.views import e_form_view
+from email_form.views import e_form_view, footer_form
 
 handler404 = 'dp.views.error404'
 handler500 = 'dp.views.error500'

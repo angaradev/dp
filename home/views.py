@@ -90,9 +90,3 @@ def requsites(request):
     return render(request, 'home/requsites.html', context)
 
 
-def footer_form(request):
-    phone = request.POST.get('phone')
-    if phone:
-        callback, created = EmailModel.objects.get_or_create(phone=phone)
-        send_mail('Anon', 'Заявка', 'yellkalolka', ['yellkalolka@gmail.com'], fail_silently=False,)
-    return redirect('home')
