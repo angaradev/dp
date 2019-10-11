@@ -2,12 +2,15 @@ from products.models import Cart, Products, Categories
 from django.conf import settings
 
 def small_cart(request):
-    cart_id = request.session.get('cart_id', None)
+    cart_id = request.session.get('cart_id')
     if cart_id:
-        context = {'cart': Cart.objects.get(id=cart_id)}
+        try:
+            context = {'cart': Cart.objects.get(id=cart_id)}
+            return context
+        except:
+            return {'cart': None}
     else:
-        context = None
-    return(context)
+        return {'cart': None}
 
 # Вывод контактной информации
 

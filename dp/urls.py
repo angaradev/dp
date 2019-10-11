@@ -17,6 +17,7 @@ from django.contrib.sitemaps.views import sitemap
 from django.views.generic import TemplateView
 from products.cart_views import cart_view, add_to_cart, remove_from_cart, update_cart, clear_cart, order_view
 from products.cart_views import order_success, add_to_wish, remove_wish, see_wish, clear_wish
+from interlink.views import subcat_ducato_redirect, subcat_boxer_redirect, subcat_jumper_redirect, analog_part_brand
 
 
 handler404 = 'dp.views.error404'
@@ -86,4 +87,18 @@ urlpatterns = [
     path('clearwish', clear_wish, name='clear_wish'),
     path('order/', order_view, name='order'),
     path('ordersuccess/<str:order_n>/', order_success, name='order_success'),
+    path('subcategory/', include(('interlink.urls', 'interlink'), namespace='interl')),
+    path('fiat-ducato-250/subcategory/<int:pk>/', subcat_ducato_redirect, name='sub_ducato_redir'),
+    path('fiat-ducato-250-new/subcategory/<int:pk>/', subcat_ducato_redirect, name='sub_ducato_redir'),
+    path('fiat-ducato-244/subcategory/<int:pk>/', subcat_ducato_redirect, name='sub_ducato_redir'),
+    path('peugeot-boxer/subcategory/<int:pk>/', subcat_boxer_redirect, name='sub_boxer_redir'),
+    path('peugeot-boxer-1/subcategory/<int:pk>/', subcat_boxer_redirect, name='sub_boxer_redir'),
+    path('peugeot-boxer-2/subcategory/<int:pk>/', subcat_boxer_redirect, name='sub_boxer_redir'),
+    path('peugeot-boxer-3/subcategory/<int:pk>/', subcat_boxer_redirect, name='sub_boxer_redir'),
+    path('citroen-jumper/subcategory/<int:pk>/', subcat_jumper_redirect, name='sub_jumper_redir'),
+    path('citroen-jumper-1/subcategory/<int:pk>/', subcat_jumper_redirect, name='sub_jumper_redir'),
+    path('citroen-jumper-2/subcategory/<int:pk>/', subcat_jumper_redirect, name='sub_jumper_redir'),
+    path('citroen-jumper-3/subcategory/<int:pk>/', subcat_jumper_redirect, name='sub_jumper_redir'),
+    path('analognumber/<str:old_url>/', analog_part_brand, name='analog'),
+    path('catalognumber/<str:old_url>/', analog_part_brand, name='analog'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

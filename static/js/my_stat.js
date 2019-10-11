@@ -36,16 +36,8 @@ $(document).ready(function() {
 //                    }
                 });
             }
-
         });
-        //};
 
-
-
-
-
-
-//my_func();
 
 
 });

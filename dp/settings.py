@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'email_form',
     'crispy_forms',
     'rest_framework',
+    'interlink',
 ]
 
 SITE_ID = 1

@@ -10,7 +10,11 @@
 	<div class="container">
 		<ul>
 			<li><a href="{% url 'home' %}">Главная</a></li>
-			<li>Новые запчасти</li>
+			{% if objects %}
+			<li>По запросу <span class="bgreen">{{ request.GET.search }}</span> нашлось {{ total_items }} {{ zapchasti_word }}</li>
+			{% else %}
+			<li>По запросу {{ request.GET.search }} ничего не нашлось</li>
+			{% endif %}
 		</ul>
 	</div>
 </div>
@@ -147,8 +151,10 @@
 					</div>
 
 				</div>
+
 				<div class="col-md-12 col-lg-9 col-xl-9">
 					<div class="content-indent container-fluid-custom-mobile-padding-02">
+						{% if objects %}
 						<div class="tt-filters-options">
 							<h1 class="tt-title">
 								{% if title_h1 %}
@@ -175,7 +181,13 @@
 								<a href="#" class="tt-col-six" data-value="tt-col-six"></a>
 							</div>
 						</div>
+						{% endif %}
+						{% if not objects %}
+						{% include 'snippets/empty_search.html' %}
+						{% else %}
+						<h1 class="search-h1" style="font-size: 26px;">По запросу <span class="bgreen">'{{ request.GET.search }}'</span> нашлось {{ total_items }} {{ zapchasti_word }}</h1>
 						<div class="tt-product-listing row">
+
 							{% for object in objects %}
 							<div class="col-6 col-md-4 col-lg-3 tt-col-item">
 								<div class="tt-product thumbprod-center">
@@ -217,10 +229,8 @@
 								</div>
 							</div>
 							{% endfor %}
-
 						</div>
 						<div class="text-center tt_product_showmore">
-
 							{% if request.GET.load_all == 'all'  %}
 								<div class="">
 									<a href="{{ request.path }}" class="btn btn-border01">НЕТ БОЛЬШЕ ТОВАРОВ ДЛЯ ЗАГРУЗКИ</a>
@@ -229,6 +239,7 @@
 								<a href="{{ request.get_full_path }}&load_all=all" class="btn btn-border">ЗАГРУЗИТЬ ВСЕ</a>
 							{% endif %}
 						</div>
+						{% endif %}
 					</div>
 				</div>
 			</div>

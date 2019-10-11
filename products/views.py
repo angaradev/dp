@@ -1,5 +1,5 @@
-from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponseRedirect, Http404
 from .models import Products, Categories
 from django.db.models import Count, Min, Max
 from django.db.models import Q, Subquery
@@ -155,6 +155,8 @@ def cars_subcats(request, car, slug, **kwargs):
         qs = qs.order_by('-price')
     else:
         qs = qs 
+    if not qs:
+        raise Http404
 
     pag = pag_def(show)
     brands = qs.values('brand').annotate(brand_count=Count('brand')) 
@@ -252,7 +254,8 @@ def subcat(request, slug, **kwargs):
     if request.GET.get('load_all') == 'all':
         objects = qs
     
-
+    if len(objects) == 0:
+        print(cats_tmp.name)
     context = {
             'objects': objects,
             'cars': show_cars(),
@@ -272,7 +275,7 @@ def subcat(request, slug, **kwargs):
 
 def detailed(request, pk):
     cats = Categories.objects.filter(parent_id=0)
-    obj = Products.objects.get(id=pk)
+    obj = get_object_or_404(Products, id=pk)
     bread_sub2 = Categories.objects.get(id=obj.cat.first().parent_id)
     bread_sub1 = Categories.objects.get(id=bread_sub2.parent_id)
     try:
@@ -389,7 +392,10 @@ def search(request):
         search_list = search.split(' ')
         new_search_list = []
         for word in search_list:
-            n_w = s.stem(word)
+            try:
+                n_w = s.stem(word)
+            except:
+                n_w = word
             new_search_list.append(n_w)
         return(new_search_list)
 
@@ -474,6 +480,19 @@ def search(request):
         pass
     if request.GET.get('load_all') == 'all':
         objects = qs
+    
+    # Обработка слов в нормальный падеж
+    def words(count):
+        if count:
+            if count % 10 == 1:
+                word = 'запчасть'
+            elif (count % 10 >= 2 and count % 10 <=4) or (count >= 2 and count <= 4):
+                word = 'запчасти'
+            elif count % 10 > 4 or count > 4:
+                word = 'запчастей'
+            return word
+        else:
+            return None
 
     
     context = {
@@ -483,5 +502,7 @@ def search(request):
                 'search_categories': ca,
                 'brands': qs_brand,
                 'brakes': brakes,
+                'total_items': p.count,
+                'zapchasti_word': words(p.count),
             }
     return render(request, 'products/search.html', context)
