@@ -202,30 +202,31 @@
 			</div>
 		</div>
 	</div>
-	<!--MODAL_CALLBACK-->
-						<div class="modal fade" id="call_form">
-							  <div class="modal-dialog" role="document">
-								<div class="modal-content">
-								  <div class="modal-header">
-									<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-									<button type="button" class="close" data-dismiss="modal" aria-label="Закрыть">
 
-									</button>
-								  </div>
-								  <div class="modal-body">
-									<form method="post" action=".">{% csrf_token %}
-									{{ email_form|crispy }}
-									<button type="submit" class="btn btn-success">отправить</button>
-									</form>
-								  </div>
-								  <div class="modal-footer">
-									<button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
-									<button type="submit" class="btn btn-success">Отправить</button>
-								  </div>
-								</div>
-							  </div>
-							</div>
-		<!--END_MODAL_CALLBACK-->
 	{% include 'snippets/comments.html' %}
 </div>
+<!--MODAL_CALLBACK-->
+<div class="modal fade" id="call_form">
+	  <div class="modal-dialog" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Закрыть">
+
+			</button>
+		  </div>
+		  <div class="modal-body">
+			<form method="post" action="{% url 'send_e_form' %}">{% csrf_token %}
+			{{ email_form|crispy }}
+			<button type="submit" class="btn btn-success">отправить</button>
+			</form>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+			<button type="submit" class="btn btn-success">Отправить</button>
+		  </div>
+		</div>
+	  </div>
+	</div>
+<!--END_MODAL_CALLBACK-->
 {% endblock %}

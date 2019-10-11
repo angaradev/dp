@@ -148,7 +148,6 @@ def admin_photo_listing(request, pk):
 
     request.session['car'] = car
     request.session['checked'] = checked
-    print(request.session.get('checked'), request.session.get('car'))
     
     objects = pqs
     

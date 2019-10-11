@@ -18,7 +18,7 @@ from django.views.generic import TemplateView
 from products.cart_views import cart_view, add_to_cart, remove_from_cart, update_cart, clear_cart, order_view
 from products.cart_views import order_success, add_to_wish, remove_wish, see_wish, clear_wish
 from interlink.views import subcat_ducato_redirect, subcat_boxer_redirect, subcat_jumper_redirect, analog_part_brand
-
+from email_form.views import e_form_view
 
 handler404 = 'dp.views.error404'
 handler500 = 'dp.views.error500'
@@ -101,4 +101,5 @@ urlpatterns = [
     path('citroen-jumper-3/subcategory/<int:pk>/', subcat_jumper_redirect, name='sub_jumper_redir'),
     path('analognumber/<str:old_url>/', analog_part_brand, name='analog'),
     path('catalognumber/<str:old_url>/', analog_part_brand, name='analog'),
+    path('emailformsend', e_form_view, name='send_e_form'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

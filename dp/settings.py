@@ -23,7 +23,7 @@ SALES_ON_HOME = {'brakes': [2774, 2582, 2560, 2027], 'fuel': [1596, 3160, 1556, 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['dp.loc', 'localhost']
+ALLOWED_HOSTS = ['dp.loc', 'localhost', '192.162.242.28', 'ducatoparts.tk', 'ducatoparts.ru']
 
 
 
@@ -170,6 +170,7 @@ STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
 
 STATICFILES_DIRS = [
 

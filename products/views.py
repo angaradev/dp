@@ -353,12 +353,6 @@ def detailed(request, pk):
 
     e_form = EmailFormLight(request.POST or None)
 
-    if e_form.is_valid():
-
-        phone = e_form.cleaned_data.get('phone')
-        name = e_form.cleaned_data.get('name')
-        callback, created = EmailModel.objects.get_or_create(phone=phone, name=name)
-
 
 
     context = {
