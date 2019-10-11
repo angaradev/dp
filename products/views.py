@@ -379,6 +379,8 @@ def search(request):
     brakes = Products.objects.filter(id__in=sale_prod)
 
     search = request.GET.get('search', None)
+    search = strip_tags(search)
+    search = search.strip(' ')
 
     def search_splitter(search):
         from .stemmer import Porter
@@ -416,7 +418,7 @@ def search(request):
         search_list = search_splitter(search)
 
         if len(search_list) == 1:
-            qs_s = f'Products.objects.filter(name__icontains="{search}").distinct().filter('
+            qs_s = f'Products.objects.filter(Q(name__icontains="{search}") | Q(cat_n__icontains="{search}")).distinct().filter('
         else:
             qs_s = f'Products.objects.filter('
             for word in search_list:
