@@ -46,7 +46,9 @@
 					<div class="product-images-static hidden-xs">
 						<ul  data-scrollzoom="false">
 							{% for p in object.image_path_all %}
-							<li><img class="zoom-product" src="{% static p %}" alt="object.name"></li>
+							{% if p %}
+							<li><img class="zoom-product" src="{% static p %}" alt="{{ object.name }}"></li>
+							{% endif %}
 							{% endfor %}
 
 							<!--<li>
@@ -165,11 +167,11 @@
 					<div class="tt-product thumbprod-center">
 						<div class="tt-image-box">
 <!--							<a href="#" class="tt-btn-quickview" data-toggle="modal" data-target="#ModalquickView"	data-tooltip="Quick View" data-tposition="left"></a>-->
-							<a href="#" class="tt-btn-wishlist" data-tooltip="Add to Wishlist" data-tposition="left"></a>
+							<a href="#" id="add-wish-{{ object.id }}" class="tt-btn-wishlist" data-tooltip="В ИЗБРАННОЕ" data-pk="{{ similar.id  }}" data-tposition="left"></a>
 <!--							<a href="#" class="tt-btn-compare" data-tooltip="Add to Compare" data-tposition="left"></a>-->
 							<a href="{% url 'detailed' similar.pk %}">
-								<span class="tt-img"><img src="{% static similar.image_path %}" alt=""></span>
-								<span class="tt-img-roll-over"><img src="{% static 'images/product/product-16-02.jpg' %}" alt=""></span>
+								<span class="tt-img"><img src="{% static similar.image_path %}" alt="{{ similar.name }}"></span>
+								<span class="tt-img-roll-over"><img src="{% static similar.image_path %}" alt="{{ similar.name }}"></span>
 							</a>
 						</div>
 						<div class="tt-description">
@@ -186,7 +188,7 @@
 							</div>
 							<div class="tt-product-inside-hover">
 								<div class="tt-row-btn">
-									<a href="#" class="tt-btn-addtocart thumbprod-button-bg" data-toggle="modal" data-target="#modalAddToCartProduct">ADD TO CART</a>
+									<a href="{% url 'add_to_cart' %}?product_id={{ object.id  }}" id="cart_button-{{ similar.id }}" class="tt-btn-addtocart thumbprod-button-bg cart_button" data-pk="{{ similar.id  }}" data-toggle="modal" data-target="#modalAddToCartProduct">В Корзину</a>
 								</div>
 								<div class="tt-row-btn">
 									<a href="#" class="tt-btn-quickview" data-toggle="modal" data-target="#ModalquickView"></a>
