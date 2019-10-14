@@ -113,8 +113,6 @@ def admin_photos_view(request):
 
 @login_required
 def admin_photo_listing(request, pk):
-
-    
     
     car = request.GET.get('car', None)
     if not car:
@@ -161,6 +159,25 @@ def admin_photo_listing(request, pk):
             }
     return render(request, 'admin/photo_listing.html', context)
 
+@login_required
+def admin_empty_listing(request):
+    working_dir = settings.STATICFILES_DIRS[1] 
+    empty_dirs = []
+    qs = Products.objects.all()
+    for d in qs:
+        folder = os.path.join(working_dir, d.cat_n)
+        try:
+            if not os.listdir(folder):
+                if not os.path.exists(folder):
+                    os.makedirs(folder)
+                empty_dirs.append(d.id)
+        except Exception as e:
+            print(e)
+    context = {
+            'objects': qs.filter(id__in=empty_dirs),
+            }
+    return render(request, 'admin/photo_listing.html', context)
+
 
 def get_image_path_all(obj):
     working_dir = settings.STATICFILES_DIRS[1] 
@@ -202,8 +219,11 @@ def admin_detailed_view(request, pk):
 
     ready = request.GET.get('make_done')
     not_ready = request.GET.get('make_not_done')
+    empty = request.GET.get('empty')
     make_main = request.GET.get('make_main')
     par_id = qs.cat.first().parent_id
+    if ready and empty:
+        return redirect('adminemptylisting')
     if ready:
         qs.img_check=True
         qs.save()

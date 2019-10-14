@@ -9,6 +9,7 @@ from products.views import newparts, subcat, cars, cars_subcats, detailed, searc
 from accounts.views import login_view, register_view, logout_view, account_view
 from admin_photos.views import (admin_photos_view, admin_photos_statistic, admin_photo_listing,
 admin_detailed_view,upload_files, create_dirs, admin_photo_search, ChartData, make_stat)
+from admin_photos.views import admin_empty_listing
 from home.views import home, about, payment, contacts, delivery, guaranties, policy, requsites
 from admin_photos.cron_stat import make_stat
 from .sitemaps import BlogsSitemap, StaticViewsSitemap, CategoriesSitemap, ProductsSitemap, ZapchastiCarSitemap
@@ -60,6 +61,7 @@ urlpatterns = [
     path('adminphotos/', admin_photos_view, name='adminphotos'),
     path('adminphotosstatistic/', admin_photos_statistic, name='adminphotosstatistic'),
     path('adminphotolisting/<int:pk>/', admin_photo_listing, name='adminphotolisting'),
+    path('adminemptylisting/', admin_empty_listing, name='adminemptylisting'),
     path('admindetailedview/<int:pk>/', admin_detailed_view, name='admin_detailed_view'),
     path('adminfilesupload/<int:pk>/', upload_files, name='adminfilesupload'),
     path('createdirs/', create_dirs, name='createdirs'),
