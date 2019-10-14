@@ -1,3 +1,7 @@
+
+
+
+
 .tt-clear-cross {
     margin-bottom: 20px;
 }
@@ -172,4 +176,11 @@
 }
 .search-h1 {
     font-size: 16px;
+}
+.acc-menu ul li a {
+    margin-right: 20px;
+    color: #2879fe;
+}
+#acc-menu:before {
+    content: "\ea82";
 }

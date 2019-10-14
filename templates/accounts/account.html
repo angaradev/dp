@@ -25,8 +25,13 @@
 <div id="tt-pageContent">
 	<div class="container-indent">
 		<div class="container container-fluid-custom-mobile-padding">
-
 			<div class="tt-shopping-layout">
+				<div class="bblue acc-font mb-4 tt-desctop-menu acc-menu">
+						<ul>
+							<li><a class="dropdown tt-megamenu-col-02" href="{% url 'admin:index' %}" >Админка</a></li>
+							<li><a class="dropdown tt-megamenu-col-01" href="{% url 'adminphotos' %}" >Работа с фото</a></li>
+						</ul>
+				</div>
 				<div class="bblue acc-font">{% if request.user.first_name %}{{ request.user.first_name|upper }}{% else %}{{ request.user.username|upper }}{% endif %}<a href="{% url 'logout' %}" class="float-right">выйти</a></div>
 				<div class="tt-wrapper">
 					<h3 class="tt-title">ИСТОРИЯ ЗАКАЗОВ</h3>
