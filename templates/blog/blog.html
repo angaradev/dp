@@ -32,7 +32,7 @@
 			<div class="row justify-content-center">
 				<div class="col-xs-12 col-md-10 col-lg-8 col-md-auto">
 					<div class="tt-post-single">
-						<div class="tt-tag"><a href="{% url 'blog' object.category.slug %}">{{ object.category.name|upper }}</a></div>
+						<div class="tt-tag"><a href="{% url 'subcat' object.category.slug %}">{{ object.category.name|upper }}</a></div>
 						<h1  itemprop="headline" class="tt-title">
 							{{ object.title }}
 						</h1>
