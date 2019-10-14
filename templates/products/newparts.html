@@ -108,6 +108,28 @@
 						</div>
 					</div>
 					<div class="tt-collapse open">
+						<h3 class="tt-collapse-title mt-4">СТАТЬИ ПО ТЕМЕ</h3>
+						<div class="tt-collapse-content">
+							<div class="tt-aside">
+								{% for article in articles %}
+								<a class="tt-item" href="{% url 'blog' article.article.slug %}">
+									<div class="tt-img">
+										<span class="tt-img-default"><img src="{{ article.article.image.url }}" alt="{{ article.article.title }}"></span>
+										<span class="tt-img-roll-over"><img src="{{ article.article.image.url }}" alt="{{ article.article.title }}"></span>
+									</div>
+									<div class="tt-content">
+										<h6 class="tt-title">{{ article.article.title|title }}</h6>
+										<div class="tt-price">
+											<span class="sale-price">Релевантность {{ article.weight }}</span>
+
+										</div>
+									</div>
+								</a>
+								{% endfor %}
+							</div>
+						</div>
+					</div>
+					<div class="tt-collapse open">
 						<h3 class="tt-collapse-title">Часто Покупаемые</h3>
 						<div class="tt-collapse-content">
 							<div class="tt-aside">

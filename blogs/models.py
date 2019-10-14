@@ -5,6 +5,7 @@ from .utils import unique_slug_generator
 from django.urls.base import reverse
 from products.models import Categories
 from django.contrib.contenttypes.models import ContentType
+from comments.models import Comment
 
 def get_filename_ext(filepath):
     base_name = os.path.basename(filepath)
@@ -47,9 +48,7 @@ class Blogs(models.Model):
     @property
     def comments(self):
         instance = self
-        print('in here')
         qs = Comment.objects.filter_by_instance(instance)
-        
         return qs
 
     @property

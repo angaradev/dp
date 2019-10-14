@@ -41,7 +41,7 @@
 <body>
 <form method="get" action="{% url 'adminphotosearch' %}">
 <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">АНГАРА</a>
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="{% url 'home' %}">АНГАРА</a>
 
     <input class="form-control form-control-dark w-100" name="search" type="text" placeholder="Поиск" aria-label="Search"
     {% if request.GET.search %} value="{{ request.GET.search }}" {% endif %} >
@@ -90,13 +90,13 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{% url 'adminphotosstatistic' %}">
-                                <span data-feather="users"></span>
+                                <span data-feather="bar-chart-2"></span>
                                 Статистика
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">
-                                <span data-feather="bar-chart-2"></span>
+                                <span data-feather="users"></span>
                                 Заглушка
                             </a>
                         </li>

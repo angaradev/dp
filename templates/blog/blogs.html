@@ -55,7 +55,7 @@
 										автор <span >Админ</span> от <span itemprop="datePublished">{{ blog.publish }}</span> <span>&#128065; {{ blog.number_views }}</span>
 									</div>
 									<div class="tt-comments">
-										<a href="#"><i class="tt-icon icon-f-88"></i>7</a>
+										<a href="#"><i class="tt-icon icon-f-88"></i>{{ blog.comments.count }}</a>
 									</div>
 								</div>
 								<div class="tt-btn">
@@ -64,58 +64,6 @@
 							</div>
 						</div>
 						{% endfor %}
-						<!--<div class="tt-post">
-							<div class="tt-post-img">
-								<div class="embed-responsive embed-responsive-16by9">
-									<iframe class="embed-responsive-item" src="{% static 'images/loader.svg' %}" data-src="http://www.youtube.com/embed/GhyKqj_P2E4" allowfullscreen></iframe>
-								</div>
-							</div>
-							<div class="tt-post-content">
-								<div class="tt-tag"><a href="blog-single-post.html">FASHION</a></div>
-								<h2 class="tt-title"><a href="blog-single-post.html">Enim ad Minim Veniam Quis Nostrud Ullamco Laboris Nisi </a></h2>
-								<div class="tt-description">
-									Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.
-								</div>
-								<div class="tt-meta">
-									<div class="tt-autor">
-										by <span>ADRIAN</span> on January 14, 2017
-									</div>
-									<div class="tt-comments">
-										<a href="#"><i class="tt-icon icon-f-88"></i>7</a>
-									</div>
-								</div>
-								<div class="tt-btn">
-									<a href="blog-single-post.html" class="btn">READ MORE</a>
-								</div>
-							</div>
-						</div>-->
-						<!--<div class="tt-post">
-							<div class="tt-post-img">
-								<div class="tt-video-block">
-									<a href="#" class="link-video"></a>
-									<video class="movie" src="{% static 'video/video.mp4' %}" poster="{% static 'video/video_img.jpg' %}"></video>
-								</div>
-							</div>
-							<div class="tt-post-content">
-								<div class="tt-tag"><a href="blog-single-post.html">FASHION</a></div>
-								<h2 class="tt-title"><a href="blog-single-post.html">Enim ad Minim Veniam Quis Nostrud Ullamco Laboris Nisi </a></h2>
-								<div class="tt-description">
-									Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.
-								</div>
-								<div class="tt-meta">
-									<div class="tt-autor">
-										by <span>ADRIAN</span> on January 14, 2017
-									</div>
-									<div class="tt-comments">
-										<a href="#"><i class="tt-icon icon-f-88"></i>7</a>
-									</div>
-								</div>
-								<div class="tt-btn">
-									<a href="blog-single-post.html" class="btn">READ MORE</a>
-								</div>
-							</div>
-						</div>-->
-
 						<div class="tt-pagination">
 							<!-- <a href="#" class="btn-pagination btn-prev"></a> -->
 							<ul>

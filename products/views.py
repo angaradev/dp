@@ -14,6 +14,8 @@ from django.core.mail import send_mail
 from email_form.forms import EmailFormLight, EmailFormOneField
 from email_form.models import EmailModel
 from star_ratings.models import Rating
+from .utils import get_weight, search_splitter
+from blogs.models import Blogs
 
 
 def show_cars():
@@ -169,6 +171,19 @@ def cars_subcats(request, car, slug, **kwargs):
         pass
     if request.GET.get('load_all') == 'all':
         objects = qs
+
+
+
+    #Article founder starts here
+    search_list = search_splitter(h1)
+    articles = Blogs.objects.all()
+    art_w_list = []
+    for i, article in enumerate(articles):
+        we = get_weight(article.text, search_list)
+        if we > 0.02:
+            art_w_list.append({ 'article': article, 'weight': we})
+        if i > 10:
+            break
     
 
     context = {
@@ -181,6 +196,7 @@ def cars_subcats(request, car, slug, **kwargs):
             'car': car,
             'brand': brand,
             'cat': cats_tmp,
+            'articles': art_w_list,
             }
     
     return render(request, 'products/newparts.html', context)
@@ -254,8 +270,19 @@ def subcat(request, slug, **kwargs):
     if request.GET.get('load_all') == 'all':
         objects = qs
     
-    if len(objects) == 0:
-        print(cats_tmp.name)
+
+    #Article founder starts here
+    search_list = search_splitter(h1)
+    articles = Blogs.objects.all()
+    art_w_list = []
+    for i, article in enumerate(articles):
+        we = get_weight(article.text, search_list)
+        if we > 0.02:
+            art_w_list.append({ 'article': article, 'weight': we})
+        if i > 10:
+            break
+
+
     context = {
             'objects': objects,
             'cars': show_cars(),
@@ -267,6 +294,7 @@ def subcat(request, slug, **kwargs):
             'bread2': bread2,
             'bread3': bread3,
             'cat': cats_tmp,
+            'articles': art_w_list,
             }
     
     return render(request, 'products/newparts.html', context)
@@ -353,6 +381,17 @@ def detailed(request, pk):
 
     e_form = EmailFormLight(request.POST or None)
 
+    #Article founder starts here
+    search_list = search_splitter(obj.name)
+    articles = Blogs.objects.all()
+    art_w_list = []
+    for i, article in enumerate(articles):
+        we = get_weight(article.text, search_list)
+        if we > 0.02:
+            art_w_list.append({ 'article': article, 'weight': we})
+        if i > 10:
+            break
+
 
 
     context = {
@@ -367,6 +406,7 @@ def detailed(request, pk):
             'bread_sub2': bread_sub2,
             'similar_products': similar_products,
             'aver': aver,
+            'articles': art_w_list,
 
             }
     return render(request, 'products/product.html', context)
@@ -490,6 +530,20 @@ def search(request):
         else:
             return None
 
+    #Article founder starts here
+    articles = Blogs.objects.all()
+    art_w_list = []
+    for i, article in enumerate(articles):
+        we = get_weight(article.text, search_list)
+        if we > 0.02:
+            art_w_list.append({ 'article': article, 'weight': we})
+        if i > 10:
+            break
+
+    
+        
+        
+
     
     context = {
                 'tags': settings.TAGS_LIST,
@@ -500,5 +554,6 @@ def search(request):
                 'brakes': brakes,
                 'total_items': p.count,
                 'zapchasti_word': words(p.count),
+                'articles': art_w_list,
             }
     return render(request, 'products/search.html', context)
