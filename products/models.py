@@ -68,20 +68,20 @@ class Products(models.Model):
     def image_path(self):
         working_dir = settings.IMG_ROOT
         if self.main_img:
-            f = os.path.join(self.cat_n, self.main_img)
+            f = os.path.join('img', self.cat_n, self.main_img)
             if not os.path.isfile(f):
                 files = os.listdir(os.path.join(working_dir, self.cat_n))
                 try:
-                    f = os.path.join(self.cat_n, files[0])
+                    f = os.path.join('img', self.cat_n, files[0])
                 except:
-                    f = '000_default/default.png'
+                    f = 'img/000_default/default.png'
 
         else:
             try:
                 files = os.listdir(os.path.join(working_dir, self.cat_n))
-                f = os.path.join(self.cat_n, files[0])
+                f = os.path.join('img', self.cat_n, files[0])
             except Exception as e:
-                f = '000_default/default.png'
+                f = 'img/000_default/default.png'
         return f
 
     @property
@@ -90,9 +90,9 @@ class Products(models.Model):
         files  =  os.listdir(os.path.join(working_dir, self.cat_n))[:15]
         img_list = []
         for f in files:
-            img_list.append(os.path.join(self.cat_n, f))
+            img_list.append(os.path.join('img', self.cat_n, f))
             if not img_list:
-                f = ['000_default/default.png' for _ in range(5)]
+                f = ['img/000_default/default.png' for _ in range(5)]
             else:
                 f = img_list
             return f
