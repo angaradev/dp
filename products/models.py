@@ -76,7 +76,7 @@ class Products(models.Model):
                 files = os.listdir(os.path.join(working_dir, self.cat_n))
                 f = os.path.join(self.cat_n, files[0])
             except Exception as e:
-                f = 'img/000_default/default.png'
+                f = '000_default/default.png'
             return os.path.join('img', f)
 
 
