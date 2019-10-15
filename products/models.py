@@ -95,7 +95,7 @@ class Products(models.Model):
                 f = ['img/000_default/default.png' for _ in range(5)]
             else:
                 f = img_list
-            return f
+        return f
 
 
 
