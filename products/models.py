@@ -66,7 +66,7 @@ class Products(models.Model):
 
     @property
     def image_path(self):
-        working_dir = settings.STATICFILES_DIRS[1]
+        working_dir = settings.STATIC_ROOT
         if self.main_img:
             f = os.path.join(self.cat_n, self.main_img)
             if not os.path.isfile(f):
@@ -86,7 +86,7 @@ class Products(models.Model):
 
     @property
     def image_path_all(self):
-            working_dir = settings.STATICFILES_DIRS[1] 
+            working_dir = settings.STATIC_ROOT 
             files  =  os.listdir(os.path.join(working_dir, self.cat_n))[:15]
             print(files)
             img_list = []
