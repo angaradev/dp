@@ -66,7 +66,7 @@ class Products(models.Model):
 
     @property
     def image_path(self):
-        working_dir = settings.STATIC_ROOT
+        working_dir = settings.IMG_ROOT
         if self.main_img:
             f = os.path.join(self.cat_n, self.main_img)
             if not os.path.isfile(f):
@@ -86,12 +86,11 @@ class Products(models.Model):
 
     @property
     def image_path_all(self):
-            working_dir = settings.STATIC_ROOT 
-            files  =  os.listdir(os.path.join(working_dir, self.cat_n))[:15]
-            print(files)
-            img_list = []
-            for f in files:
-                img_list.append(os.path.join(self.cat_n, f))
+        working_dir = settings.IMG_ROOT
+        files  =  os.listdir(os.path.join(working_dir, self.cat_n))[:15]
+        img_list = []
+        for f in files:
+            img_list.append(os.path.join(self.cat_n, f))
             if not img_list:
                 f = ['000_default/default.png' for _ in range(5)]
             else:

@@ -4,6 +4,8 @@
 
 ### Django ###
 settings.py
+dp/urls.py
+static_root/
 *.log
 *.pot
 *.pyc
