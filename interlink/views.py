@@ -4,7 +4,7 @@ from products.models import Categories
 from django.http import Http404
 
 def subcat_redirect(request, pk):
-    qs = RedireCtcat.objects.get(id_old=pk).first()
+    qs = RedireCtcat.objects.filter(id_old=pk).first()
     nqs = Categories.objects.get(id=qs.id_new)
     if not qs or not nqs:
         raise Http404
@@ -12,7 +12,7 @@ def subcat_redirect(request, pk):
 
 
 def subcat_ducato_redirect(request, pk):
-    qs = RedireCtcat.objects.get(id_old=pk).first()
+    qs = RedireCtcat.objects.filter(id_old=pk).first()
     nqs = Categories.objects.get(id=qs.id_new)
     if not qs or not nqs:
         raise Http404
@@ -20,7 +20,7 @@ def subcat_ducato_redirect(request, pk):
 
 
 def subcat_boxer_redirect(request, pk):
-    qs = RedireCtcat.objects.get(id_old=pk).first()
+    qs = RedireCtcat.objects.filter(id_old=pk).first()
     nqs = Categories.objects.get(id=qs.id_new)
     if not qs or not nqs:
         raise Http404
@@ -28,7 +28,7 @@ def subcat_boxer_redirect(request, pk):
 
 
 def subcat_jumper_redirect(request, pk):
-    qs = RedireCtcat.objects.get(id_old=pk).first()
+    qs = RedireCtcat.objects.filter(id_old=pk).first()
     nqs = Categories.objects.get(id=qs.id_new)
     if not qs or not nqs:
         raise Http404
