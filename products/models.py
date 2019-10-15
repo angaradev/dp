@@ -67,22 +67,18 @@ class Products(models.Model):
     @property
     def image_path(self):
         working_dir = settings.IMG_ROOT
-        if self.main_img:
-            f = os.path.join('img', self.cat_n, self.main_img)
-            if not os.path.isfile(f):
-                files = os.listdir(os.path.join(working_dir, self.cat_n))
-                try:
-                    f = os.path.join('img', self.cat_n, files[0])
-                except:
-                    f = 'img/000_default/default.png'
-
+        f = None
+        if self.main_img and os.path.isfile(os.path.join(working_dir, os.path.join(self.cat_n, self.main_img))):
+            f = os.path.join(self.cat_n, self.main_img)
+            return os.path.join('img', f)
         else:
             try:
                 files = os.listdir(os.path.join(working_dir, self.cat_n))
-                f = os.path.join('img', self.cat_n, files[0])
+                f = os.path.join(self.cat_n, files[0])
             except Exception as e:
                 f = 'img/000_default/default.png'
-        return f
+            return os.path.join('img', f)
+
 
     @property
     def image_path_all(self):
