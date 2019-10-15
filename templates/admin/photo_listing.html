@@ -5,17 +5,19 @@
 
 
 {% include 'admin/snippets/breadcrumbs.html' %}
+{% if 'adminemptylisting' in request.path %}
 <div class="row">
     <div class="col-12">
         <h6>Пустых папок: <span  class="bred">{{ objects.count }}</span></h6>
     </div>
 </div>
+{% endif %}
 <div class="row">
         {% for object in objects %}
             <div class="col-2">
                 <div class="thumbnail {% if object.image_path %}thumbnail-green{% else %}thumbnail-red{% endif %}">
                         {% if object.image_path %}
-                    <a href="{% url 'admin_detailed_view' object.id %}?car={{ car }}">
+                            <a href="{% url 'admin_detailed_view' object.id %}?car={{ car }}">
                         <img src="{% static object.image_path %}" class="img-fluid"></a>
                         {% endif %}
                     <div class="detailed-cat_n mt-2">{{ object.cat_n }}</div>
