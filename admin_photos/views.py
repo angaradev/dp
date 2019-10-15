@@ -185,7 +185,7 @@ def get_image_path_all(obj):
     img_list = []
     for f in files:
         try:
-            img_list.append({ 'path': os.path.join(obj.cat_n, f), 'img_name': f})
+            img_list.append({ 'path': os.path.join('img', obj.cat_n, f), 'img_name': f})
         except Exception as e:
             print(e)
     setattr(obj, 'image_path_adm', img_list ) 
