@@ -161,7 +161,7 @@ def admin_photo_listing(request, pk):
 
 @login_required
 def admin_empty_listing(request):
-    working_dir = settings.STATICFILES_DIRS[1] 
+    working_dir = settings.STATIC_ROOT 
     empty_dirs = []
     qs = Products.objects.all()
     for d in qs:
@@ -180,7 +180,7 @@ def admin_empty_listing(request):
 
 
 def get_image_path_all(obj):
-    working_dir = settings.STATICFILES_DIRS[1] 
+    working_dir = settings.STATIC_ROOT
     files  =  os.listdir(os.path.join(working_dir, obj.cat_n))
     img_list = []
     for f in files:
@@ -200,7 +200,7 @@ def admin_detailed_view(request, pk):
         request.session['car'] = car
     qs = Products.objects.get(id=pk)
     objects = get_image_path_all(qs)
-    dir_listing = os.listdir(os.path.join(settings.STATICFILES_DIRS[1],qs.cat_n))    
+    dir_listing = os.listdir(os.path.join(settings.STATIC_ROOT,qs.cat_n))    
     
     img_delete = request.GET.getlist('img_delete')
     if img_delete:
@@ -208,13 +208,13 @@ def admin_detailed_view(request, pk):
             if img_stay in dir_listing:
                 dir_listing.remove(img_stay)
         for f in dir_listing:
-            os.remove(os.path.join(settings.STATICFILES_DIRS[1], qs.cat_n, f))
+            os.remove(os.path.join(settings.STATIC_ROOT, qs.cat_n, f))
         return redirect('admin_detailed_view', pk)
 
     
     f = request.GET.get('delete_single')
     if f:
-        os.remove(os.path.join(settings.STATICFILES_DIRS[1], qs.cat_n, f))
+        os.remove(os.path.join(settings.STATIC_ROOT, qs.cat_n, f))
         return redirect('admin_detailed_view', pk)
 
     ready = request.GET.get('make_done')
@@ -284,7 +284,7 @@ def admin_photos_statistic(request):
 @login_required
 def create_dirs(request):
 
-    working_dir = settings.STATICFILES_DIRS[1] 
+    working_dir = settings.STATIC_ROOT 
     qs = Products.objects.all()
     i = 0
     for obj in qs:

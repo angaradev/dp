@@ -71,7 +71,11 @@ class Products(models.Model):
             f = os.path.join(self.cat_n, self.main_img)
             if not os.path.isfile(f):
                 files = os.listdir(os.path.join(working_dir, self.cat_n))
-                f = os.path.join(self.cat_n, files[0])
+                try:
+                    f = os.path.join(self.cat_n, files[0])
+                except:
+                    f = '000_default/default.png'
+
         else:
             try:
                 files = os.listdir(os.path.join(working_dir, self.cat_n))
