@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load extras %}
+{% load crispy_forms_tags %}
+{% block meta %}
+	{% if request.GET.page  %}
+		<link rel="canonical" href="{{ request.path }}" />
+	{% endif %}
+{% endblock meta %}
+{% block page_title %}Страница логина{% endblock page_title %}
+
+
+{% block page_keywords %}Страница логина{% endblock page_keywords %}
+
+{% block page_description %}Страница входа в аккаунт{% endblock page_description %}
+{% block page %}
+<div class="tt-breadcrumb">
+	<div class="container">
+		<ul>
+			<li><a href="{% url 'home' %}">Главная</a></li>
+			<li>Аккаунт</li>
+		</ul>
+	</div>
+</div>
+<div id="tt-pageContent">
+	<div class="container-indent">
+		<div class="container container-fluid-custom-mobile-padding">
+			<div class="tt-shopping-layout">
+				<div class="bblue acc-font mb-4 tt-desctop-menu acc-menu">
+						<ul>
+							<li><a class="dropdown tt-megamenu-col-02" href="{% url 'admin:index' %}" >Админка</a></li>
+							<li><a class="dropdown tt-megamenu-col-01" href="{% url 'adminphotos' %}" >Работа с фото</a></li>
+						</ul>
+				</div>
+				<div class="bblue acc-font">{% if request.user.first_name %}{{ request.user.first_name|upper }}{% else %}{{ request.user.username|upper }}{% endif %}<a href="{% url 'logout' %}" class="float-right">выйти</a></div>
+				<div class="tt-wrapper">
+					<h3 class="tt-title">ИСТОРИЯ ЗАКАЗОВ</h3>
+					<div class="tt-table-responsive">
+						<table class="tt-table-shop-01">
+							<thead>
+								<tr>
+									<th>ЗАКАЗ #</th>
+									<th>ДАТА</th>
+									<th>СУММА</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for order in orders %}
+								<tr>
+									<td>{{ order.order_n }}</td>
+									<td>{{ order.created }}</td>
+									<td>&#x20bd; {{ order.cart.cart_total }}</td>
+								</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<form method="post" action="{% url 'account' %}">{% csrf_token %}
+				<div class="tt-wrapper">
+					<h3 class="tt-title">ИЗМЕНИТЬ ДАННЫЕ</h3>
+
+					<div class="tt-table-responsive">
+						<table class="tt-table-shop-02">
+							<tbody>
+								<tr>
+									<td>ИМЯ:</td>
+									<td>{{ user_form.first_name|as_crispy_field }} </td>
+								</tr>
+								<tr>
+									<td>ФАМИЛИЯ:</td>
+									<td>{{ user_form.last_name|as_crispy_field }} </td>
+								</tr>
+								<tr>
+									<td>E-MAIL:</td>
+									<td>{{ user_form.email|as_crispy_field }}{{ form.value }}</td>
+								</tr>
+								<tr>
+									<td>ТЕЛЕФОН:</td>
+									<td>{{ profile_form.phone|as_crispy_field }} </td>
+								</tr>
+								<tr>
+									<td>АДРЕС:</td>
+									<td>{{ profile_form.address|as_crispy_field }}</td>
+								</tr>
+								<tr>
+									<td>СТРАНА:</td>
+									<td>{{ profile_form.country|as_crispy_field }}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<button type="submit" class="btn btn-border">СОХРАНИТЬ ИЗМЕНЕНИЯ</button>
+				</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

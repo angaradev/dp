@@ -1,0 +1,186 @@
+
+
+
+
+.tt-clear-cross {
+    margin-bottom: 20px;
+}
+
+
+.tt_product_showmore {
+    margin-top: 28px;
+    margin-bottom: 28px;
+}
+
+.arch-btn {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.tt-post-content {
+    font-size: 1.2rem;
+    line-height: 150%;
+}
+.comment-reply {
+    display: none;
+}
+
+.my-form-control{
+    margin-bottom: 20px;
+}
+
+.tt-background2{
+    background:rgba(255, 255, 255, 0.5);
+}
+
+.button-call-product{
+    background:#17a2b8;
+}
+.badge {
+    display: inline-block;
+    padding: .25em .4em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25rem;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    }
+
+.badge-pill {
+    padding-right: .6em;
+    padding-left: .6em;
+    border-radius: 10rem;
+}
+
+.badge-secondary {
+    color: #fff;
+    background-color: #6c757d;
+}
+
+.search-filter-checkbox {
+    padding-top:5px;
+    padding-bottom:5px;
+}
+.pretty .state label {
+    margin-left: 10px;
+    font-weight: 100;
+}
+
+.bred {
+    color: hotpink;
+    font-weight: bold;
+    display: inline;
+}
+.bred-a {
+    color: #007bff;
+    font-weight: bold;
+    display: inline;
+    text-decoration: underline;
+}
+.bgreen {
+    color: MEDIUMSEAGREEN;
+    font-weight: bold;
+}
+
+.bblue {
+    color: #007bff;
+    font-weight: bold;
+}
+
+.acc-font{
+    font-size: 16px;
+    border-bottom: 1px solid #e9e7e7;
+    font-weight: 300;
+}
+.search-tags {
+    background-color: #fff;
+    border: 1px solid #2879fe;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-bottom: 4px;
+    color: #777777;
+}
+.search-tags:hover {
+    font-weight: bold;
+    border: 2px solid #2879fe;
+}
+
+.upper-tags {
+    padding: 10px;
+}
+.upper-tags ul>li {
+    display: inline;
+    margin-left: 5px;
+}
+
+.tag-class li a{
+    margin-right: 20px;
+}
+.xmark {
+    font-weight: 100;
+    color: hotpink;
+    font-size: 16px;
+}
+.xbrand{
+    cursor: pointer;
+}
+.inactive-cart-button, .inactive-cart-button:hover {
+    background-color: #777777;
+}
+
+.triangle-border {
+  position:relative;
+  padding:15px;
+  margin:1em 0 3em;
+  border:5px solid #5a8f00;
+  color:#333;
+  background:#fff;
+  /* css3 */
+  -webkit-border-radius:10px;
+  -moz-border-radius:10px;
+  border-radius:10px;
+}
+
+/* Variant : for left positioned triangle
+------------------------------------------ */
+
+.triangle-border.left {
+  margin-left:30px;
+}
+
+.tt-badge-wish {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    background: #2879fe;
+    color: #ffffff;
+    border-radius: 50%;
+    position: absolute;
+    top: -3px;
+    right: -10px;
+    font-size: 12px;
+    line-height: 1.7;
+    pointer-events: none;
+}
+.tt-parent-box {
+    padding-left: 10px;
+}
+.tt-filter-list li a:before {
+    content: "\e90e";
+    /*content: "\e9fa";*/
+}
+.icon-women:before {
+    content: "\e9fa";
+}
+.search-h1 {
+    font-size: 16px;
+}
+.acc-menu ul li a {
+    margin-right: 20px;
+    color: #2879fe;
+}
+#acc-menu:before {
+    content: "\ea82";
+}

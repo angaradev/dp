@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load extras %}
+{% block meta %}
+	{% if request.GET.page  %}
+		<link rel="canonical" href="{{ request.path }}" />
+	{% endif %}
+{% endblock meta %}
+{% block page_title %}Советы по выбору запчастей для автомобилей{% for car in cars %} {{ car.car|upper }}{% endfor %}{% endblock page_title %}
+
+
+{% block page_keywords %}
+	{% for car in cars %}Запчасти для {{ car.car|upper }},&nbsp;{% endfor %}
+{% endblock page_keywords %}
+
+{% block page_description %}
+	Полезные статьи, исследования, наблюдения касающиеся эксплуатации, ремонта а так же выбора запчастей для автомобилей{% for car in cars %}{{ car.car|upper }} {% endfor %} {% endblock page_description %}
+{% block page %}
+<div class="tt-breadcrumb">
+	<div class="container">
+		<ul>
+			<li><a href="{% url 'home' %}">Главная</a></li>
+			<li>Блог</li>
+		</ul>
+	</div>
+</div>
+<div id="tt-pageContent">
+	<div class="container-indent">
+		<div class="container container-fluid-custom-mobile-padding">
+			<h1 class="tt-title-subpages noborder">СТАТЬИ</h1>
+			<div class="row">
+				<div class="col-sm-12 col-md-8 col-lg-9">
+					<div class="tt-listing-post">
+						{% for blog in objects %}
+						<div itemscope itemtype="http://schema.org/Blog" class="tt-post">
+							<div class="tt-post-img">
+								{% if 'articles' in request.path %}
+								<a href="{% url 'oldblog' blog.id %}"><img itemprop="image" src="{% static 'images/loader.svg' %}" data-src="{{ blog.image.url }}" alt=""></a>
+								{% else %}
+								<a href="{% url 'blog' blog.slug %}"><img itemprop="image" src="{% static 'images/loader.svg' %}" data-src="{{ blog.image.url }}" alt=""></a>
+								{% endif %}
+							</div>
+							<div class="tt-post-content">
+								<div class="tt-tag"><a href="{% url 'subcat' blog.category.slug %}">{{ blog.category|upper }}</a></div>
+								{% if 'articles' in request.path %}
+								<h2  itemprop="name" class="tt-title"><a href="{% url 'oldblog' blog.id %}">{{ blog.title }}</a></h2>
+								{% else %}
+								<h2  itemprop="name" class="tt-title"><a href="{% url 'blog' blog.slug %}">{{ blog.title }}</a></h2>
+								{% endif %}
+								<div itemprop="description" class="tt-description">
+									{{ blog.short_desc|striptags| truncatechars:200 }}
+								</div>
+								<div class="tt-meta">
+									<div class="tt-autor">
+										автор <span >Админ</span> от <span itemprop="datePublished">{{ blog.publish }}</span> <span>&#128065; {{ blog.number_views }}</span>
+									</div>
+									<div class="tt-comments">
+										<a href="#"><i class="tt-icon icon-f-88"></i>{{ blog.comments.count }}</a>
+									</div>
+								</div>
+								<div class="tt-btn">
+									<a href="{% url 'blog' blog.slug %}" class="btn">ЧИТАТЬ ДАЛЕЕ</a>
+								</div>
+							</div>
+						</div>
+						{% endfor %}
+						<div class="tt-pagination">
+							<!-- <a href="#" class="btn-pagination btn-prev"></a> -->
+							<ul>
+								{% if objects.has_previous %}
+									<li><a href="{% url 'blogs' %}">Первая</a></li>
+									<li><a href="?page={{ objects.previous_page_number }}">Предыдущая</a></li>
+								{% endif %}
+								{% for i in objects.paginator.page_range %}
+									{% if objects.number == i %}
+										<li class="active"><a href="">{{ i }}</a></li>
+									{% elif i > objects.number|add:'-5' and i < objects.number|add:'5' %}
+                           	 			<li><a href="?{% param_replace page=i %}">{{ i }}</a></li>
+									{% endif %}
+								{% endfor %}
+								{% if objects.has_next %}
+									<li><a href="?page={{ objects.next_page_number }}" >Следующая</a></li>
+									<li><a href="?page={{ objects.paginator.num_pages }}">Последняя</a></li>
+								{% endif %}
+							</ul>
+							<a href="#" class="btn-pagination btn-next"></a>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-12 col-md-4 col-lg-3 rightColumn">
+					<div class="tt-block-aside">
+						<h3 class="tt-aside-title">КАТЕГОРИИ</h3>
+						<div class="tt-aside-content">
+							<ul class="tt-list-row">
+								{% for cat in categs %}
+								<li><a href="?category={{ cat.category.pk }}">{{ cat.category|upper }} ({{ cat.cat_count }})</a></li>
+								{% endfor %}
+							</ul>
+						</div>
+					</div>
+					<div class="tt-block-aside">
+						<h3 class="tt-aside-title">ПОИСК</h3>
+						<div class="tt-aside-content">
+							<form class="form-default" method="get" action="">
+								<div class="tt-form-search">
+									<input type="text" class="form-control" name="search_blog">
+									<button type="submit" class="tt-btn-icon icon-f-85"></button>
+								</div>
+							</form>
+						</div>
+					</div>
+
+					<div class="tt-block-aside">
+						<h3 class="tt-aside-title">ПОСЛЕДНИЕ СТАТЬИ</h3>
+						<div class="tt-aside-content">
+							<div class="tt-aside-post">
+								{% for resent in resents %}
+								<div class="item">
+									<div class="tt-tag"><a href="{% url 'subcat' resent.category.slug %}">{{ resent.category|upper }}</a></div>
+									{% if 'articles' in request.path %}
+									<a href="{% url 'oldblog' resent.id %}"><div class="tt-title">{{ resent.title|title }}</div>
+										<div class="tt-description">
+											{{ resent.short_desc|striptags|truncatechars:100}}
+										</div>
+									{% else %}
+									<a href="{% url 'blog' resent.slug %}"><div class="tt-title">{{ resent.title|title }}</div>
+										<div class="tt-description">
+											{{ resent.short_desc|striptags|truncatechars:100}}
+										</div>
+									{% endif %}
+
+									</a>
+									<div class="tt-info">
+										by <span>Admin</span> {{ resent.publish }}
+									</div>
+								</div>
+								{% endfor %}
+
+							</div>
+						</div>
+					</div>
+
+					<div class="tt-block-aside">
+						<h3 class="tt-aside-title">КАЛЕНДАРЬ</h3>
+						<div class="tt-aside-content">
+							<div class="calendarDatepicker" data-date="{% now 'SHORT_DATETIME_FORMAT' %}" data-date-format="dd-mm-yyyy"></div>
+						</div>
+					</div>
+					<div class="tt-block-aside">
+						<h3 class="tt-aside-title">АРХИВ</h3>
+						<div class="tt-aside-content">
+							<form class="form-default" method="get" action="">
+								<div class="box-archives">
+									<select class=" form-control" name="arch">
+										{% for a in archeves %}
+										<option>{{ a.year|date:'Y' }} ({{ a.year_count }})</option>
+										{% endfor %}
+									</select>
+									<button class="btn arch-btn" type="submit">Выбрать</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

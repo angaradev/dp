@@ -1,0 +1,82 @@
+{% extends 'admin/adm_base.html' %}
+{% load static %}
+{% block page_content %}
+<script>
+    function my_loop(files){
+        var html = '<span class="files-upload-ul">Выбрано: ' + files.length + ' файлов</span><ul >';
+
+        return html;
+    };
+
+</script>
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <div class="col-6">
+        <form method="post" action="{% url 'adminfilesupload' images.pk %}" enctype="multipart/form-data">{% csrf_token %}
+            {% if 'adminemptylisting' in request.META.HTTP_REFERER %}
+            <a href="{% url 'adminemptylisting' %}" class="btn btn-outline-success btn-sm">Назад в пустые</a>
+            {% else %}
+            <a href="{% url 'adminphotolisting' category_id %}" class="btn btn-outline-success btn-sm">Назад в категорию</a>
+            {% endif %}
+            <label class="btn btn-outline-primary btn-sm mb-0" for="my-file-selector">
+                <input id="my-file-selector" type="file" name="files" multiple hidden
+                onchange="$('#upload-file-info').html(my_loop(this.files))">
+                Выбрать файлы для загрузки
+            </label>
+            <button type="submit" class="btn btn-outline-success btn-sm">Загрузить фото</button>
+            <span class='label label-info' id="upload-file-info"></span>
+        </form>
+    </div>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group mr-2">
+        {% if 'adminemptylisting' in request.META.HTTP_REFERER %}
+        <a href="?make_done={{ images.pk }}&car={{ car }}&empty=True" class="btn btn-sm btn-outline-success" title="Отметить как готовую">Отметить проверено</a>
+        <a href="?make_not_done={{ images.pk }}&car={{ car }}&empty=True" class="btn btn-sm btn-outline-danger" title="Отметить как НЕ готовую">Отметить НЕ проверено</a>
+        {% else %}
+        <a href="?make_done={{ images.pk }}&car={{ car }}" class="btn btn-sm btn-outline-success" title="Отметить как готовую">Отметить проверено</a>
+        <a href="?make_not_done={{ images.pk }}&car={{ car }}" class="btn btn-sm btn-outline-danger" title="Отметить как НЕ готовую">Отметить НЕ проверено</a>
+            {% endif %}
+        </div>
+
+        <!--<button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+        <span data-feather="calendar"></span>
+            This week
+        </button>-->
+    </div>
+</div>
+<div class="row">
+
+    <div class="col-12">
+        <form method="get" action=".">
+            <button type="submit" style="z-index:20;" class="btn btn-danger btn-sm float">Удалить Все короме Выделенных</button>
+            <h6>{{ images.name|title }}</h6>
+                <div class="row">
+                    {% for img in images.image_path_adm %}
+                    <div class="col-2">
+                        <hr>
+                        <div class="text-center">
+                            {% if images.main_img == img.img_name %}
+                            <a href="" class="btn btn-outline-primary btn-sm">Главная</a>
+                            {% else %}
+                            <a href="?make_main={{ img.img_name }}&car={{ car }}" class="btn btn-outline-primary btn-sm">Сделать Глав</a>
+                            {% endif %}
+                            <a href="?delete_single={{ img.img_name }}&car={{ car }}" class="btn btn-outline-danger btn-sm">Удалить</a>
+                            <div class="p-2">
+                                <img id="ch-{{ img.path }}" src="{% static img.path %}" class="img-fluid chk-div" data-id="{{ img.img_name }}">
+                                <input  class="form-check-input" type="checkbox" name="img_delete" value="{{ img.img_name }}" id="c-{{ img.img_name }}">
+                            </div>
+                        </div>
+                    </div>
+
+                     {% endfor %}
+                </div>
+        </form>
+    </div>
+
+</div>
+
+
+{% endblock %}
+{% block js_img %}
+<script type="text/javascript" src="{% static 'js/adminphotos_check_img.js' %}"></script>
+{% endblock %}
