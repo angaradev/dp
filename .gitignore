@@ -3,10 +3,10 @@
 # Edit at https://www.gitignore.io/?templates=django
 
 ### Django ###
-#settings.py
-#dp/urls.py
+settings.py
+p/urls.py
 static_root/
-#wsgi.py
+wsgi.py
 *.log
 *.pot
 *.pyc
