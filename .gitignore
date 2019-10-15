@@ -6,6 +6,7 @@
 settings.py
 dp/urls.py
 static_root/
+wsgi.py
 *.log
 *.pot
 *.pyc
