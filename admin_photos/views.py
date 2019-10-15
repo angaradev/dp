@@ -208,7 +208,7 @@ def admin_detailed_view(request, pk):
             if img_stay in dir_listing:
                 dir_listing.remove(img_stay)
         for f in dir_listing:
-            os.remove(os.path.join(working_dir, 'img', qs.cat_n, f))
+            os.remove(os.path.join(working_dir, qs.cat_n, f))
         return redirect('admin_detailed_view', pk)
 
     
