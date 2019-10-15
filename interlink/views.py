@@ -4,8 +4,7 @@ from products.models import Categories
 from django.http import Http404
 
 def subcat_redirect(request, pk):
-    qs = RedireCtcat.objects.get(id_old=pk)
-    print(qs)
+    qs = RedireCtcat.objects.first(id_old=pk)
     nqs = Categories.objects.get(id=qs.id_new)
     if not qs or not nqs:
         raise Http404
