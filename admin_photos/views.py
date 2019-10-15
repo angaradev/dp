@@ -259,7 +259,7 @@ def admin_detailed_view(request, pk):
 @login_required
 def upload_files(request, pk):
     qs = Products.objects.get(id=pk)
-    dir_path = os.path.join(settings.STATICFILES_DIRS[1], qs.cat_n)
+    dir_path = os.path.join(settings.STATIC_ROOT, qs.cat_n)
     for count, x in enumerate(request.FILES.getlist("files")):
         ext = os.path.splitext(x.name)[-1]
         timestamp = timezone.now().timestamp()     
