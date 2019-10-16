@@ -184,3 +184,29 @@
 #acc-menu:before {
     content: "\ea82";
 }
+.about-p {
+    font-size: 1.3rem;
+    line-height:1.6;
+}
+.about-p p {
+    margin-bottom: 20px;
+}
+.about-p h2 {
+    color: #2879fe;
+}
+.about-p h5 {
+    color: MEDIUMSEAGREEN;
+}
+.about-img img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    max-width: 800px;
+    height: auto;
+}
+.about-label {
+    margin-top: 20px;
+    color: MEDIUMSEAGREEN;
+
+}
