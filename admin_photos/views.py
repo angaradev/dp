@@ -235,13 +235,19 @@ def admin_detailed_view(request, pk):
     not_ready = request.GET.get('make_not_done')
     empty = request.GET.get('empty')
     make_main = request.GET.get('make_main')
-    par_id = qs.cat.first().parent_id
+    try:
+        par_id = qs.cat.first().parent_id
+    except:
+        par_id = 0
     if ready and empty:
         return redirect('adminemptylisting')
     if ready:
         qs.img_check=True
         qs.save()
-        return redirect('adminphotolisting', par_id)
+        if par_id == 0:
+            return redirect('adminnocat')
+        else:
+            return redirect('adminphotolisting', par_id)
     if not_ready:
         qs.img_check=False
         qs.save()
