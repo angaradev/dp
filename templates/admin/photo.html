@@ -15,6 +15,15 @@
         </tr>
         </thead>
         <tbody>
+        <tr>
+            <td>000</td>
+            <td>
+                <a href="{% url 'adminnocat' %}">Без категории</a>
+            </td>
+            <td><span class="bblue">{{ nocat.count }}</span></td>
+            <td><span class="bgreen">{{ nocat.c_count }}</span></td>
+            <td><span class="bred">{{ nocat.u_count }}</span></td>
+        </tr>
         {% for object in objects %}
         <tr>
             <td>{{ object.id }}</td>

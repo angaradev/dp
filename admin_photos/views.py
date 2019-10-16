@@ -100,18 +100,32 @@ def admin_photos_view(request):
             pqs.filter(img_check=True).count(), 'unchecked_count': pqs.filter(img_check=False).count()})
 
     cars = show_cars()
+    nocat_qs = Products.objects.filter(cat__isnull=True)
+    c_nocat = nocat_qs.filter(img_check=1).aggregate(ch_count=Count('id'))
+    u_nocat = nocat_qs.filter(img_check=0).aggregate(ch_count=Count('id'))
 
     context = {
                 'objects': objects,
                 'cars': cars,
                 'car': car,
                 'checked': checked,
+                'nocat': {
+                    'count': nocat_qs.count(),
+                    'c_count': c_nocat['ch_count'],
+                    'u_count': u_nocat['ch_count'],
+                    }
             }
     return render(request, 'admin/photo.html', context)
 
 
 
-
+def nocat_product(request):
+    nocat = request.GET.get('nocat')
+    qs = Products.objects.filter(cat__isnull=True)
+    context = {
+            'nocat': qs,
+            }
+    return render(request, 'admin/photo_listing.html', context)
 
 @login_required
 def admin_photo_listing(request, pk):
@@ -127,7 +141,7 @@ def admin_photo_listing(request, pk):
     li = []
     for c in cat:
         li.append(c.id)
-    qs = Products.objects.filter(cat__in=li)
+    qs = Products.objects.filter(cat__in=li).distinct()
 
     if not car or not checked:
         car = 'all'
