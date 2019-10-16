@@ -118,12 +118,12 @@ def admin_photos_view(request):
     return render(request, 'admin/photo.html', context)
 
 
-
+@login_required
 def nocat_product(request):
     nocat = request.GET.get('nocat')
     qs = Products.objects.filter(cat__isnull=True)
     context = {
-            'nocat': qs,
+            'objects': qs,
             }
     return render(request, 'admin/photo_listing.html', context)
 
