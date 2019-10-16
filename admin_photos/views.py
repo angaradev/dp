@@ -127,7 +127,7 @@ def admin_photo_listing(request, pk):
     li = []
     for c in cat:
         li.append(c.id)
-    qs = Products.objects.filter(cat__in=li).distinct()
+    qs = Products.objects.filter(cat__in=li)
 
     if not car or not checked:
         car = 'all'
