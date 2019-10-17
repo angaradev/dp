@@ -257,7 +257,6 @@ def admin_detailed_view(request, pk):
         qs.save()
         return redirect('admin_detailed_view', pk)
 
-    car = request.session['car']
     
     if request.session.get('car', None): 
         car = request.session['car']
