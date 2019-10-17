@@ -9,7 +9,7 @@ from django.conf import settings
 from django.views.generic.edit import FormView
 from .forms import FileFieldForm
 from django.utils import timezone
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.db.models import Q
 from django.urls.base import reverse
 
@@ -122,8 +122,22 @@ def admin_photos_view(request):
 def nocat_product(request):
     nocat = request.GET.get('nocat')
     qs = Products.objects.filter(cat__isnull=True)
+    checked = 'All'
+    if request.GET.get('checked'):
+        checked = request.GET.get('checked')
+        request.session['checked'] = checked
+    else:
+        checked = request.session.get('checked', None)
+
+    if checked and (checked == 'True' or checked == 'False'):
+        qs = qs.filter(img_check=checked)
+    elif not checked:
+        qs = qs
+            
+    cars = show_cars()
     context = {
             'objects': qs,
+            'cars': cars,
             }
     return render(request, 'admin/photo_listing.html', context)
 
