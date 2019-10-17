@@ -23,13 +23,33 @@
 	<div class="container-indent">
 		<div class="container">
 			<div class="tt-about-col-list">
-				<div class="map-area">
-                  <div>
-					  <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d940.6870088332372!2d37.40267952214013!3d55.89140407547924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46b5389430b4de03%3A0x9bc8057d70bedbb5!2z0JDQvdCz0LDRgNCwINCX0LDQv9GH0LDRgdGC0Lg!5e0!3m2!1sru!2sru!4v1517403237916" width="100%" height="500" frameborder="0" style="border:0" allowfullscreen></iframe>
-                  </div>
-               </div>
-				<h1 class="title">Как до нас добраться?</h1>
-				<div class="row">
+				<h1 class="title">Контакты</h1>
+				<div class="row about-p">
+					<div class="col-md-6">
+						<div class="tt-box-info">
+							<p>
+								<span class="tt-base-dark-color">Телефон:</span> <span class="bgreen"> {{ shop_info.shop_tel }}</span> (Бесплатный)
+							</p>
+							<p>
+								<span class="tt-base-dark-color">Телефон:</span> <span class="bgreen"> {{ shop_info.shop_tel2 }}</span>
+							</p>
+							<p>
+								<span class="tt-base-dark-color">Телефон:</span> <span class="bgreen"> {{ shop_info.shop_tel3 }}</span>
+							</p>
+							<p>
+								<span class="tt-base-dark-color">Часы работы:</span> {{ shop_info.shop_working_hours }}
+							</p>
+							<p>
+								<span class="tt-base-dark-color">Почта:</span> <a class="link" href="mailto: {{ shop_info.shop_email }}">{{ shop_info.shop_email }}</a>
+							</p>
+							<p>
+								<span class="tt-base-dark-color">Адрес:</span> <span class="bblue"> {{ shop_info.address_line1 }}</span>
+							</p>
+							<p>
+								<span class="tt-base-dark-color"></span> <span class="bblue"> {{ shop_info.address_line2 }}</span>
+							</p>
+						</div>
+					</div>
 					<div class="col-md-6">
 						<div class="width-90">
 							Мы находимся на Северо-Западе, ближайшая станция метро - Планерная.
@@ -38,23 +58,13 @@
 						</div>
 
 					</div>
-					<div class="col-md-6">
-						<div class="tt-box-info">
-							<p>
-								<span class="tt-base-dark-color">Адрес:</span> Соловьиная Роща дом 8 корпус 2 офис 9<br>
-							</p>
-							<p>
-								<span class="tt-base-dark-color">Телефон:</span> 8 800 200 99 53
-							</p>
-							<p>
-								<span class="tt-base-dark-color">Часы работы:</span> С 9 до 19 Без выходных
-							</p>
-							<p>
-								<span class="tt-base-dark-color">Почта:</span> <a class="link" href="mailto:angara77@gmail.com">angara77@gmail.com</a>
-							</p>
-						</div>
-					</div>
 				</div>
+				<div class="map-area">
+                  <div>
+					  <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d940.6870088332372!2d37.40267952214013!3d55.89140407547924!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46b5389430b4de03%3A0x9bc8057d70bedbb5!2z0JDQvdCz0LDRgNCwINCX0LDQv9GH0LDRgdGC0Lg!5e0!3m2!1sru!2sru!4v1517403237916" width="100%" height="500" frameborder="0" style="border:0" allowfullscreen></iframe>
+                  </div>
+               </div>
+
 			</div>
 		</div>
 	</div>
