@@ -87,8 +87,9 @@ class Products(models.Model):
         img_list = []
         for f in files:
             img_list.append(os.path.join('img', self.cat_n, f))
-            if not img_list:
-                img_list = ['img/000_default/default.png' for _ in range(5)]
+        if not img_list:
+            print('in here', img_list)
+            img_list = ['img/000_default/default.png' for _ in range(2)]
         return img_list
 
 
