@@ -6,6 +6,7 @@ from django.urls.base import reverse
 from products.models import Categories
 from django.contrib.contenttypes.models import ContentType
 from comments.models import Comment
+from django.utils import timezone
 
 def get_filename_ext(filepath):
     base_name = os.path.basename(filepath)
@@ -39,7 +40,7 @@ class Blogs(models.Model):
     text                = models.TextField()
     image               = models.ImageField(upload_to=upload_image_path, null=True, blank=True)
     category            = models.ForeignKey(Categories, related_name='category', on_delete=models.CASCADE, default=1)
-    publish             = models.DateField(auto_now=True)
+    publish             = models.DateField(default=timezone.now)
     number_views        = models.IntegerField(default=0)
     page_title          = models.CharField(max_length=500, blank=True, null=True)
     page_description    = models.CharField(max_length=500, blank=True, null=True)
