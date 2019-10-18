@@ -86,9 +86,8 @@ class OldBlogs(models.Model):
     short_desc          = models.TextField(null=True, blank=True)
     text                = models.TextField()
     image               = models.ImageField(upload_to=upload_image_path, null=True, blank=True)
-    category            = models.ForeignKey(Categories, on_delete=models.CASCADE, default=1,
-            related_name='old_categories')
-    publish             = models.DateField(auto_now=True)
+    category            = models.ForeignKey(Categories, on_delete=models.CASCADE, default=1, related_name='old_categories')
+    publish             = models.DateField(default=timezone.now)
     number_views        = models.IntegerField(default=1)
     page_title          = models.CharField(max_length=500, blank=True, null=True)
     page_description    = models.CharField(max_length=500, blank=True, null=True)
