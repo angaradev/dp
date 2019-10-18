@@ -14,6 +14,7 @@
 	<div class="container">
 		<ul>
 			<li><a href="{% url 'home' %}">Главная</a></li>
+			<li><a href="{% url 'newparts' %}">Запчасти</a> </li>
 			{% if bread1 %}
 			<li><a href="{% url 'subcat' bread1.slug %}">{{ bread1.name|title }}</a></li>
 			{% endif %}

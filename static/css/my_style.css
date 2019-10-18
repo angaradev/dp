@@ -191,8 +191,10 @@
 .about-p p {
     margin-bottom: 20px;
 }
-.about-p h2 {
+.about-p h2:not(.small):not([class^="tt-title"]):not([class^="tt-collapse"]):not([class^="tt-aside"])  {
     color: #2879fe;
+    margin-top: 36px;
+    padding-bottom: 0;
 }
 .about-p h5 {
     color: MEDIUMSEAGREEN;
@@ -208,5 +210,8 @@
 .about-label {
     margin-top: 20px;
     color: MEDIUMSEAGREEN;
-
+}
+.about-border {
+    border: 1px solid #77777733;
+    border-radius:2px;
 }

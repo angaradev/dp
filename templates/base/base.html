@@ -76,15 +76,15 @@
 			</li>
 			<li>
 				<a href="{% url 'newparts' %}">КАТАЛОГИ</a>
-
 			</li>
 			<li>
 				<a href="{% url 'blogs' %}">БЛОГ</a>
-
 			</li>
 			<li>
-				<a href="{% url 'contacts' %}">КОНТАКТЫ</a>
-
+				<a href="{% url 'delivery' %}">ДОСТАВКА</a>
+			</li>
+			<li>
+				<a href="{% url 'guaranties' %}">ГАРАНТИИ</a>
 			</li>
 			<li>
 				<a href="#">О КОМПАНИИ</a>
@@ -107,7 +107,8 @@
 				</ul>
 			</li>
 			<li>
-
+				<a href="{% url 'contacts' %}">КОНТАКТЫ</a>
+			</li>
 		</ul>
 		<div class="mm-navbtn-names">
 			<div class="mm-closebtn">Закрыть</div>
@@ -204,7 +205,6 @@
 						<div class="tt-dropdown-menu">
 							<nav>
 								<ul>
-
 										{% for h_cat in categories %}
 										<li>
 											<a href="{% url 'subcat' h_cat.slug %}">
@@ -213,7 +213,6 @@
 											</a>
 										</li>
 										{% endfor %}
-
 								</ul>
 							</nav>
 						</div>
@@ -228,8 +227,6 @@
 								<ul>
 									<li class="dropdown tt-megamenu-col-02 selected">
 										<a href="{% url 'home' %}">ГЛАВНАЯ</a>
-
-
 									</li>
 									<li class="dropdown tt-megamenu-col-01">
 										<a href="{% url 'newparts' %}">КАТАЛОГИ</a>
@@ -261,12 +258,10 @@
 										</div>
 									</li>
 									<li class="dropdown tt-megamenu-col-01">
-										<a href="{% url 'contacts' %}">КОНТАКТЫ</a>
-
+										<a href="{% url 'delivery' %}">ДОСТАВКА</a>
 									</li>
 									<li class="dropdown tt-megamenu-col-01">
-										<a href="{% url 'delivery' %}">ДОСТАВКА</a>
-
+										<a href="{% url 'guaranties' %}">ГАРАНТИИ</a>
 									</li>
 									<li class="dropdown tt-megamenu-col-01">
 										<a href="{% url 'about' %}">О НАС</a>
@@ -290,6 +285,9 @@
 												</div>
 											</div>
 										</div>
+									</li>
+									<li class="dropdown tt-megamenu-col-01">
+										<a href="{% url 'contacts' %}">КОНТАКТЫ</a>
 									</li>
 								</ul>
 							</nav>
