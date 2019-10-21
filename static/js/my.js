@@ -43,7 +43,10 @@ $(document).ready(function(){
         data: data,
         success: function(data){
             $('.tt-badge-wish').html(data.wish_list_count);
-            $('#add-wish-product-' + pk).html('<i class="icon-n-072"></i>ДОБАВЛЕНО В ИЗБРАННОЕ');
+            var wish_heart = $('a#add-wish-' + pk);
+            console.log(wish_heart.data('tooltip'));
+            wish_heart.attr('data-tooltip', 'Добавлено в Избранное')
+            wish_heart.css('background', '#777777');
             $('.tt-badge-wish').css('visibility', 'visible');
             }
         });
