@@ -23,7 +23,6 @@
 		<div class="tt-mobile-product-layout visible-xs">
 			<div class="tt-mobile-product-slider arrow-location-center slick-animated-show-js">
 				{% for p in object.image_path_all %}
-
 				<div><img src="{% static p %}" alt=""></div>
 				{% endfor %}
 				<!--<div>
@@ -47,7 +46,7 @@
 						<ul  data-scrollzoom="false">
 							{% for p in object.image_path_all %}
 							{% if p %}
-							<li><img class="zoom-product" src="{% static p %}" alt="{{ object.name }}"></li>
+							<li><img class="zoom-produc" src="{% static p %}" alt="{{ object.name }}"></li>
 							{% endif %}
 							{% endfor %}
 
@@ -65,7 +64,7 @@
 						<div class="tt-product-single-info">
 							<div class="tt-add-info">
 								<ul>
-									<li><span>Номер по каталогу:</span> {{ object.cat_n }}</li>
+									<li><span>Артикул:</span> {{ object.cat_n }}</li>
 									<!--<li><span>Наличие:</span> В наличии</li>-->
 								</ul>
 							</div>
@@ -86,9 +85,15 @@
 
 								</div>
 							</div>
-							<div class="tt-wrapper">
+							<div class="tt-wrapper product-desc">
 								Внимание! Изображения запчастей могут не соответсвовать реальным! Мы обновляем базу изображений.
 								Для уточнения деталей звоните пожалуйста менеджеру!
+							</div>
+							<div class="tt-wrapper product-desc">
+								Доставка по Москве от 290 рублей. При большом заказе - доставка бесплатно! <a href="{% url 'delivery' %}">Подробнее о  Доставке >></a>
+							</div>
+							<div class="tt-wrapper product-desc">
+								Почему лучше покупать у нас: <a href="{% url 'about' %}">Преимущества и Отзывы >></a>
 							</div>
 							<div class="tt-wrapper">
 								<div class="tt-row-custom-01">
@@ -235,7 +240,7 @@
 	  <div class="modal-dialog" role="document">
 		<div class="modal-content">
 		  <div class="modal-header">
-			<h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+			<h5 class="modal-title" id="exampleModalLabel">Заказать звонок</h5>
 			<button type="button" class="close" data-dismiss="modal" aria-label="Закрыть">
 
 			</button>
