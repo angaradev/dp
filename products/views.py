@@ -391,6 +391,10 @@ def detailed(request, pk):
             art_w_list.append({ 'article': article, 'weight': we})
         if i > 10:
             break
+    #Добавляем аналоги
+    analogs = Products.objects.filter(cat_n=obj.cat_n).exclude(id=obj.id)
+    if not analogs:
+        analogs = None
 
 
 
@@ -407,6 +411,7 @@ def detailed(request, pk):
             'similar_products': similar_products,
             'aver': aver,
             'articles': art_w_list,
+            'analogs': analogs,
 
             }
     return render(request, 'products/product.html', context)

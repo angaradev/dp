@@ -120,6 +120,19 @@
 									<li><a class="btn-link" href="{% url 'cart' %}"><i class="icon-f-39"></i>ПЕРЕЙТИ В КОРЗИНУ</a></li>
 								</ul>
 							</div>
+							{% if analogs %}
+							<div class="tt-wrapper">
+								<div class="tt-add-info">
+									<span class="bgreen">Внимание есть аналоги:</span>
+									<ul>
+										{% for analog in analogs %}
+										<li class="border_bott"><span></span><a href="{% url 'detailed' analog.id %}">{{ analog.cat_n }} | {{ analog.name|title }} </a><span class="bgreen"> | &#8381; {{ analog.price }}</span></li>
+
+										{% endfor %}
+									</ul>
+								</div>
+							</div>
+							{% endif %}
 							<div class="tt-wrapper">
 								<div class="tt-add-info">
 									<ul>

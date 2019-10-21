@@ -222,3 +222,12 @@
     color: mediumseagreen;
     font-weight: bold;
 }
+.tt-product-single-info .tt-add-info ul li a{
+    color: #2879fe;
+}
+.tt-product-single-info .tt-add-info ul li a:hover{
+    color: #2b5cab;
+}
+.border_bott {
+    border-bottom: 1px solid #77777733;
+}
