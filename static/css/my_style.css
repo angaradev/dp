@@ -231,3 +231,7 @@
 .border_bott {
     border-bottom: 1px solid #77777733;
 }
+.tt-product-single-info .tt-title {
+    font-size: 18px;
+    font-weight: bold;
+}
