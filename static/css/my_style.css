@@ -235,3 +235,6 @@
     font-size: 18px;
     font-weight: bold;
 }
+.header-tel-info [class^="icon"] {
+    color:mediumseagreen;
+}
