@@ -40,12 +40,12 @@
 	<script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "{{ shop_info.company_name }}",
+      "@type": "Organization",
       "url": "{{ site_host }}",
       "contactPoint": [
         { "@type": "ContactPoint",
-          "telephone": "{{ shop_info.shop_tel }}",
-          "contactType": "Отдел продаж"
+          "telephone": "{{ shop_info.shop_tel_no_brackets }}",
+          "contactType": "sales"
         }
       ]
     }
