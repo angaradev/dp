@@ -3,6 +3,51 @@
 {% load ratings %}
 {% load crispy_forms_tags %}
 {% block page %}
+
+
+<div>
+    <div itemscope itemtype="http://schema.org/Product">
+        <meta content="{{ object.cat_n }}" itemprop="mpn" />
+        <meta content="{{ object.name }}" itemprop="name" />
+        <link href="{% static object.image_path %}" itemprop="image" />
+        <meta content="{{ object.description }}" itemprop="description" />
+        <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+            <link href="{{ object.get_absolute_url }}" itemprop="url" />
+            <meta content="https://schema.org/InStock" itemprop="availability" />
+            <meta content="RUB" itemprop="priceCurrency" />
+            <meta content="https://schema.org/UsedCondition" itemprop="itemCondition" />
+            <meta content="{{ object.price }}" itemprop="price" />
+            <meta content="{{ object.price_valid_date }}" itemprop="priceValidUntil" />
+            <div itemprop="seller" itemscope itemtype="http://schema.org/Organization">
+            <meta content="{{ shop_info.company_name }}" itemprop="name" />
+            </div>
+        </div>
+        <div itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
+          <meta content="{{ object.rating.count }}" itemprop="reviewCount" />
+          <meta content="{{ object.rating.average }}" itemprop="ratingValue" />
+        </div>
+        <div itemprop="review" itemscope itemtype="http://schema.org/Review">
+            <div itemprop="author" itemscope itemtype="http://schema.org/Person">
+            	<meta content="Admin" itemprop="name" />
+            </div>
+            <div itemprop="reviewRating" itemscope itemtype="http://schema.org/Rating">
+            <meta content="{{ object.rating.average }}" itemprop="ratingValue" />
+			<meta content="1" itemprop="worstRating" />
+            <meta content="5" itemprop="bestRating" />
+            </div>
+        </div>
+        <meta content="{{ object.id }}" itemprop="sku" />
+        <div itemprop="brand" itemscope itemtype="http://schema.org/Thing">
+          <meta content="{{ object.brand }}" itemprop="name" />
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
 <div class="tt-breadcrumb">
 	<div class="container">
 		<ul>
@@ -17,8 +62,8 @@
 	</div>
 
 </div>
-<div itemscope itemtype="http://schema.org/Product" id="tt-pageContent">
-	<div class="container-indent" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+<div id="tt-pageContent">
+	<div class="container-indent">
 		<!-- mobile product slider  -->
 		<div class="tt-mobile-product-layout visible-xs">
 			<div class="tt-mobile-product-slider arrow-location-center slick-animated-show-js">
@@ -64,14 +109,14 @@
 						<div class="tt-product-single-info">
 							<div class="tt-add-info">
 								<ul>
-									<li><span itemprop="mpn">Артикул:</span> {{ object.cat_n }}</li>
-									<li><span itemprop="brand">Брeнд:</span> {{ object.brand|upper }}</li>
+									<li><span>Артикул:</span> {{ object.cat_n }}</li>
+									<li><span>Брeнд:</span> {{ object.brand|upper }}</li>
 									<!--<li><span>Наличие:</span> В наличии</li>-->
 								</ul>
 							</div>
 							<h1 itemprop = "name" class="tt-title">{{ object.name|upper }}</h1>
 							<div class="tt-price">
-								<span class="new-price">&#8381; <span itemprop = "price" >{{ object.price }}</span></span>
+								<span class="new-price">&#8381; {{ object.price }}</span>
 								<span class="old-price"></span>
 							</div>
 							{% ratings object 12 12 %}

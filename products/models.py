@@ -8,6 +8,7 @@ import os
 from django.db.models.signals import pre_save
 from .utils import random_string_generator
 from urllib.parse import quote
+from star_ratings.models import Rating
 
 class Categories(models.Model):
     name = models.CharField(max_length=100, null=True)
@@ -57,6 +58,15 @@ class Products(models.Model):
         instance = self
         qs = Comment.objects.filter_by_instance(instance)
         return qs
+    
+    @property
+    def price_valid_date(self):
+        return timezone.now() + timezone.timedelta(days=7)
+
+    @property
+    def rating(self):
+        rating =  Rating.objects.get(object_id=self.id)
+        return rating
 
     @property
     def get_content_type(self):
