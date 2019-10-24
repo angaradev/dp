@@ -1,3 +1,14 @@
 from django.db import models
 
-# Create your models here.
+
+class Kernel(models.Model):
+    
+    keywords = models.CharField(max_length=500)
+    freq    = models.PositiveIntegerField()
+    
+
+
+
+
+
+    

@@ -40,7 +40,7 @@
 		</div>
 		<!-- /mobile product slider  -->
 
-		<div class="container container-mobile-airSticky" itemscope itemtype="http:/scema.org/Offer">
+		<div class="container container-mobile-airSticky" itemscope itemtype="http://schema.org/Product">
 			<div class="row airSticky_stop-block">
 				<div class="col-6 hidden-xs">
 					<div class="product-images-static hidden-xs">
@@ -50,7 +50,6 @@
 							<li><img class="zoom-produc about-border" src="{% static p %}" alt="{{ object.name }}"></li>
 							{% endif %}
 							{% endfor %}
-
 							<!--<li>
 								<div class="tt-video-block">
 									<a href="#" class="link-video"></a>
@@ -65,7 +64,8 @@
 						<div class="tt-product-single-info">
 							<div class="tt-add-info">
 								<ul>
-									<li><span>Артикул:</span> {{ object.cat_n }}</li>
+									<li><span itemprop="mpn">Артикул:</span> {{ object.cat_n }}</li>
+									<li><span itemprop="brand">Бранд:</span> {{ object.brand|upper }}</li>
 									<!--<li><span>Наличие:</span> В наличии</li>-->
 								</ul>
 							</div>
