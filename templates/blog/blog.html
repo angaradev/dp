@@ -18,6 +18,32 @@
 	Полезные статьи, исследования, наблюдения касающиеся эксплуатации, ремонта а так же выбора запчастей для автомобилей{% for car in cars %}{{ car.car|upper }} {% endfor %} {% endblock page_description %}
 {% block page %}
 
+<li><a href="{% url 'home' %}">Главная</a></li>
+			<li><a href="{% url 'blogs' %}">Блог</a></li>
+			<li>{{ object.title|title }}</li>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+    "@type": "ListItem",
+    "position": 1,
+    "name": "Главная",
+    "item": "{% url 'home' %}"
+  },{
+    "@type": "ListItem",
+    "position": 2,
+    "name": "Блог",
+    "item": "{% url 'blogs' %}"
+  },{
+    "@type": "ListItem",
+    "position": 3,
+    "name": "{{ object.title|title }}",
+    "item": "{{ object.get_absolute_url }}"
+  }]
+}
+</script>
+
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
