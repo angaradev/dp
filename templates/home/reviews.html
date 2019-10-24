@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block page_title %}О компании Ducatoparts.ru{% endblock page_title %}
+
+{% block page_description %}{% endblock page_description %}
+{% block page %}
+<div class="tt-breadcrumb">
+	<div class="container">
+		<ul>
+			<li><a href="{% url 'home' %}">Главная</a></li>
+			<li><a href="{% url 'newparts' %}">Запчасти</a> </li>
+			<li>Отзывы</li>
+		</ul>
+	</div>
+</div>
+<div id="tt-pageContent">
+	<div class="nomargin container-indent">
+		<div class="about-box">
+			<div class="container about-p">
+				<div class="row">
+					<div class="col-12">
+						<h3>Вот так оценивают нашу работу клиенты</h3>
+						<div class="row">
+							<div class="col-6">
+								<div class="about-img text-center">
+									<img src="{% static 'img_company/google_business.png' %}" alt="Оценка нашей работы клиентами в Google">
+									<label class="about-label">Оценка нашей работы клиентами в Гугл бизнес</label>
+								</div>
+							</div>
+							<div class="col-6">
+								<div class="about-img text-center">
+									<img src="{% static 'img_company/yandex_business.png' %}" alt="Оценка нашей работы клиентами в Yandex">
+									<label class="about-label">Оценка нашей работы клиентами в Яндекс</label>
+								</div>
+							</div>
+						</div>
+						<p>Желаем Вам хорошего дня и удачи на дорогах!</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+
+

@@ -31,6 +31,22 @@ def home(request):
 
     return render(request, 'home/home.html', context)
 
+
+def reviews(request):
+    form = EmailFormLight(request.POST or None)
+
+    if form.is_valid():
+
+        phone = form.cleaned_data.get('phone')
+        name = form.cleaned_data.get('name')
+        callback, created = EmailModel.objects.get_or_create(phone=phone, name=name)
+    context = {
+        'form': form,
+
+            }
+    return render(request, 'home/reviews.html', context)
+
+
 def about(request):
     form = EmailFormLight(request.POST or None)
 
