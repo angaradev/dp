@@ -9,7 +9,11 @@
         <meta content="{{ object.name }}" itemprop="name" />
 		<meta content="{{ object.cat.first }}" itemprop="category" />
         <link href="{% static object.image_path %}" itemprop="image" />
+		{% if object.descriptino %}
         <meta content="{{ object.description }}" itemprop="description" />
+		{% else %}
+		<meta content="{{ object.name }}" itemprop="description" />
+		{% endif %}
         <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
             <link href="{{ object.get_absolute_url }}" itemprop="url" />
             <meta content="https://schema.org/InStock" itemprop="availability" />
