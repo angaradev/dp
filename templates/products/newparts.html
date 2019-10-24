@@ -7,9 +7,43 @@
 {% endblock %}
 {% block page_title %}{% if title_h1 %}{{ title_h1|title }}{% if car %} для {{ car|upper }}{% endif %}{% if brand %} производитель {{ brand }}{% endif %}{% else %}{% if car %} Запчасти для {{ car|upper }}{% else %} Запчасти для Коммерческого Транспорта {% endif %} {% endif %} | DucatoParts.ru{% endblock %}
 {% block page_description %}Автозапчасти для коммерческого транспорта с доставкой. {% if title_h1 %}{{ title_h1|title }}{% if car %} для {{ car|upper }}{% endif %}{% if brand %} производитель {{ brand }}{% endif %}{% else %}{% if car %} Запчасти для {{ car|upper }}{% else %} Запчасти для Коммерческого Транспорта {% endif %} {% endif %}{% endblock %}
-
+{% block breadcrumb_schema %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+    "@type": "ListItem",
+    "position": 1,
+    "name": "Главная",
+    "item": "{{ site_host }}{% url 'home' %}"
+  },{
+    "@type": "ListItem",
+    "position": 2,
+    "name": "Каталог",
+    "item": "{{ site_host }}{% url 'newparts' %}"
+  },{% if bread1%},{
+    "@type": "ListItem",
+    "position": 3,
+    "name": "{{ bread1.name|title }}",
+    "item": "{{ site_host }}{% url 'subcat' bread1.slug %}"
+  },{% endif %},{% if bread2%},{
+    "@type": "ListItem",
+    "position": 4,
+    "name": "{{ bread2.name|title }}",
+    "item": "{{ site_host }}{% url 'subcat' bread2.slug %}"
+  },{% endif %},{% if bread3%},{
+    "@type": "ListItem",
+    "position": 5,
+    "name": "{{ bread3.name|title }}",
+    "item": "{{ site_host }}{% url 'subcat' bread3.slug %}"
+  },{% endif %}]
+}
+</script>
+{% endblock %}
 
 {% block page %}
+
 <div class="tt-breadcrumb">
 	<div class="container">
 		<ul>
