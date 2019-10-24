@@ -41,6 +41,38 @@
         </div>
     </div>
 </div>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [{
+    "@type": "ListItem",
+    "position": 1,
+    "name": "Главная",
+    "item": "{{ site_host }}{% url 'home' %}"
+  },{
+    "@type": "ListItem",
+    "position": 2,
+    "name": "Каталог",
+    "item": "{{ site_host }}{% url 'newparts' %}"
+  },{
+    "@type": "ListItem",
+    "position": 3,
+    "name": "{{ bread_sub1.name|title }}",
+    "item": "{{ site_host }}{% url 'subcat' bread_sub1.slug %}"
+  },{
+    "@type": "ListItem",
+    "position": 4,
+    "name": "{{ bread_sub2.name|title }}",
+    "item": "{{ site_host }}{% url 'subcat' bread_sub2.slug %}"
+  },{
+    "@type": "ListItem",
+    "position": 5,
+    "name": "{{ object.name }}",
+    "item": "{{ site_host }}{{ object.get_absolute_url }}"
+  }]
+}
+</script>
 <div class="tt-breadcrumb">
 	<div class="container">
 		<ul>
@@ -50,7 +82,9 @@
 			<li><a href="{% url 'subcat' bread_sub2.slug %}">{{ bread_sub2.name|title }}</a></li>
 			<li>{% for c in object.cat.all %}
 				<a href="{% url 'subcat' c.slug %}">{{ c.name|title }}</a>,
-				{% endfor %}</li>
+				{% endfor %}
+			</li>
+			<li>{{ object.name|truncatechars:50|title }}</li>
 		</ul>
 	</div>
 
