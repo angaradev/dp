@@ -3,8 +3,6 @@
 {% load ratings %}
 {% load crispy_forms_tags %}
 {% block page %}
-
-
 <div>
     <div itemscope itemtype="http://schema.org/Product">
         <meta content="{{ object.cat_n }}" itemprop="mpn" />
@@ -20,7 +18,7 @@
             <meta content="{{ object.price }}" itemprop="price" />
             <meta content="{{ object.price_valid_date }}" itemprop="priceValidUntil" />
             <div itemprop="seller" itemscope itemtype="http://schema.org/Organization">
-            <meta content="{{ shop_info.company_name }}" itemprop="name" />
+				<meta content="{{ shop_info.company_name }}" itemprop="name" />
             </div>
         </div>
         <div itemprop="aggregateRating" itemscope itemtype="http://schema.org/AggregateRating">
