@@ -18,7 +18,7 @@
 
 </div>
 <div itemscope itemtype="http://schema.org/Product" id="tt-pageContent">
-	<div class="container-indent">
+	<div class="container-indent" itemprop="offers" itemscope itemtype="http://schema.org/Offer">
 		<!-- mobile product slider  -->
 		<div class="tt-mobile-product-layout visible-xs">
 			<div class="tt-mobile-product-slider arrow-location-center slick-animated-show-js">
@@ -40,7 +40,7 @@
 		</div>
 		<!-- /mobile product slider  -->
 
-		<div class="container container-mobile-airSticky" itemscope itemtype="http://schema.org/Product">
+		<div class="container container-mobile-airSticky">
 			<div class="row airSticky_stop-block">
 				<div class="col-6 hidden-xs">
 					<div class="product-images-static hidden-xs">
@@ -65,7 +65,7 @@
 							<div class="tt-add-info">
 								<ul>
 									<li><span itemprop="mpn">Артикул:</span> {{ object.cat_n }}</li>
-									<li><span itemprop="brand">Бранд:</span> {{ object.brand|upper }}</li>
+									<li><span itemprop="brand">Брeнд:</span> {{ object.brand|upper }}</li>
 									<!--<li><span>Наличие:</span> В наличии</li>-->
 								</ul>
 							</div>
