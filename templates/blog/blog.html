@@ -17,6 +17,36 @@
 {% block page_description %}
 	Полезные статьи, исследования, наблюдения касающиеся эксплуатации, ремонта а так же выбора запчастей для автомобилей{% for car in cars %}{{ car.car|upper }} {% endfor %} {% endblock page_description %}
 {% block page %}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ object.get_absolute_url }}"
+  },
+  "headline": "Article headline",
+  "image": [
+    "{{ object.img.url }}"
+   ],
+  "datePublished": "{{ object.publish }}",
+  "dateModified": "{{ object.modified }}",
+  "author": {
+    "@type": "Person",
+    "name": "{{ object.author }}"
+  },
+   "publisher": {
+    "@type": "Organization",
+    "name": "{{ shop_info.company_name }}",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{% static 'logo.png' %}"
+    }
+  },
+  "description": "{{ object.short_desc }}"
+}
+</script>
 <div class="tt-breadcrumb">
 	<div itemscope itemtype="http://schema.org/BlogPosting" class="container">
 		<ul>
