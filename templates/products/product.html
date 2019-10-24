@@ -9,6 +9,7 @@
     <div itemscope itemtype="http://schema.org/Product">
         <meta content="{{ object.cat_n }}" itemprop="mpn" />
         <meta content="{{ object.name }}" itemprop="name" />
+		<meta content="{{ object.cat.first }}" itemprop="category" />
         <link href="{% static object.image_path %}" itemprop="image" />
         <meta content="{{ object.description }}" itemprop="description" />
         <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
@@ -42,12 +43,6 @@
         </div>
     </div>
 </div>
-
-
-
-
-
-
 <div class="tt-breadcrumb">
 	<div class="container">
 		<ul>
@@ -114,7 +109,7 @@
 									<!--<li><span>Наличие:</span> В наличии</li>-->
 								</ul>
 							</div>
-							<h1 itemprop = "name" class="tt-title">{{ object.name|upper }}</h1>
+							<h1 class="tt-title">{{ object.name|upper }}</h1>
 							<div class="tt-price">
 								<span class="new-price">&#8381; {{ object.price }}</span>
 								<span class="old-price"></span>
@@ -179,7 +174,7 @@
 										{% if object.model %}
 										<li><span>Модель:</span> {{ object.model|upper }}</li>
 										{% endif %}
-										<li itemprop="category"><span>Категории:</span>
+										<li><span>Категории:</span>
 											{% for c in object.cat.all %}
 												<a href="{% url 'subcat' c.slug %}">{{ c.name }},</a>
 											{% endfor %}</li>

@@ -61,7 +61,7 @@ class Products(models.Model):
     
     @property
     def price_valid_date(self):
-        return timezone.now() + timezone.timedelta(days=7)
+        return (timezone.now() + timezone.timedelta(days=7)).strftime('%Y-%m-%d')
 
     @property
     def rating(self):
