@@ -15,7 +15,7 @@ def small_cart(request):
 # Вывод контактной информации
 
 def contact_info(request):
-    return({'shop_info': settings.SHOP_CONTACT_INFO})
+    return({'shop_info': settings.SHOP_CONTACT_INFO, 'site_host': settings.SHOP_SITE_HOST})
 
 
 def sales_products(request):
