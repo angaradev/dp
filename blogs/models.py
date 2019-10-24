@@ -93,6 +93,8 @@ class OldBlogs(models.Model):
     number_views        = models.IntegerField(default=1)
     page_title          = models.CharField(max_length=500, blank=True, null=True)
     page_description    = models.CharField(max_length=500, blank=True, null=True)
+    modified            = models.DateField(auto_now=True)
+    author              = models.CharField(max_length=255, default='Admin')
 
 
     @property
