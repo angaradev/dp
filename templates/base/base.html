@@ -37,7 +37,19 @@
 		});
 	</script>
 	<noscript><div><img src="https://mc.yandex.ru/watch/44011094" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-	<!-- /Yandex.Metrika counter -->
+	<script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "{{ shop_info.company_name }}",
+      "url": "{{ site_host }}",
+      "contactPoint": [
+        { "@type": "ContactPoint",
+          "telephone": "{{ shop_info.shop_tel }}",
+          "contactType": "Отдел продаж"
+        }
+      ]
+    }
+</script>
 </head>
 <body>
 <div id="loader-wrapper">
