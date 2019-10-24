@@ -70,9 +70,8 @@
 							</div>
 							<h1 itemprop = "name" class="tt-title">{{ object.name|upper }}</h1>
 							<div class="tt-price">
-								<span itemprop = "price" class="new-price">&#8381; {{ object.price }}</span>
+								<span class="new-price">&#8381; <span itemprop = "price" >{{ object.price }}</span></span>
 								<span class="old-price"></span>
-
 							</div>
 							{% ratings object 12 12 %}
 							<div class="tt-review">
