@@ -26,9 +26,9 @@
     "@type": "WebPage",
     "@id": "{{ object.get_absolute_url }}"
   },
-  "headline": "Article headline",
+  "headline": "{{ object.title }}",
   "image": [
-    "{{ object.img.url }}"
+    "{{ object.image.url }}"
    ],
   "datePublished": "{{ object.publish|date:'Y-m-d' }}",
   "dateModified": "{{ object.modified|date:'Y-m-d' }}",
@@ -48,7 +48,7 @@
 }
 </script>
 <div class="tt-breadcrumb">
-	<div itemscope itemtype="http://schema.org/BlogPosting" class="container">
+	<div class="container">
 		<ul>
 			<li><a href="{% url 'home' %}">Главная</a></li>
 			<li><a href="{% url 'blogs' %}">Блог</a></li>
@@ -63,14 +63,14 @@
 				<div class="col-xs-12 col-md-10 col-lg-8 col-md-auto">
 					<div class="tt-post-single">
 						<div class="tt-tag"><a href="{% url 'subcat' object.category.slug %}">{{ object.category.name|upper }}</a></div>
-						<h1  itemprop="headline" class="tt-title">
+						<h1 class="tt-title">
 							{{ object.title }}
 						</h1>
-						<div class="tt-autor">by <span itemprop="author" >Команда DucatoParts.ru</span> on <span itemprop="datePublished">{{ object.publish }}</span>
+						<div class="tt-autor">by <span>{{ object.author }}</span> on <span>{{ object.publish }}</span>
 
 						</div>
-						<div itemprop="articleBody" class="tt-post-content">
-							<img itemprop="image" src="images/loader.svg" data-src="{{ object.image.url }}" alt="{{ object.title }}">
+						<div class="tt-post-content">
+							<img src="images/loader.svg" data-src="{{ object.image.url }}" alt="{{ object.title }}">
 							{{ object.text|safe }}
 						</div>
 						<div class="post-meta">
