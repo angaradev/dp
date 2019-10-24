@@ -30,8 +30,8 @@
   "image": [
     "{{ object.img.url }}"
    ],
-  "datePublished": "{{ object.publish }}",
-  "dateModified": "{{ object.modified }}",
+  "datePublished": "{{ object.publish|date:'Y-m-d' }}",
+  "dateModified": "{{ object.modified|date:'Y-m-d' }}",
   "author": {
     "@type": "Person",
     "name": "{{ object.author }}"
