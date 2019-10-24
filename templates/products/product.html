@@ -2,6 +2,9 @@
 {% load static %}
 {% load ratings %}
 {% load crispy_forms_tags %}
+{% block page_title %}{{ object.name|title }} | DucatoParts.ru{% endblock page_title %}
+{% block page_keywords%}{{ object.name }}{% endblock %}
+{% block page_description %}{% if object.description %}{{ object.description|truncatechars:180|title }}{% else %}{{ object.name|title }} и другие запчасти в интернет магазине DucatoParts.ru. Доставка в регионы.{% endif %}{% endblock page_description %}
 {% block page %}
 <div>
     <div itemscope itemtype="http://schema.org/Product">

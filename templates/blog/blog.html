@@ -7,17 +7,12 @@
 		<link rel="canonical" href="{{ request.path }}" />
 	{% endif %}
 {% endblock meta %}
-{% block page_title %}Советы по выбору запчастей для автомобилей{% for car in cars %} {{ car.car|upper }}{% endfor %}{% endblock page_title %}
-
-
+{% block page_title %}{{ object.title }} | DucatoParts.ru{% endblock page_title %}
 {% block page_keywords %}
-	{% for car in cars %}Запчасти для {{ car.car|upper }},&nbsp;{% endfor %}
+	{{ object.title }}
 {% endblock page_keywords %}
-
-{% block page_description %}
-	Полезные статьи, исследования, наблюдения касающиеся эксплуатации, ремонта а так же выбора запчастей для автомобилей{% for car in cars %}{{ car.car|upper }} {% endfor %} {% endblock page_description %}
+{% block page_description %}{% if object.short_desc %}{{ object.short_desc }}{% else %}{{ object.title }}{% endif %}{% endblock %}
 {% block page %}
-
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
