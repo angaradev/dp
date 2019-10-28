@@ -13,7 +13,7 @@ class Kernel(models.Model):
     
     def file_insert(self, path):
         i = 0
-        with open(path) as f:
+        with open(path, 'rt', encoding='utf-8') as f:
             reader = csv.reader(f)
             for row in reader:
                 if row[1]:
