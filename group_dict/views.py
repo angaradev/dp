@@ -17,13 +17,17 @@ from django.contrib.auth.decorators import login_required
 
 
 @login_required
-def insert_kernel(request):
-    path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'files/kernel2.csv')
+def insert_kernel(request, mode):
+    path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'files/kernel_all.csv')
     path2 = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'files/parts1.csv')
     ker = Kernel()
     nom = Nomenklatura()
-    i = ker.file_insert(path)    
-    j = nom.file_insert(path2)
+    i = None
+    j = None
+    if mode == 'kernel':
+        i = ker.file_insert(path)    
+    elif mode == 'nom':
+        j = nom.file_insert(path2)
     context = {
             'inserted_ker': i,
             'inserted_nom': j,

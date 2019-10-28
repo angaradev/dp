@@ -16,9 +16,13 @@ class Kernel(models.Model):
         with open(path) as f:
             reader = csv.reader(f)
             for row in reader:
+                if row[1]:
+                    f = row[1]
+                else:
+                    f = 1
                 created = self.__class__.objects.get_or_create(
                         keywords = row[0],
-                        freq = row[1],
+                        freq = f
                         )
                 if created:
                     i += 1
