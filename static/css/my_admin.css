@@ -174,3 +174,14 @@ height: 20px;
     -webkit-filter: grayscale(100%) brightness(50%) sepia(100%) hue-rotate(50deg) saturate(1000%) contrast(0.8);
       filter: grayscale(100%) brightness(50%) sepia(100%) hue-rotate(50deg) saturate(1000%) contrast(0.8);
 }
+.list-style ul {
+    list-style: none;
+    }
+.wrapper-my {
+    color: #777777;
+}
+#top-div {
+    position: fixed;
+    top: 7em;
+    left: 1em;
+}

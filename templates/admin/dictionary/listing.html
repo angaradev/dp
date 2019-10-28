@@ -1,0 +1,48 @@
+{% extends 'admin/dictionary/dict_base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block page_content %}
+
+<div class="wrapper-my">
+    <div class="row">
+        <div class="col-12">
+            <h6>Создано Групп: <span  class="bred">XXX</span></h6>
+        </div>
+    </div>
+    <div class="row list-style">
+        <div class="col-2">
+        </div>
+        <div class="col-2" id="top-div">
+            <form action="{% url 'dictionary:main_work' %}" method="get">
+                <input type="hidden" name="save_group" value="save" />
+                <button id="butt" class="btn btn-outline-success btn-sm">Сохранить работу</button>
+                {% crispy key_form %}
+
+            </form>
+        </div>
+        <div class="col-1">
+
+            {% for group in groups %}
+                <div class="chk-gr" style="font-size:12px;" data-pk="{{ group.name }}"><a id="check_group-{{ group.id }}"  href="#">{{ group.name }}</a></div>
+            {% endfor %}
+        </div>
+        <div id="kernel_id" class="col-4">
+            <ul>
+                {% for kernel in kernels %}
+                <li>{{ kernel }}<span class="float-right bgreen">{{ kernel.freq }}</span></li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div id="noms_id" class="col-5">
+            <ul>
+                {% for nom in nomenklatura %}
+                <li>{{ nom }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block js %}
+<script src="{% static 'js/dictionary.js' %}"></script>
+{% endblock %}

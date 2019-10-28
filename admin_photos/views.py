@@ -41,8 +41,6 @@ class ChartData(APIView):
         labels = [f'Сделано {checked}', f'Осталось {unchecked}']
         defaultData = [checked, unchecked]
 
-
-
         data = {
                 "labels": labels,   #['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
                 'defaultData':defaultData, # [12, 19, 3, 5, 2, 3],
