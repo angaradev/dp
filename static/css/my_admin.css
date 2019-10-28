@@ -36,6 +36,10 @@
     font-weight: bold;
     display: inline;
 }
+.bred2 {
+    color: hotpink;
+    font-weight: bold;
+}
 .bred-a {
     color: #007bff;
     font-weight: bold;
@@ -184,4 +188,16 @@ height: 20px;
     position: fixed;
     top: 7em;
     left: 1em;
+}
+.my-card{
+    background-color: #f8f8f8;
+    border: 1px solid #f8f8f8;
+}
+.list-style-group ul, .list-style-group div{
+    font-size: 1.1em;
+    list-style: none;
+}
+.words-group ul {
+    font-size: 0.9em;
+    color: #777777;
 }

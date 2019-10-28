@@ -1,0 +1,45 @@
+{% extends 'admin/dictionary/dict_base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load humanize %}
+{% block page_content %}
+
+<div class="wrapper-my container-fluid">
+    <div class="row list-style-group mt-1">
+        <div class="col-2">
+            <h5 class="bblue">{{ group.id }}. {{ group }}</h5>
+        </div>
+        <div class="col-1">
+            <ul>
+                {% for p in plus %}
+                <li class="bgreen">{{ p }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col-1">
+            <ul>
+                {% for m in minus %}
+                <li class="bred2">{{ m }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col-3 words-group">
+            <ul>
+                {% for k in ker %}
+                <li>{{ k }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="col-5 words-group">
+            <ul>
+                {% for n in nom %}
+                <li>{{ n }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block js %}
+<script src=""></script>
+{% endblock %}

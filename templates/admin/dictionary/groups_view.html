@@ -1,0 +1,26 @@
+{% extends 'admin/dictionary/dict_base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load humanize %}
+{% block page_content %}
+
+<div class="wrapper-my container-fluid">
+    <div class="row">
+        <div class="col-2">
+            Всего групп: {{ count }}
+        </div>
+    </div>
+    <div class="row list-style-group mt-1">
+        {% for chunk in groups %}
+        <div class="col-2">
+            {% for group in chunk %}
+                <div data-pk="{{ group.name }}"><a href="{% url 'dictionary:view_group' group.id %}">{{ group.id }}. {{ group }}</a></div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+{% block js %}
+<script src="{% static 'js/dictionary.js' %}"></script>
+{% endblock %}
