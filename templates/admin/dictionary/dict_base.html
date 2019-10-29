@@ -14,6 +14,7 @@
     <!-- Bootstrap core CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <link href="{% static 'css/my_admin.css' %}" rel="stylesheet">
 
 
@@ -56,13 +57,16 @@
       <li class="nav-item">
         <a class="nav-link  {% if 'viewgroups' in request.path %} active {% endif %}" href="{% url 'dictionary:view_groups' %}" tabindex="-1" aria-disabled="true">Просмотр Групп</a>
       </li>
+        <li class="nav-item">
+        <a class="nav-link  {% if 'categorizer' in request.path %} active {% endif %}" href="{% url 'dictionary:categorizer' %}" tabindex="-1" aria-disabled="true">Категоризатор</a>
+      </li>
         <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Вставка файлов
+          Инструменты
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="{% url 'dictionary:insert_kernel' 'kernel' %}">Вставить Ядро</a>
-          <a class="dropdown-item" href="{% url 'dictionary:insert_kernel' 'nom' %}">Вставить Номнеклатуру</a>
+          <a class="dropdown-item" href="{% url 'dictionary:insert_kernel' 'view' %}">Загрузка файлов</a>
+          <a class="dropdown-item" href="{% url 'dictionary:kernelclean' %}">Очистка Ядра</a>
         </div>
       </li>
     </ul>

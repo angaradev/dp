@@ -58,6 +58,13 @@ class Groups(models.Model):
     def __str__(self):
         return self.name
 
+class CleanKernel(models.Model):
+    minus = models.TextField(blank=True)
+
+
+class InfoKernel(models.Model):
+    minus = models.TextField(blank=True)
+
 
 
 

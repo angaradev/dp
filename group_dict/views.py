@@ -1,10 +1,10 @@
 from django.shortcuts import render, redirect
-from .models import Kernel, Nomenklatura, Groups
+from .models import Kernel, Nomenklatura, Groups, CleanKernel, InfoKernel
 import os
 import csv
 from functools import reduce
 import operator
-from .forms import KeyWordForm
+from .forms import KeyWordForm, UploadFileForm, CleanForm
 from django.db.models import Q
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -16,23 +16,104 @@ from django.db.models import Count
 from django.contrib.auth.decorators import login_required
 
 
+def kernel_clean(request):
+    clean_form = CleanForm(request.POST)
+    qs = Kernel.objects.all()[:100]
+    if clean_form.is_valid():
+        minus = clean_form.cleaned_data['minus'].split('\n')
+        minus = [x.strip() for x in minus]
+        ker_qs = Kernel.objects.exclude(reduce(operator.or_, (Q(keywords__icontains=x) for x in minus)))
+        ker_qs_json = serializers.serialize('json', ker_qs)
+        mun = '\n'.join(minus)
+        if request.is_ajax():
+            data = {
+                    'keys': ker_qs_json,
+                    }
+            return JsonResponse(data, safe=False) 
+        if request.POST.get('save') == 'clean':
+            request.session['clean_mode'] = 'clean'
+            ker, created = CleanKernel.objects.get_or_create(
+                minus = mun
+                )
+            return redirect('dictionary:kernelclean')
+        elif request.POST.get('save') == 'info':
+            request.session['clean_mode'] = 'info'
+            ker, created = InfoKernel.objects.get_or_create(
+                minus = mun
+                )
+            return redirect('dictionary:kernelclean')
+    context = {
+            'clean_form': clean_form, 
+            'kernel': qs,
+            }
+    return render(request, 'admin/dictionary/kernel_work.html', context)
+
+def load_kernel(request):
+    if request.GET.get('kernel_mode') == 'clean':
+        qs = CleanKernel.objects.all()
+    elif request.GET.get('kernel_mode') == 'info':
+        qs = InfoKernel.objects.all()
+    if request.is_ajax():
+        minus = [x.minus for x in qs]
+        data = '\n'.join(minus)
+        data = {'minus': data}
+        return JsonResponse(data, safe=False)
+
+
+
+
+
+
+
+        
+
+def handle_uploaded_file(f):
+    with open(os.path.join(os.path.abspath(os.path.dirname(__file__)),'files', f.name), 'wb+') as destination:
+        for chunk in f.chunks():
+            destination.write(chunk)
+
+def categorizer(request):
+
+    context = {
+            'some': 'context',
+            }
+    return render(request, 'admin/dictionary/categorizer.html', context)
+
+
 @login_required
 def insert_kernel(request, mode):
-    path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'files/kernel_all.csv')
-    path2 = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'files/parts1.csv')
+    path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'files')
     ker = Kernel()
     nom = Nomenklatura()
+    file_name = request.GET.get('filename')
+    if file_name:
+        pa = os.path.join(path, file_name)
     i = None
     j = None
+    if request.GET.get('delete') and pa:
+        os.remove(pa)
+        return redirect('dictionary:insert_kernel', 'view')
     if mode == 'kernel':
-        i = ker.file_insert(path)    
+        #i = ker.file_insert(pa)    
+        return redirect('dictionary:insert_kernel', 'view')
     elif mode == 'nom':
-        j = nom.file_insert(path2)
+        #j = nom.file_insert(pa)
+        return redirect('dictionary:insert_kernel', 'view')
     context = {
             'inserted_ker': i,
             'inserted_nom': j,
             }
-    return render(request, 'admin/dictionary/insert.html', context)
+    if mode == 'view':
+        form = UploadFileForm(request.POST, request.FILES)
+        if form.is_valid():
+            handle_uploaded_file(request.FILES['file'])
+        files = os.listdir(path)
+        context = {
+                'file_form': form,
+                'files': files,
+                }
+            
+        return render(request, 'admin/dictionary/insert.html', context)
 
 @login_required
 def change_group(request, pk):

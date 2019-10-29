@@ -8,4 +8,9 @@ class KeyWordForm(forms.Form):
     plus = forms.CharField(label='Плюс слова', widget=forms.Textarea(attrs={'rows': 5}))
     minus = forms.CharField(label='Минус слова', widget=forms.Textarea(attrs={'rows': 5}), required=False)
     
-    
+class UploadFileForm(forms.Form):
+    file = forms.FileField(label='')   
+
+
+class CleanForm(forms.Form):
+    minus = forms.CharField(label='Минус слова', widget=forms.Textarea(attrs={'rows': 20}), required=True)
