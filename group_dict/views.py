@@ -44,11 +44,12 @@ def insert_data(request):
 @login_required
 def kernel_clean(request):
     clean_form = CleanForm(request.POST)
-    qs = Kernel.objects.all()[:100]
+    qs = Kernel.objects.all().order_by('keywords')[:100]
     if clean_form.is_valid():
         minus = clean_form.cleaned_data['minus'].split('\n')
         minus = [x.strip() for x in minus]
-        ker_qs = Kernel.objects.exclude(reduce(operator.or_, (Q(keywords__icontains=x) for x in minus)))
+        ker_qs = Kernel.objects.exclude(reduce(operator.or_, (Q(keywords__icontains=x) for x in
+            minus))).order_by('kernelkernel')
         ker_qs_json = serializers.serialize('json', ker_qs)
         mun = '\n'.join(minus)
         if request.is_ajax():
