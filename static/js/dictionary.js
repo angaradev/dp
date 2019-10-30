@@ -11,9 +11,6 @@ $(document).ready(function(){
                     var obj = JSON.parse(json_data.keys);
                     var ul = '<ul>';
                     if (!$.isEmptyObject(obj)){
-                        //console.log('not or empty');
-                    //} 
-                    //if (obj.length > 0){
                         $.each(obj, function(key, value){
                         ul += ('<li>' + value.fields.keywords + '<span class="float-right bgreen">' + value.fields.freq + '</spna></li>');
                         });

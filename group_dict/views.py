@@ -108,6 +108,8 @@ def categorizer(request):
     path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'files')
     files = os.listdir(path)
     file_name = request.GET.get('filename')
+    if file_name:
+        request.session['filename'] = file_name
     sample = []
     cat_count = 0
     not_cat_count = 0
@@ -120,8 +122,7 @@ def categorizer(request):
                 sample.append(line)
                 if i == 10:
                     break
-    elif request.GET.get('mode') == 'categorize' and file_name:
-        pa = os.path.join(path, file_name)
+    elif request.GET.get('mode') == 'categorize':
         dic = Groups.objects.all()
 
         for drow in dic:        
@@ -132,12 +133,11 @@ def categorizer(request):
             ker_qs = KernelTmp.objects.filter(reduce(operator.or_, (Q(keywords__icontains=x) for x in
             plus))).exclude(reduce(operator.or_, (Q(keywords__icontains=x) for x in minus))).exclude(chk=True)
             ker_qs.update(group_id=drow.id)
-            print(plus, minus)
-            print(ker_qs)
         final_qs = KernelTmp.objects.all()
         cat_count = final_qs.filter(~Q(group_id=0)).count()
         not_cat_count = final_qs.filter(group_id=0).count()
-
+        request.session['categorized'] = True
+        return redirect('dictionary:categorizer')
         
     context = {
             'files': files,
@@ -154,6 +154,7 @@ def get_csv(request):
     qs = KernelTmp.objects.all()
     for row in qs:
         writer.writerow([row.keywords, row.freq, row.group_id])
+    request.session['categorized'] = False
     return resp
 
 @login_required

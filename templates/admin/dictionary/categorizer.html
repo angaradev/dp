@@ -16,9 +16,12 @@
                     <li>Загрузите её в базу данных ducatoparts на удаленном сервере.</li>
                     <li>Нажмите категоризировать.</li>
                 </ol>
+             <a class="mk-alert btn btn-outline-success mb-3" href="?mode=categorize" title="Прокатегоризировать">Категоризировать</a>
            <div>
-               <h6><a href="{% url 'dictionary:getcsv' %}"> Скачать Готовый Файл</a></h6>
-               <p class="bgreen">Категоризировалось ядро {{ request.GET.filename }}</p>
+                {% if request.session.categorized %}
+               <h6><a class="download-file" href="{% url 'dictionary:getcsv' %}" download> Скачать Готовый Файл</a></h6>
+               <p class="bgreen">Категоризировалось ядро {{ request.session.filename }}</p>
+               {% endif %}
                <ul style="font-size:14px;">
                    {% for samp in sample %}
                    <li>{{ samp }}</li>
@@ -28,9 +31,10 @@
         </div>
         <div class="col-6">
             <h5 class="bblue">Загруженные файлы</h5>
+            <p>Загрузит новые файлы или удалить можно <a href="{% url 'dictionary:insert_kernel' 'view' %}">здесь</a> </p>
             <ul>
             {% for f in files %}
-                <li><a href="?filename={{ f }}&mode=preview" title="Посмотреть как выглядит файл">Предпросмотр</a> | <a href="{% url 'dictionary:insertdata' %}?filename={{ f }}&mode=preview" title="Засунуть файл в Mysql таблицу">В MySql</a> | <a class="mk-alert" href="?filename={{ f }}&mode=categorize" title="Прокатегоризировать">Категоризировать</a> | <span class="bgreen">{{ f }}</span></li>
+                <li><a href="?filename={{ f }}&mode=preview" title="Посмотреть как выглядит файл">Предпросмотр</a> | <a href="{% url 'dictionary:insertdata' %}?filename={{ f }}&mode=preview" title="Засунуть файл в Mysql таблицу">В MySql</a> | <span class="bgreen" title="Название файла">{{ f }}</span></li>
             {% endfor %}
             </ul>
         </div>
