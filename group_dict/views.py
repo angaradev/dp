@@ -114,7 +114,7 @@ def categorizer(request):
     final_set = set()
     if request.GET.get('mode') == 'preview' and file_name:
         pa = os.path.join(path, file_name)
-        with open(pa, 'r') as f_csv:
+        with open(pa, encoding='utf-8') as f_csv:
             reader = csv.reader(f_csv, delimiter=';')
             for i,line in enumerate(reader):
                 sample.append(line)
