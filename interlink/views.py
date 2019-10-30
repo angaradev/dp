@@ -38,6 +38,8 @@ def analog_part_brand(request, old_url):
     qs = RedirectProductOldToNew.objects.filter(url=old_url).first()
     if not qs:
         cat_qs = RedirectProductOldToNewDictionary.objects.filter(url=old_url).first()
+        if not cat_qs:
+            raise Http404
         # Это костыль для категорий которых нет у нас но есть в словаре
         if cat_qs.id_new == 0 or cat_qs.id_new > 2504:
             return redirect('newparts', permanent=True)

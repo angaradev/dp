@@ -1,5 +1,5 @@
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator
 from products.views import show_cars
 from .models import Blogs, OldBlogs
@@ -48,7 +48,7 @@ def blogs(request):
 
 
 def blog(request, slug):
-    obj = Blogs.objects.get(slug=slug)
+    obj = get_object_or_404(Blogs, slug=slug)
     obj.number_views += 1
     obj.save()
     
