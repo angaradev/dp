@@ -49,7 +49,7 @@ def kernel_clean(request):
         minus = clean_form.cleaned_data['minus'].split('\n')
         minus = [x.strip() for x in minus]
         ker_qs = Kernel.objects.exclude(reduce(operator.or_, (Q(keywords__icontains=x) for x in
-            minus))).order_by('kernelkernel')
+            minus))).order_by('keywords')
         ker_qs_json = serializers.serialize('json', ker_qs)
         mun = '\n'.join(minus)
         if request.is_ajax():
