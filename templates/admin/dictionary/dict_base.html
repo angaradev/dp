@@ -58,15 +58,16 @@
         <a class="nav-link  {% if 'viewgroups' in request.path %} active {% endif %}" href="{% url 'dictionary:view_groups' %}" tabindex="-1" aria-disabled="true">Просмотр Групп</a>
       </li>
         <li class="nav-item">
-        <a class="nav-link  {% if 'categorizer' in request.path %} active {% endif %}" href="{% url 'dictionary:categorizer' %}" tabindex="-1" aria-disabled="true">Категоризатор</a>
-      </li>
+        <!--<a class="nav-link  {% if 'categorizer' in request.path %} active {% endif %}" href="{% url 'dictionary:categorizer' %}" tabindex="-1" aria-disabled="true">Категоризатор</a>
+      </li>-->
         <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link dropdown-toggle {% if 'insertkernel' in request.path or 'categorizer' in request.path or 'kernelclean' in request.path %} active {% endif %}" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Инструменты
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="{% url 'dictionary:insert_kernel' 'view' %}">Загрузка файлов</a>
           <a class="dropdown-item" href="{% url 'dictionary:kernelclean' %}">Очистка Ядра</a>
+            <a class="dropdown-item" href="{% url 'dictionary:categorizer' %}">Категоризатор</a>
         </div>
       </li>
     </ul>

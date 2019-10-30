@@ -14,3 +14,7 @@ class UploadFileForm(forms.Form):
 
 class CleanForm(forms.Form):
     minus = forms.CharField(label='Минус слова', widget=forms.Textarea(attrs={'rows': 20}), required=True)
+
+
+class CategorizeKernel(forms.Form):
+    kernel = forms.FileField(label='')   

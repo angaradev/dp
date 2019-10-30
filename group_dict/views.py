@@ -1,21 +1,47 @@
 from django.shortcuts import render, redirect
-from .models import Kernel, Nomenklatura, Groups, CleanKernel, InfoKernel
+from .models import Kernel, Nomenklatura, Groups, CleanKernel, InfoKernel, KernelTmp
 import os
 import csv
 from functools import reduce
 import operator
-from .forms import KeyWordForm, UploadFileForm, CleanForm
+from .forms import KeyWordForm, UploadFileForm, CleanForm, CategorizeKernel
 from django.db.models import Q
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.core import serializers
 import json
 from products.models import Categories
 from django.db.models import Count
 from django.contrib.auth.decorators import login_required
+import itertools
+from django.db import connection
+from django.urls import reverse
 
 
+@login_required
+def insert_data(request):
+    cursor = connection.cursor()
+    table_name = 'group_dict_kerneltmp'
+    q = 'TRUNCATE TABLE ' + table_name
+    cursor.execute(q)
+    path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'files')
+    file_name = request.GET.get('filename')
+    fil = os.path.join(path, file_name)
+    with open(fil) as csvfile:
+        dialect = csv.Sniffer().sniff(csvfile.read(1024))
+        delimiter = dialect.delimiter
+    statement = "LOAD DATA LOCAL INFILE %s INTO TABLE group_dict_kerneltmp FIELDS TERMINATED BY %s  (keywords, freq,@dummy2);"
+    state = cursor.execute(statement, [fil, delimiter])
+    context = {
+            'insert_count': state,
+            }
+    if context:
+        return redirect(reverse('dictionary:categorizer'))
+    else:
+        return render(request, 'admin/dictionary/categorizer.html', context)
+
+@login_required
 def kernel_clean(request):
     clean_form = CleanForm(request.POST)
     qs = Kernel.objects.all()[:100]
@@ -48,6 +74,8 @@ def kernel_clean(request):
             }
     return render(request, 'admin/dictionary/kernel_work.html', context)
 
+
+@login_required
 def load_kernel(request):
     if request.GET.get('kernel_mode') == 'clean':
         qs = CleanKernel.objects.all()
@@ -60,25 +88,73 @@ def load_kernel(request):
         return JsonResponse(data, safe=False)
 
 
-
-
-
-
-
-        
-
 def handle_uploaded_file(f):
     with open(os.path.join(os.path.abspath(os.path.dirname(__file__)),'files', f.name), 'wb+') as destination:
         for chunk in f.chunks():
             destination.write(chunk)
 
+@login_required
 def categorizer(request):
+    def q_plus(kernel, plus):
+        for rec in kernel:
+            matches = {s for s in kernel if any(w in s for w in plus)}
+        return(matches)
 
+    def q_minus(plus_set, minus):
+        for rec in plus_set:
+            non_matches = {s for s in plus_set if not any(w in s for w in minus)}
+        return non_matches
+
+    path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'files')
+    files = os.listdir(path)
+    file_name = request.GET.get('filename')
+    sample = []
+    cat_count = 0
+    not_cat_count = 0
+    final_set = set()
+    if request.GET.get('mode') == 'preview' and file_name:
+        pa = os.path.join(path, file_name)
+        with open(pa, 'r') as f_csv:
+            reader = csv.reader(f_csv, delimiter=';')
+            for i,line in enumerate(reader):
+                sample.append(line)
+                if i == 10:
+                    break
+    elif request.GET.get('mode') == 'categorize' and file_name:
+        pa = os.path.join(path, file_name)
+        dic = Groups.objects.all()
+
+        for drow in dic:        
+            plus = drow.plus.split('\n')
+            plus = [x.strip() for x in plus]
+            minus = drow.minus.split('\n')
+            minus = [x.strip() for x in minus]
+            ker_qs = KernelTmp.objects.filter(reduce(operator.or_, (Q(keywords__icontains=x) for x in
+            plus))).exclude(reduce(operator.or_, (Q(keywords__icontains=x) for x in minus))).exclude(chk=True)
+            ker_qs.update(group_id=drow.id)
+            print(plus, minus)
+            print(ker_qs)
+        final_qs = KernelTmp.objects.all()
+        cat_count = final_qs.filter(~Q(group_id=0)).count()
+        not_cat_count = final_qs.filter(group_id=0).count()
+
+        
     context = {
-            'some': 'context',
+            'files': files,
+            'sample': sample,
+            'cat_count': cat_count,
+            'not_cat_count': not_cat_count,
             }
     return render(request, 'admin/dictionary/categorizer.html', context)
 
+def get_csv(request):
+    resp = HttpResponse(content_type='text/csv')
+    resp['Content-Disposition'] = 'attachment; filename="ready_kernel.csv"'
+    writer = csv.writer(resp)
+    qs = KernelTmp.objects.all()
+    for row in qs:
+        writer.writerow([row.keywords, row.freq, row.group_id])
+    return resp
 
 @login_required
 def insert_kernel(request, mode):

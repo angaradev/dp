@@ -8,21 +8,29 @@
     <div class="row list-style-group mt-1">
         <div class="col-6">
             <h5 class="bblue">Категоризатор</h5>
+             {% if cat_count %}
+            <h5><span class="bgreen">Успешно {{ cat_count }} строк!</span> | <span class="bred2">НЕ Успешно {{ not_cat_count }} строк!</span> </h5>
+            {% endif %}
                 <ol>
                     <li>Приготовьте таблицу для категоризации. В таблице должны быть как минимум 2 поля. <span class="bgreen">name</span> и <span class="bgreen">parent_id</span></li>
                     <li>Загрузите её в базу данных ducatoparts на удаленном сервере.</li>
                     <li>Нажмите категоризировать.</li>
                 </ol>
-            <form action="." method="post" enctype="multipart/form-data">{% csrf_token %}
-
-                <button class="btn btn-outline-success" type="submit">Категоризировать</button>
-            </form>
+           <div>
+               <h6><a href="{% url 'dictionary:getcsv' %}"> Скачать Готовый Файл</a></h6>
+               <p class="bgreen">Категоризировалось ядро {{ request.GET.filename }}</p>
+               <ul style="font-size:14px;">
+                   {% for samp in sample %}
+                   <li>{{ samp }}</li>
+                   {% endfor %}
+               </ul>
+           </div>
         </div>
         <div class="col-6">
             <h5 class="bblue">Загруженные файлы</h5>
             <ul>
             {% for f in files %}
-                <li><a class="mk-alert" href="{% url 'dictionary:insert_kernel' 'nom' %}?filename={{ f }}">Номенклатура</a> | <a class="mk-alert" href="{% url 'dictionary:insert_kernel' 'kernel' %}?filename={{ f }}">Ядро</a> | <a class="mk-alert-del" href="{% url 'dictionary:insert_kernel' 'view' %}?filename={{ f }}&delete=True"><span class="bred2"> <i class="fa fa-trash" aria-hidden="true"></i></span></a> | <span class="bgreen">{{ f }}</span></li>
+                <li><a href="?filename={{ f }}&mode=preview" title="Посмотреть как выглядит файл">Предпросмотр</a> | <a href="{% url 'dictionary:insertdata' %}?filename={{ f }}&mode=preview" title="Засунуть файл в Mysql таблицу">В MySql</a> | <a class="mk-alert" href="?filename={{ f }}&mode=categorize" title="Прокатегоризировать">Категоризировать</a> | <span class="bgreen">{{ f }}</span></li>
             {% endfor %}
             </ul>
         </div>

@@ -9,7 +9,9 @@ from .views import (insert_kernel,
         view_group,
         categorizer,
         kernel_clean,
-        load_kernel
+        load_kernel,
+        insert_data,
+        get_csv,
         )
 urlpatterns = [
             path('insertkernel/<str:mode>/', insert_kernel, name='insert_kernel'),
@@ -21,4 +23,6 @@ urlpatterns = [
             path('categorizer/', categorizer, name='categorizer'),
             path('kernelclean/', kernel_clean, name='kernelclean'),
             path('loadkernel/', load_kernel, name='loadkernel'),
+            path('insertdata/', insert_data, name='insertdata'),
+            path('getcsv/', get_csv, name='getcsv'),
         ]

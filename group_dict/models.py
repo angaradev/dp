@@ -2,6 +2,16 @@ from django.db import models
 import csv
 
 
+class KernelTmp(models.Model):
+    
+    keywords = models.CharField(max_length=500, default='')
+    freq    = models.PositiveIntegerField(default=0)
+    chk = models.BooleanField(default=0)
+    group_id = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.keywords
+
 class Kernel(models.Model):
     
     keywords = models.CharField(max_length=500)

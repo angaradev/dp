@@ -41,7 +41,6 @@ $(document).ready(function(){
             data: {'kernel_mode': mode},
             success: function(json_data){
                 $('textarea').val(json_data.minus);
-                console.log(json_data.minus);
                 }
             })
         })
