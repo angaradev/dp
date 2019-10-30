@@ -8,7 +8,7 @@
     <div class="row">
         <div class="col-2">
         </div>
-        <div class="col-1">
+        <div class="col-2">
             <div class="card grey my-card">
               <div class="card-body  text-center pb-0 pt-0">
                 <div class="d-flex">
@@ -17,7 +17,7 @@
               </div>
             </div>
         </div>
-        <div class="col-4">
+        <div class="col-3">
             <div class="card grey my-card">
               <div class="card-body  text-center pb-0 pt-0">
                 <div class="d-flex">
@@ -36,7 +36,7 @@
             </div>
         </div>
     </div>
-    <div class="row list-style mt-1">
+    <div class="row list-style mt-1 color-bg">
         <div class="col-2">
         </div>
         <div class="col-2" id="top-div">
@@ -47,13 +47,13 @@
 
             </form>
         </div>
-        <div class="col-1">
+        <div class="col-2">
 
             {% for group in groups %}
                 <div class="chk-gr" style="font-size:12px;" data-pk="{{ group.name }}"><a id="check_group-{{ group.id }}"  href="#">{{ group.name }}</a></div>
             {% endfor %}
         </div>
-        <div id="kernel_id" class="col-4">
+        <div id="kernel_id" class="col-3">
             <ul>
                 {% for kernel in kernels %}
                 <li title="Слова из Ядра">{{ kernel }}<span class="float-right bgreen" title="Частотность">{{ kernel.freq }}</span></li>

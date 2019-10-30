@@ -19,7 +19,7 @@ $(document).ready(function(){
                     kernel.html(ul)
                     }else{
                         var kernel = $('#kernel_id');
-                        kernel.html('Ничего не найдено или уже обработано');
+                        kernel.html('Ничего не найдено или <span class="bred2"> уже обработано</span>');
                     }
                     var obj2 = JSON.parse(json_data.noms);
                     var ul2 = '<ul>';
@@ -31,7 +31,7 @@ $(document).ready(function(){
                         var noms = $('#noms_id').html(ul2);
                     }else{
                         var noms = $('#noms_id');
-                        noms.html('Ничего не найдено или уже обработано');
+                        noms.html('Ничего не найдено или <span class="bred2"> уже обработано</span>');
                     }
 
                 }

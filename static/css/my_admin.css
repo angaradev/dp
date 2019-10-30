@@ -201,3 +201,10 @@ height: 20px;
     font-size: 0.9em;
     color: #777777;
 }
+.color-bg ul li:nth-child(odd) {
+    background: #77777722;
+}
+.color-bg ul {
+    width: 100%;
+    margin: auto;
+}
