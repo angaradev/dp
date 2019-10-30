@@ -28,7 +28,7 @@ def insert_data(request):
     path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'files')
     file_name = request.GET.get('filename')
     fil = os.path.join(path, file_name)
-    with open(fil, encoding="utf-8") as csvfile:
+    with open(fil) as csvfile:
         dialect = csv.Sniffer().sniff(csvfile.read(1024))
         delimiter = dialect.delimiter
     statement = "LOAD DATA LOCAL INFILE %s INTO TABLE group_dict_kerneltmp FIELDS TERMINATED BY %s  (keywords, freq,@dummy2);"
@@ -114,7 +114,7 @@ def categorizer(request):
     final_set = set()
     if request.GET.get('mode') == 'preview' and file_name:
         pa = os.path.join(path, file_name)
-        with open(pa, 'rb' ) as f_csv:
+        with open(pa, 'r') as f_csv:
             reader = csv.reader(f_csv, delimiter=';')
             for i,line in enumerate(reader):
                 sample.append(line)
