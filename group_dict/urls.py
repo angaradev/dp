@@ -12,6 +12,8 @@ from .views import (insert_kernel,
         load_kernel,
         insert_data,
         get_csv,
+        split_kernel,
+        split_kernel_clean,
         )
 urlpatterns = [
             path('insertkernel/<str:mode>/', insert_kernel, name='insert_kernel'),
@@ -24,5 +26,7 @@ urlpatterns = [
             path('kernelclean/', kernel_clean, name='kernelclean'),
             path('loadkernel/', load_kernel, name='loadkernel'),
             path('insertdata/', insert_data, name='insertdata'),
-            path('getcsv/', get_csv, name='getcsv'),
+            path('getcsv/<str:mode>/', get_csv, name='getcsv'),
+            path('splitkernel/', split_kernel, name='splitkernel'),
+            path('splitkernelclean/', split_kernel_clean, name='splitkernelclean'),
         ]

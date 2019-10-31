@@ -18,11 +18,12 @@
             <h5 class="bblue">Загруженные файлы</h5>
             <ul>
             {% for f in files %}
-                <li><a class="mk-alert" href="{% url 'dictionary:insert_kernel' 'nom' %}?filename={{ f }}">Номенклатура</a> | <a class="mk-alert" href="{% url 'dictionary:insert_kernel' 'kernel' %}?filename={{ f }}">Ядро</a> | <a class="mk-alert-del" href="{% url 'dictionary:insert_kernel' 'view' %}?filename={{ f }}&delete=True"><span class="bred2"> <i class="fa fa-trash" aria-hidden="true"></i></span></a> | <span class="bgreen">{{ f }}</span></li>
+                <li><a class="mk-alert" href="{% url 'dictionary:insert_kernel' 'nom' %}?filename={{ f }}">Вставить Номенклатуру</a> | <a class="mk-alert" href="{% url 'dictionary:insert_kernel' 'kernel' %}?filename={{ f }}">Вставить Ядро</a> | <a class="mk-alert-del" href="{% url 'dictionary:insert_kernel' 'view' %}?filename={{ f }}&delete=True"><span class="bred2"> <i class="fa fa-trash" aria-hidden="true"></i></span></a> | <span class="bgreen">{{ f }}</span></li>
             {% endfor %}
             </ul>
         </div>
     </div>
+
 </div>
 {% endblock %}
 {% block js %}

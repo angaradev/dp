@@ -16,12 +16,24 @@
                     <li>Загрузите её в базу данных ducatoparts на удаленном сервере.</li>
                     <li>Нажмите категоризировать.</li>
                 </ol>
-             <a class="mk-alert btn btn-outline-success mb-3" href="?mode=categorize" title="Прокатегоризировать">Категоризировать</a>
+            <div id="loading-image" style="display:none;">
+                <img  class="img image-fluid" src="{% static 'images/other/loading.gif' %}" width="200">
+            </div>
+            <p id="show-counts"></p>
+
+             <a id="categorize-me" class="mk-alert btn btn-outline-success mb-3" href="?mode=categorize" title="Прокатегоризировать">Категоризировать</a>
+            {% for f in files %}
+                <h6><a href="{% url 'dictionary:insertdata' %}?filename={{ f }}&mode=preview" title="Засунуть файл в Mysql таблицу">Засунуть файл ядра( {{ f }} ) В MySql</a></h6>
+            {% endfor %}
+                <h6><a class="clean-kernel" href="{% url 'dictionary:splitkernelclean' %}">Очистить Ядро от общих минус слов</a></h6>
+                <h6><a class="split-kernel" href="{% url 'dictionary:splitkernel' %}">Разделить Ядро на Коммерческие и Инфо запросы</a></h6>
+            <div class="alert-success-my">
+            </div>
            <div>
-                {% if request.session.categorized %}
-               <h6><a class="download-file" href="{% url 'dictionary:getcsv' %}" download> Скачать Готовый Файл</a></h6>
-               <p class="bgreen">Категоризировалось ядро {{ request.session.filename }}</p>
-               {% endif %}
+
+               <p><a class="download-file_" href="{% url 'dictionary:getcsv' 'comm' %}" download> Скачать Готовый Файл Commercial</a> | <a class="download-file_" href="{% url 'dictionary:getcsv' 'info' %}" download> Скачать Готовый Файл Info</a></p>
+
+
                <ul style="font-size:14px;">
                    {% for samp in sample %}
                    <li>{{ samp }}</li>
@@ -30,11 +42,14 @@
            </div>
         </div>
         <div class="col-6">
-            <h5 class="bblue">Загруженные файлы</h5>
-            <p>Загрузит новые файлы или удалить можно <a href="{% url 'dictionary:insert_kernel' 'view' %}">здесь</a> </p>
-            <ul>
+            <h5 class="bblue">Загруженные файлы Ядра для очистки и категоризации</h5>
+            <form method="post" action="." enctype="multipart/form-data">{% csrf_token %}
+                {{ form|crispy }}
+                <button class="btn btn-outline-success" type="submit">Загрузить</button>
+            </form>
+            <ul class="mt-5">
             {% for f in files %}
-                <li><a href="?filename={{ f }}&mode=preview" title="Посмотреть как выглядит файл">Предпросмотр</a> | <a href="{% url 'dictionary:insertdata' %}?filename={{ f }}&mode=preview" title="Засунуть файл в Mysql таблицу">В MySql</a> | <span class="bgreen" title="Название файла">{{ f }}</span></li>
+                <li><a href="?filename={{ f }}&mode=preview" title="Посмотреть как выглядит файл">Предпросмотр</a> | <span class="bgreen" title="Название файла">{{ f }}</span> | <a class="mk-alert-del" href="{% url 'dictionary:categorizer' %}?filename={{ f }}&delete=True"><span class="bred2"> <i class="fa fa-trash" aria-hidden="true"></i></span></a></li>
             {% endfor %}
             </ul>
         </div>

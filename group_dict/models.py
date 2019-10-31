@@ -1,4 +1,4 @@
-from django.db import models
+from django.db import models, connection
 import csv
 
 
@@ -12,6 +12,43 @@ class KernelTmp(models.Model):
     def __str__(self):
         return self.keywords
 
+
+#Модель ядра очищенного от общих минус слов
+class KernelCleanedFromTrash(models.Model):
+    
+    keywords = models.CharField(max_length=500)
+    freq    = models.PositiveIntegerField()
+    chk = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.keywords
+    
+
+#Модель для коммерческих запросов
+class KernelReadyCommercial(models.Model):
+    
+    keywords = models.CharField(max_length=500)
+    freq    = models.PositiveIntegerField()
+    chk = models.BooleanField(default=False)
+    group_id = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.keywords
+
+
+#Модель для информационных запросов
+class KernelReadyInfo(models.Model):
+    
+    keywords = models.CharField(max_length=500)
+    freq    = models.PositiveIntegerField()
+    chk = models.BooleanField(default=False)
+    group_id = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.keywords
+    
+
+#Главная модель для самого первого шага и загрузки в базу
 class Kernel(models.Model):
     
     keywords = models.CharField(max_length=500)
@@ -22,20 +59,21 @@ class Kernel(models.Model):
         return self.keywords
     
     def file_insert(self, path):
-        i = 0
-        with open(path, 'rt', encoding='utf-8') as f:
-            reader = csv.reader(f)
-            for row in reader:
-                if row[1]:
-                    f = row[1]
-                else:
-                    f = 1
-                created = self.__class__.objects.get_or_create(
-                        keywords = row[0],
-                        freq = f
-                        )
-                if created:
-                    i += 1
+        cursor = connection.cursor()
+        q = 'TRUNCATE TABLE ' + self._meta.db_table
+        cursor.execute(q)
+
+        with open(path, encoding='utf-8') as f:
+            dialect = csv.Sniffer().sniff(f.read(1024))
+            reader = csv.reader(f, dialect)
+            l = []
+            for x in reader:
+                if not x[1]:
+                    continue
+                l.append(x)
+
+        insert_q = "INSERT INTO " + self._meta.db_table + " (keywords, freq) VALUES (%s, %s)"
+        i = cursor.executemany(insert_q, l)
         return i
    
 class Nomenklatura(models.Model):
@@ -47,15 +85,17 @@ class Nomenklatura(models.Model):
         return self.name
     
     def file_insert(self, path):
-        i = 0
-        with open(path) as f:
-            reader = csv.reader(f)
-            for row in reader:
-                created = self.__class__.objects.get_or_create(
-                        name = row[0],
-                        )
-                if created:
-                    i += 1
+        cursor = connection.cursor()
+        q = 'TRUNCATE TABLE ' + self._meta.db_table
+        cursor.execute(q)
+
+        with open(path, encoding='utf-8') as f:
+            dialect = csv.Sniffer().sniff(f.read(1024))
+            reader = csv.reader(f, dialect)
+            l = [[x[0]] for x in reader]
+
+        insert_q = "INSERT INTO " + self._meta.db_table + " (name) VALUES (%s)"
+        i = cursor.executemany(insert_q, l)
         return i
 
 class Groups(models.Model):
