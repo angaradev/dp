@@ -30,12 +30,16 @@ $(document).ready(function(){
 
     $('.split-kernel').on('click', function(e){
         e.preventDefault();
+        $('#loading-image').show();
         $.ajax({
             url: '/dictionary/splitkernel/',
             method: 'GET',
             success: function(json_data){
                 $('.alert-success-my').html('<div class="alert alert-success"><strong>Успешно!</strong> Вставлено ' + json_data.info_count + ' строк! В Инфо запросы. И ' + json_data.comm_count + ' в Коммерческие запросы</div>');
 
+            },
+            complete: function(){
+                $('#loading-image').hide();
             }
         });
     });
@@ -43,7 +47,6 @@ $(document).ready(function(){
     //Функции для категоризатора на AJAX
     //
     
-    $('#loading-image').hide();
     $('#categorize-me').on('click', function(e){
         e.preventDefault();
         $('#loading-image').show();
@@ -52,7 +55,6 @@ $(document).ready(function(){
             method: 'GET',
             data: {'mode': 'categorize'},
             success: function(json_data){
-                console.log(json_data);
                 $('#show-counts').html('Прокатегоризировалось Ядро:<span class="bgreen"> ' + json_data.f  + '</span><span class="bgreen">Успешно: ' + json_data.i + '</span>.<span class="bred2"> Неуспешно: ' + json_data.j + '</span>');
             },
             complete: function(){
