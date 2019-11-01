@@ -28,6 +28,8 @@ def split_kernel_clean(request):
     minus = [x.strip() for x in minus]
     ker_qs = KernelTmp.objects.filter(reduce(operator.or_, (Q(keywords__icontains=x) for x in
             minus))).order_by('keywords')
+    ker_qs = Kernel.objects.filter(Q(reduce(operator.or_, (Q(keywords__icontains=x) for x in plus)) |
+        Q(reduce(operator.and_, (Q(keywords__icontains=x) for x in plus_and))))).exclude(reduce(operator.or_, (Q(keywords__icontains=x) for x in minus))).exclude(chk=True)
     i = ker_qs.delete()
     return JsonResponse({'insert_count': i[0]})
 
@@ -183,10 +185,13 @@ def categorizer(request):
         for drow in dic:        
             plus = drow.plus.split('\n')
             plus = [x.strip() for x in plus]
+            plus_and = plus_and_func(plus)
             minus = drow.minus.split('\n')
             minus = [x.strip() for x in minus]
-            ker_qs = KernelTmp.objects.filter(reduce(operator.or_, (Q(keywords__icontains=x) for x in
-            plus))).exclude(reduce(operator.or_, (Q(keywords__icontains=x) for x in minus))).exclude(chk=True)
+    #        ker_qs = KernelTmp.objects.filter(reduce(operator.or_, (Q(keywords__icontains=x) for x in
+    #        plus))).exclude(reduce(operator.or_, (Q(keywords__icontains=x) for x in minus))).exclude(chk=True)
+            ker_qs = Kernel.objects.filter(Q(reduce(operator.or_, (Q(keywords__icontains=x) for x in plus)) |
+        Q(reduce(operator.and_, (Q(keywords__icontains=x) for x in plus_and))))).exclude(reduce(operator.or_, (Q(keywords__icontains=x) for x in minus))).exclude(chk=True)
             ker_qs.update(group_id=drow.id)
         final_qs = KernelTmp.objects.all()
         cat_count = final_qs.filter(~Q(group_id=0)).count()
@@ -257,10 +262,13 @@ def change_group(request, pk):
     qs = Groups.objects.get(id=pk)
     plus = qs.plus.split('\n')
     plus = [x.strip() for x in plus]
+    plus_and = plus_and_func(plus)
     minus = qs.minus.split('\n')
     minus = [x.strip() for x in minus]
-    ker_qs = Kernel.objects.filter(reduce(operator.or_, (Q(keywords__icontains=x) for x in
-        plus))).exclude(reduce(operator.or_, (Q(keywords__icontains=x) for x in minus)))
+    #ker_qs = Kernel.objects.filter(reduce(operator.or_, (Q(keywords__icontains=x) for x in
+    #    plus))).exclude(reduce(operator.or_, (Q(keywords__icontains=x) for x in minus)))
+    ker_qs = Kernel.objects.filter(Q(reduce(operator.or_, (Q(keywords__icontains=x) for x in plus)) |
+        Q(reduce(operator.and_, (Q(keywords__icontains=x) for x in plus_and))))).exclude(reduce(operator.or_, (Q(keywords__icontains=x) for x in minus))).exclude(chk=True)
     nom_qs = Nomenklatura.objects.filter(reduce(operator.or_, (Q(name__icontains=x) for x in
         plus))).exclude(reduce(operator.or_, (Q(name__icontains=x) for x in minus)))
     ker_qs_json = serializers.serialize('json', ker_qs)
@@ -275,6 +283,16 @@ def change_group(request, pk):
     return render(request, 'admin/dictionary/listing.html', context)
 
 
+def plus_and_func(plus):
+    plus_and = []
+    for p in plus:
+        pl = p.split(' ')
+        if len(pl) > 1:
+            plus_and.append(pl)
+        else:
+            plus_and.append(plus)
+    return plus_and[0]
+
 
 @login_required
 def main_work(request):
@@ -286,11 +304,19 @@ def main_work(request):
         parent = key_form.cleaned_data['parent']
         plus = key_form.cleaned_data['plus'].split('\n')
         plus = [x.strip() for x in plus]
+        #Здесь функция для плюс слов
+        plus_and = plus_and_func(plus)
         minus = key_form.cleaned_data['minus'].split('\n')
         minus = [x.strip() for x in minus]
         group_name = key_form.cleaned_data['group_name']
-        ker_qs = Kernel.objects.filter(reduce(operator.or_, (Q(keywords__icontains=x) for x in
-            plus))).exclude(reduce(operator.or_, (Q(keywords__icontains=x) for x in minus))).exclude(chk=True)
+
+        ker_qs = Kernel.objects.filter(Q(reduce(operator.or_, (Q(keywords__icontains=x) for x in plus)) |
+            Q(reduce(operator.and_, (Q(keywords__icontains=x) for x in plus_and))))).exclude(reduce(operator.or_, (Q(keywords__icontains=x) for x in minus))).exclude(chk=True)
+
+
+        #ker_qs = Kernel.objects.filter(reduce(operator.or_, (Q(keywords__icontains=x) for x in
+        #    plus))).filter(reduce(operator.and_, (Q(keywords__icontains=x) for x in plus_and))).exclude(reduce(operator.or_, (Q(keywords__icontains=x) for x in minus))).exclude(chk=True)
+
         nom_qs = Nomenklatura.objects.filter(reduce(operator.or_, (Q(name__icontains=x) for x in
             plus))).exclude(reduce(operator.or_, (Q(name__icontains=x) for x in minus))).exclude(chk=True)
         ker_qs_json = serializers.serialize('json', ker_qs)
@@ -351,10 +377,13 @@ def view_group(request, pk):
     group = Groups.objects.get(id=pk)
     plus = group.plus.split('\n')
     plus = [x.strip() for x in plus]
+    plus_and = plus_and_func(plus)
     minus = group.minus.split('\n')
     minus = [x.strip() for x in minus]
-    ker_qs = Kernel.objects.filter(reduce(operator.or_, (Q(keywords__icontains=x) for x in
-        plus))).exclude(reduce(operator.or_, (Q(keywords__icontains=x) for x in minus)))
+    #ker_qs = Kernel.objects.filter(reduce(operator.or_, (Q(keywords__icontains=x) for x in
+    #    plus))).exclude(reduce(operator.or_, (Q(keywords__icontains=x) for x in minus)))
+    ker_qs = Kernel.objects.filter(Q(reduce(operator.or_, (Q(keywords__icontains=x) for x in plus)) |
+        Q(reduce(operator.and_, (Q(keywords__icontains=x) for x in plus_and))))).exclude(reduce(operator.or_, (Q(keywords__icontains=x) for x in minus))).exclude(chk=True)
     nom_qs = Nomenklatura.objects.filter(reduce(operator.or_, (Q(name__icontains=x) for x in
         plus))).exclude(reduce(operator.or_, (Q(name__icontains=x) for x in minus)))
     context = {
