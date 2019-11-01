@@ -300,6 +300,11 @@ def main_work(request):
     nom_qs = Nomenklatura.objects.all().exclude(chk=True).order_by('name')[:1000]
     group_qs = Groups.objects.all().order_by('name')
     key_form = KeyWordForm(request.GET)
+
+    if request.GET.get('delete_group'):
+        Groups.objects.get(id=int(request.GET.get('delete_group'))).delete()
+        return redirect('dictionary:main_work')
+
     if key_form.is_valid():
         parent = key_form.cleaned_data['parent']
         plus = key_form.cleaned_data['plus'].split('\n')
@@ -328,6 +333,7 @@ def main_work(request):
                     'noms': nom_qs_json,
                     }
             return JsonResponse(data, safe=False) 
+
         if request.GET.get('save_group'):
             group, created = Groups.objects.update_or_create(
                     name = group_name,

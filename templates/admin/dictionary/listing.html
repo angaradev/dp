@@ -50,7 +50,7 @@
         <div class="col-2">
 
             {% for group in groups %}
-                <div class="chk-gr" style="font-size:12px;" data-pk="{{ group.name }}"><a id="check_group-{{ group.id }}"  href="#">{{ group.name }}</a></div>
+                <div ><a href="{% url 'dictionary:main_work' %}?delete_group={{ group.id}}" class="mk-alert-del"><span class="bred2"> <i class="fa fa-trash" aria-hidden="true"></i></span></a> | <a class="chk-gr" style="font-size:12px;" data-pk="{{ group.name }}" id="check_group-{{ group.id }}"  href="#">{{ group.name }}</a></div>
             {% endfor %}
         </div>
         <div id="kernel_id" class="col-3">
@@ -72,4 +72,5 @@
 {% endblock %}
 {% block js %}
 <script src="{% static 'js/dictionary.js' %}"></script>
+<script src="{% static 'js/mkalert.js' %}"></script>
 {% endblock %}
