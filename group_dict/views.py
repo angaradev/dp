@@ -257,6 +257,7 @@ def insert_kernel(request, mode):
             
         return render(request, 'admin/dictionary/insert.html', context)
 
+
 @login_required
 def change_group(request, pk):
     qs = Groups.objects.get(id=pk)
@@ -265,12 +266,24 @@ def change_group(request, pk):
     plus_and = plus_and_func(plus)
     minus = qs.minus.split('\n')
     minus = [x.strip() for x in minus]
-    #ker_qs = Kernel.objects.filter(reduce(operator.or_, (Q(keywords__icontains=x) for x in
-    #    plus))).exclude(reduce(operator.or_, (Q(keywords__icontains=x) for x in minus)))
-    ker_qs = Kernel.objects.filter(Q(reduce(operator.or_, (Q(keywords__icontains=x) for x in plus)) |
-        Q(reduce(operator.and_, (Q(keywords__icontains=x) for x in plus_and))))).exclude(reduce(operator.or_, (Q(keywords__icontains=x) for x in minus))).exclude(chk=True)
-    nom_qs = Nomenklatura.objects.filter( Q(reduce(operator.or_, (Q(name__icontains=x) for x in plus)) |
-            Q(reduce(operator.and_, (Q(name__icontains=x) for x in plus_and))))).exclude(reduce(operator.or_, (Q(name__icontains=x) for x in minus)))
+    q_objects =Q()
+    for pl_and in plus_and:
+        q_objects.add(Q(reduce(operator.and_, (Q(name__icontains=x) for x in pl_and))), Q.OR)
+
+    nom_qs = Nomenklatura.objects.filter(
+            Q(reduce(operator.or_, (Q(name__icontains=x) for x in plus)) |
+                Q(q_objects)
+                )).exclude(reduce(operator.or_, (Q(name__icontains=x) for x in minus))).exclude(chk=True)
+
+    q_objects_key =Q()
+    for pl_and in plus_and:
+        q_objects_key.add(Q(reduce(operator.and_, (Q(keywords__icontains=x) for x in pl_and))), Q.OR)
+        
+    ker_qs = Kernel.objects.filter(
+            Q(reduce(operator.or_, (Q(keywords__icontains=x) for x in plus)) |
+                Q(q_objects_key)
+                )).exclude(reduce(operator.or_, (Q(keywords__icontains=x) for x in minus))).exclude(chk=True)
+
     ker_qs_json = serializers.serialize('json', ker_qs)
     nom_qs_json = serializers.serialize('json', nom_qs)
     key_form = KeyWordForm(request.GET)
@@ -291,7 +304,7 @@ def plus_and_func(plus):
             plus_and.append(pl)
         else:
             plus_and.append(plus)
-    return plus_and[0]
+    return plus_and
 
 
 @login_required
@@ -315,15 +328,32 @@ def main_work(request):
         minus = [x.strip() for x in minus]
         group_name = key_form.cleaned_data['group_name']
 
-        ker_qs = Kernel.objects.filter(Q(reduce(operator.or_, (Q(keywords__icontains=x) for x in plus)) |
-            Q(reduce(operator.and_, (Q(keywords__icontains=x) for x in plus_and))))).exclude(reduce(operator.or_, (Q(keywords__icontains=x) for x in minus))).exclude(chk=True)
 
+        q_objects =Q()
+        for pl_and in plus_and:
+            q_objects.add(Q(reduce(operator.and_, (Q(name__icontains=x) for x in pl_and))), Q.OR)
 
-        #ker_qs = Kernel.objects.filter(reduce(operator.or_, (Q(keywords__icontains=x) for x in
-        #    plus))).filter(reduce(operator.and_, (Q(keywords__icontains=x) for x in plus_and))).exclude(reduce(operator.or_, (Q(keywords__icontains=x) for x in minus))).exclude(chk=True)
+        nom_qs = Nomenklatura.objects.filter(
+                Q(reduce(operator.or_, (Q(name__icontains=x) for x in plus)) |
+                    Q(q_objects)
+                #Q(reduce(operator.and_, (Q(name__icontains=x) for x in pl_and))
+                    )).exclude(reduce(operator.or_, (Q(name__icontains=x) for x in minus))).exclude(chk=True)
 
-        nom_qs = Nomenklatura.objects.filter(Q(reduce(operator.or_, (Q(name__icontains=x) for x in plus)) |
-            Q(reduce(operator.and_, (Q(name__icontains=x) for x in plus_and))))).exclude(reduce(operator.or_, (Q(name__icontains=x) for x in minus))).exclude(chk=True)
+        q_objects_key =Q()
+        for pl_and in plus_and:
+            q_objects_key.add(Q(reduce(operator.and_, (Q(keywords__icontains=x) for x in pl_and))), Q.OR)
+            
+        ker_qs = Kernel.objects.filter(
+                Q(reduce(operator.or_, (Q(keywords__icontains=x) for x in plus)) |
+                    Q(q_objects_key)
+                #Q(reduce(operator.and_, (Q(name__icontains=x) for x in pl_and))
+                    )).exclude(reduce(operator.or_, (Q(keywords__icontains=x) for x in minus))).exclude(chk=True)
+        
+        
+        
+#        .filter(Q(reduce(operator.or_, (Q(keywords__icontains=x) for x in plus)) |
+#            Q(reduce(operator.and_, (Q(keywords__icontains=x) for x in plus_and))))).exclude(reduce(operator.or_, (Q(keywords__icontains=x) for x in minus))).exclude(chk=True)
+#
         ker_qs_json = serializers.serialize('json', ker_qs)
         nom_qs_json = serializers.serialize('json', nom_qs)
         
@@ -378,6 +408,7 @@ def check_group(request):
                 }
         return JsonResponse(data)
 
+
 @login_required
 def view_group(request, pk):
     group = Groups.objects.get(id=pk)
@@ -400,6 +431,7 @@ def view_group(request, pk):
             'nom': nom_qs,
             }
     return render(request, 'admin/dictionary/group_view.html', context)
+
 
 @login_required
 def view_groups(request):
