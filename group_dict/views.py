@@ -336,7 +336,6 @@ def main_work(request):
         nom_qs = Nomenklatura.objects.filter(
                 Q(reduce(operator.or_, (Q(name__icontains=x) for x in plus)) |
                     Q(q_objects)
-                #Q(reduce(operator.and_, (Q(name__icontains=x) for x in pl_and))
                     )).exclude(reduce(operator.or_, (Q(name__icontains=x) for x in minus))).exclude(chk=True)
 
         q_objects_key =Q()
@@ -346,14 +345,9 @@ def main_work(request):
         ker_qs = Kernel.objects.filter(
                 Q(reduce(operator.or_, (Q(keywords__icontains=x) for x in plus)) |
                     Q(q_objects_key)
-                #Q(reduce(operator.and_, (Q(name__icontains=x) for x in pl_and))
                     )).exclude(reduce(operator.or_, (Q(keywords__icontains=x) for x in minus))).exclude(chk=True)
         
         
-        
-#        .filter(Q(reduce(operator.or_, (Q(keywords__icontains=x) for x in plus)) |
-#            Q(reduce(operator.and_, (Q(keywords__icontains=x) for x in plus_and))))).exclude(reduce(operator.or_, (Q(keywords__icontains=x) for x in minus))).exclude(chk=True)
-#
         ker_qs_json = serializers.serialize('json', ker_qs)
         nom_qs_json = serializers.serialize('json', nom_qs)
         
@@ -417,8 +411,7 @@ def view_group(request, pk):
     plus_and = plus_and_func(plus)
     minus = group.minus.split('\n')
     minus = [x.strip() for x in minus]
-    #ker_qs = Kernel.objects.filter(reduce(operator.or_, (Q(keywords__icontains=x) for x in
-    #    plus))).exclude(reduce(operator.or_, (Q(keywords__icontains=x) for x in minus)))
+
     ker_qs = Kernel.objects.filter(Q(reduce(operator.or_, (Q(keywords__icontains=x) for x in plus)) |
         Q(reduce(operator.and_, (Q(keywords__icontains=x) for x in plus_and))))).exclude(reduce(operator.or_, (Q(keywords__icontains=x) for x in minus))).exclude(chk=True)
     nom_qs = Nomenklatura.objects.filter(reduce(operator.or_, (Q(name__icontains=x) for x in
