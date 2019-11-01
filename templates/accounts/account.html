@@ -30,6 +30,7 @@
 						<ul>
 							<li><a class="dropdown tt-megamenu-col-02" href="{% url 'admin:index' %}" >Админка</a></li>
 							<li><a class="dropdown tt-megamenu-col-01" href="{% url 'adminphotos' %}" >Работа с фото</a></li>
+							<li><a class="dropdown tt-megamenu-col-01" href="{% url 'adminphotos' %}" >Работа с Ядром (группы)</a></li>
 						</ul>
 				</div>
 				<div class="bblue acc-font">{% if request.user.first_name %}{{ request.user.first_name|upper }}{% else %}{{ request.user.username|upper }}{% endif %}<a href="{% url 'logout' %}" class="float-right">выйти</a></div>
