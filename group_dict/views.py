@@ -269,8 +269,8 @@ def change_group(request, pk):
     #    plus))).exclude(reduce(operator.or_, (Q(keywords__icontains=x) for x in minus)))
     ker_qs = Kernel.objects.filter(Q(reduce(operator.or_, (Q(keywords__icontains=x) for x in plus)) |
         Q(reduce(operator.and_, (Q(keywords__icontains=x) for x in plus_and))))).exclude(reduce(operator.or_, (Q(keywords__icontains=x) for x in minus))).exclude(chk=True)
-    nom_qs = Nomenklatura.objects.filter(reduce(operator.or_, (Q(name__icontains=x) for x in
-        plus))).exclude(reduce(operator.or_, (Q(name__icontains=x) for x in minus)))
+    nom_qs = Nomenklatura.objects.filter( Q(reduce(operator.or_, (Q(name__icontains=x) for x in plus)) |
+            Q(reduce(operator.and_, (Q(name__icontains=x) for x in plus_and))))).exclude(reduce(operator.or_, (Q(name__icontains=x) for x in minus)))
     ker_qs_json = serializers.serialize('json', ker_qs)
     nom_qs_json = serializers.serialize('json', nom_qs)
     key_form = KeyWordForm(request.GET)
@@ -317,8 +317,8 @@ def main_work(request):
         #ker_qs = Kernel.objects.filter(reduce(operator.or_, (Q(keywords__icontains=x) for x in
         #    plus))).filter(reduce(operator.and_, (Q(keywords__icontains=x) for x in plus_and))).exclude(reduce(operator.or_, (Q(keywords__icontains=x) for x in minus))).exclude(chk=True)
 
-        nom_qs = Nomenklatura.objects.filter(reduce(operator.or_, (Q(name__icontains=x) for x in
-            plus))).exclude(reduce(operator.or_, (Q(name__icontains=x) for x in minus))).exclude(chk=True)
+        nom_qs = Nomenklatura.objects.filter(Q(reduce(operator.or_, (Q(name__icontains=x) for x in plus)) |
+            Q(reduce(operator.and_, (Q(name__icontains=x) for x in plus_and))))).exclude(reduce(operator.or_, (Q(name__icontains=x) for x in minus))).exclude(chk=True)
         ker_qs_json = serializers.serialize('json', ker_qs)
         nom_qs_json = serializers.serialize('json', nom_qs)
         
