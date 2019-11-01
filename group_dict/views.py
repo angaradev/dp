@@ -28,8 +28,6 @@ def split_kernel_clean(request):
     minus = [x.strip() for x in minus]
     ker_qs = KernelTmp.objects.filter(reduce(operator.or_, (Q(keywords__icontains=x) for x in
             minus))).order_by('keywords')
-    ker_qs = Kernel.objects.filter(Q(reduce(operator.or_, (Q(keywords__icontains=x) for x in plus)) |
-        Q(reduce(operator.and_, (Q(keywords__icontains=x) for x in plus_and))))).exclude(reduce(operator.or_, (Q(keywords__icontains=x) for x in minus))).exclude(chk=True)
     i = ker_qs.delete()
     return JsonResponse({'insert_count': i[0]})
 
@@ -188,10 +186,15 @@ def categorizer(request):
             plus_and = plus_and_func(plus)
             minus = drow.minus.split('\n')
             minus = [x.strip() for x in minus]
-    #        ker_qs = KernelTmp.objects.filter(reduce(operator.or_, (Q(keywords__icontains=x) for x in
-    #        plus))).exclude(reduce(operator.or_, (Q(keywords__icontains=x) for x in minus))).exclude(chk=True)
-            ker_qs = Kernel.objects.filter(Q(reduce(operator.or_, (Q(keywords__icontains=x) for x in plus)) |
-        Q(reduce(operator.and_, (Q(keywords__icontains=x) for x in plus_and))))).exclude(reduce(operator.or_, (Q(keywords__icontains=x) for x in minus))).exclude(chk=True)
+
+            q_objects_key =Q()
+            for pl_and in plus_and:
+                q_objects_key.add(Q(reduce(operator.and_, (Q(keywords__icontains=x) for x in pl_and))), Q.OR)
+                
+            ker_qs = Kernel.objects.filter(
+                    Q(reduce(operator.or_, (Q(keywords__icontains=x) for x in plus)) |
+                        Q(q_objects_key)
+                        )).exclude(reduce(operator.or_, (Q(keywords__icontains=x) for x in minus))).exclude(chk=True)
             ker_qs.update(group_id=drow.id)
         final_qs = KernelTmp.objects.all()
         cat_count = final_qs.filter(~Q(group_id=0)).count()
@@ -220,6 +223,7 @@ def get_csv(request, mode):
         writer.writerow([row.keywords, row.freq, row.group_id])
     request.session['categorized'] = False
     return resp
+
 
 @login_required
 def insert_kernel(request, mode):
@@ -411,11 +415,25 @@ def view_group(request, pk):
     plus_and = plus_and_func(plus)
     minus = group.minus.split('\n')
     minus = [x.strip() for x in minus]
+        
+    q_objects_key =Q()
+    for pl_and in plus_and:
+        q_objects_key.add(Q(reduce(operator.and_, (Q(keywords__icontains=x) for x in pl_and))), Q.OR)
+        
+    ker_qs = Kernel.objects.filter(
+            Q(reduce(operator.or_, (Q(keywords__icontains=x) for x in plus)) |
+                Q(q_objects_key)
+                )).exclude(reduce(operator.or_, (Q(keywords__icontains=x) for x in minus))).exclude(chk=True)
 
-    ker_qs = Kernel.objects.filter(Q(reduce(operator.or_, (Q(keywords__icontains=x) for x in plus)) |
-        Q(reduce(operator.and_, (Q(keywords__icontains=x) for x in plus_and))))).exclude(reduce(operator.or_, (Q(keywords__icontains=x) for x in minus))).exclude(chk=True)
-    nom_qs = Nomenklatura.objects.filter(reduce(operator.or_, (Q(name__icontains=x) for x in
-        plus))).exclude(reduce(operator.or_, (Q(name__icontains=x) for x in minus)))
+    q_objects =Q()
+    for pl_and in plus_and:
+        q_objects.add(Q(reduce(operator.and_, (Q(name__icontains=x) for x in pl_and))), Q.OR)
+
+    nom_qs = Nomenklatura.objects.filter(
+            Q(reduce(operator.or_, (Q(name__icontains=x) for x in plus)) |
+                Q(q_objects)
+                )).exclude(reduce(operator.or_, (Q(name__icontains=x) for x in minus))).exclude(chk=True)
+
     context = {
             'group': group,
             'plus': plus,
