@@ -5,6 +5,7 @@
 ### Django ###
 settings.py
 dp/urls.py
+gtoup_dict/files/
 static_root/
 wsgi.py
 *.log
