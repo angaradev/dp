@@ -313,8 +313,8 @@ def plus_and_func(plus):
 
 @login_required
 def main_work(request):
-    ker_qs = Kernel.objects.all().exclude(chk=True).order_by('keywords')[5607:6607]
-    nom_qs = Nomenklatura.objects.all().exclude(chk=True).order_by('name')[:1000]
+    ker_qs = Kernel.objects.all().exclude(chk=True).order_by('keywords')[5607:8607]
+    nom_qs = Nomenklatura.objects.all().exclude(chk=True).order_by('name')[:4444000]
     group_qs = Groups.objects.all().order_by('name')
     key_form = KeyWordForm(request.GET)
 
