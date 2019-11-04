@@ -28,7 +28,7 @@ def split_kernel_clean(request):
     minus = [x.strip() for x in minus]
     ker_qs = KernelTmp.objects.filter(reduce(operator.or_, (Q(keywords__icontains=x) for x in
             minus))).order_by('keywords')
-    i = ker_qs.delete()
+    ker_qs.delete()
     return JsonResponse({'insert_count': i[0]})
 
 
