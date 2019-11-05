@@ -8,6 +8,7 @@ class KernelTmp(models.Model):
     freq    = models.PositiveIntegerField(default=0)
     chk = models.BooleanField(default=0)
     group_id = models.IntegerField(default=0)
+    group_name = models.CharField(max_length=255, blank=True)
 
     def __str__(self):
         return self.keywords
@@ -31,6 +32,7 @@ class KernelReadyCommercial(models.Model):
     freq    = models.PositiveIntegerField()
     chk = models.BooleanField(default=False)
     group_id = models.IntegerField(default=0)
+    group_name = models.CharField(max_length=255, blank=True)
 
     def __str__(self):
         return self.keywords
@@ -43,6 +45,7 @@ class KernelReadyInfo(models.Model):
     freq    = models.PositiveIntegerField()
     chk = models.BooleanField(default=False)
     group_id = models.IntegerField(default=0)
+    group_name = models.CharField(max_length=255, blank=True)
 
     def __str__(self):
         return self.keywords

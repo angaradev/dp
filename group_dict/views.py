@@ -48,12 +48,12 @@ def split_kernel(request):
     ker_qs_info = KernelTmp.objects.filter(reduce(operator.or_, (Q(keywords__icontains=x) for x in
             minus))).order_by('keywords')
 
-    insert_comm = "INSERT INTO " + table_name_comm + " (keywords, freq, group_id) VALUES (%s, %s, %s)"
-    l = [[x.keywords, x.freq, x.group_id] for x in ker_qs]
+    insert_comm = "INSERT INTO " + table_name_comm + " (keywords, freq, group_id, group_name) VALUES (%s, %s, %s, %s)"
+    l = [[x.keywords, x.freq, x.group_id, x.group_name] for x in ker_qs]
     j = cursor.executemany(insert_comm, l)
     
-    insert_comm = "INSERT INTO " + table_name_info + " (keywords, freq, group_id) VALUES (%s, %s, %s)"
-    l = [[x.keywords, x.freq, x.group_id] for x in ker_qs_info]
+    insert_comm = "INSERT INTO " + table_name_info + " (keywords, freq, group_id, group_name) VALUES (%s, %s, %s, %s)"
+    l = [[x.keywords, x.freq, x.group_id, x.group_name] for x in ker_qs_info]
     i = cursor.executemany(insert_comm, l)
     return JsonResponse({'info_count': i, 'comm_count': j})
 
@@ -195,7 +195,7 @@ def categorizer(request):
                     Q(reduce(operator.or_, (Q(keywords__icontains=x) for x in plus)) |
                         Q(q_objects_key)
                         )).exclude(reduce(operator.or_, (Q(keywords__icontains=x) for x in minus))).exclude(chk=True)
-            ker_qs.update(group_id=drow.id)
+            ker_qs.update(group_id=drow.id, group_name=drow.name)
         final_qs = KernelTmp.objects.all()
         cat_count = final_qs.filter(~Q(group_id=0)).count()
         not_cat_count = final_qs.filter(group_id=0).count()
@@ -220,7 +220,7 @@ def get_csv(request, mode):
         resp['Content-Disposition'] = 'attachment; filename="ready_kernel_info.csv"'
     writer = csv.writer(resp)
     for row in qs:
-        writer.writerow([row.keywords, row.freq, row.group_id])
+        writer.writerow([row.keywords, row.freq, row.group_id, row.group_name])
     request.session['categorized'] = False
     return resp
 
