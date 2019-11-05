@@ -191,7 +191,7 @@ def categorizer(request):
             for pl_and in plus_and:
                 q_objects_key.add(Q(reduce(operator.and_, (Q(keywords__icontains=x) for x in pl_and))), Q.OR)
                 
-            ker_qs = Kernel.objects.filter(
+            ker_qs = KernelTmp.objects.filter(
                     Q(reduce(operator.or_, (Q(keywords__icontains=x) for x in plus)) |
                         Q(q_objects_key)
                         )).exclude(reduce(operator.or_, (Q(keywords__icontains=x) for x in minus))).exclude(chk=True)
