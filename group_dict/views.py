@@ -320,7 +320,6 @@ def main_work(request):
 
     if request.GET.get('delete_group'):
         if request.GET.get('delete_group'):
-            print('Whats the fuck', request.GET.get('delete_group'))
             del_obj = Groups.objects.get(pk=int(request.GET.get('delete_group')))
             del_obj.delete()
         return redirect('dictionary:main_work')
