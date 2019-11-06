@@ -220,7 +220,7 @@ def get_csv(request, mode):
         resp['Content-Disposition'] = 'attachment; filename="ready_kernel_info.csv"'
     writer = csv.writer(resp)
     for row in qs:
-        writer.writerow([row.keywords, row.freq, row.group_id, row.group_name])
+        writer.writerow([row.keywords, row.freq, row.group_id, row.group_nam, row.group_namee])
     request.session['categorized'] = False
     return resp
 
@@ -313,13 +313,16 @@ def plus_and_func(plus):
 
 @login_required
 def main_work(request):
-    ker_qs = Kernel.objects.all().exclude(chk=True).order_by('keywords')[5607:8607]
-    nom_qs = Nomenklatura.objects.all().exclude(chk=True).order_by('name')[:4444000]
+    ker_qs = Kernel.objects.all().exclude(chk=True).order_by('keywords')[:5000]
+    nom_qs = Nomenklatura.objects.all().exclude(chk=True).order_by('name')[:5000]
     group_qs = Groups.objects.all().order_by('name')
     key_form = KeyWordForm(request.GET)
 
     if request.GET.get('delete_group'):
-        Groups.objects.get(id=int(request.GET.get('delete_group'))).delete()
+        if request.GET.get('delete_group'):
+            print('Whats the fuck', request.GET.get('delete_group'))
+            del_obj = Groups.objects.get(pk=int(request.GET.get('delete_group')))
+            del_obj.delete()
         return redirect('dictionary:main_work')
 
     if key_form.is_valid():
