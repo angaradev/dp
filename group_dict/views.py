@@ -220,7 +220,7 @@ def get_csv(request, mode):
         resp['Content-Disposition'] = 'attachment; filename="ready_kernel_info.csv"'
     writer = csv.writer(resp)
     for row in qs:
-        writer.writerow([row.keywords, row.freq, row.group_id, row.group_nam, row.group_namee])
+        writer.writerow([row.keywords, row.freq, row.group_id, row.group_name, row.group_name])
     request.session['categorized'] = False
     return resp
 

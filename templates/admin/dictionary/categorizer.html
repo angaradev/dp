@@ -12,34 +12,38 @@
             <h5><span class="bgreen">Успешно {{ cat_count }} строк!</span> | <span class="bred2">НЕ Успешно {{ not_cat_count }} строк!</span> </h5>
             {% endif %}
                 <ol>
-                    <li>Приготовьте таблицу для категоризации. В таблице должны быть как минимум 2 поля. <span class="bgreen">name</span> и <span class="bgreen">parent_id</span></li>
-                    <li>Загрузите её в базу данных ducatoparts на удаленном сервере.</li>
-                    <li>Нажмите категоризировать.</li>
+                    <li>Закачайте файл для категоризации в форме справа. Можно посмотреть как файл выглядит.</li>
+                    <li>Залейте его в базу Шаг 2)</li>
+                    <li>Если нужно, очистить от общих минус слов, авито и тд. Шаг 3)</li>
+                    <lb>Нажмите категоризировать. Шаг 4). Занимает несколько минут.</lb>
+                    <li>Далее можно разделить ядро или номенклатуру на коммерческие и инфо запросы. Шаг 5).</li>
+                    <li>На шаге 6) можно скачать готовые файлы инфо и коммерческих запросов.</li>
                 </ol>
 
-            <div class="row">
-                <div class="col-6">
-                    <a id="categorize-me" class="mk-alert btn btn-outline-success mb-3" href="?mode=categorize" title="Прокатегоризировать">Категоризировать</a>
-                </div>
-                <div class="col-6">
-                    <div id="loading-image" style="display:none;">
-                        <img  class="img image-fluid" src="{% static 'images/other/loading.gif' %}" width="100">
-                    </div>
 
-                </div>
-            </div>
-            <p id="show-counts"></p>
 
             {% for f in files %}
-                <h6><a href="{% url 'dictionary:insertdata' %}?filename={{ f }}&mode=preview" title="Засунуть файл в Mysql таблицу">Засунуть файл ядра( {{ f }} ) В MySql</a></h6>
+                <h6>2) <a href="{% url 'dictionary:insertdata' %}?filename={{ f }}&mode=preview" title="Засунуть файл в Mysql таблицу">Засунуть файл ядра( {{ f }} ) В MySql</a></h6>
             {% endfor %}
-                <h6><a class="clean-kernel" href="{% url 'dictionary:splitkernelclean' %}">Очистить Ядро от общих минус слов</a></h6>
-                <h6><a class="split-kernel" href="{% url 'dictionary:splitkernel' %}">Разделить Ядро на Коммерческие и Инфо запросы</a></h6>
+                <h6>3) <a class="clean-kernel" href="{% url 'dictionary:splitkernelclean' %}">Очистить Ядро от общих минус слов</a></h6>
+                <div class="row">
+                    <div class="col-6">
+                        4) <a id="categorize-me" class="mk-alert" href="?mode=categorize" title="Прокатегоризировать">Категоризировать</a>
+                    </div>
+                    <div class="col-6">
+                        <div id="loading-image" style="display:none;">
+                            <img  class="img image-fluid" src="{% static 'images/other/loading.gif' %}" width="100">
+                        </div>
+
+                    </div>
+                </div>
+                <p id="show-counts"></p>
+                <h6>5) <a class="split-kernel" href="{% url 'dictionary:splitkernel' %}">Разделить Ядро на Коммерческие и Инфо запросы</a></h6>
             <div class="alert-success-my">
             </div>
            <div>
 
-               <p><a class="download-file_" href="{% url 'dictionary:getcsv' 'comm' %}" download> Скачать Готовый Файл Commercial</a> | <a class="download-file_" href="{% url 'dictionary:getcsv' 'info' %}" download> Скачать Готовый Файл Info</a></p>
+               <p>6) <a class="download-file_" href="{% url 'dictionary:getcsv' 'comm' %}" download> Скачать Готовый Файл Commercial</a> | <a class="download-file_" href="{% url 'dictionary:getcsv' 'info' %}" download> Скачать Готовый Файл Info</a></p>
 
 
                <ul style="font-size:14px;">

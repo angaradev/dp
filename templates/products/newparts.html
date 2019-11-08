@@ -192,7 +192,7 @@
 								<li><a href="{% url 'subcat' cat.slug %}">{{ cat.name|title }}</a></li>
 								{% endif %}
 								{% endfor %}
-								<li class="active"><a href="#">{{ cat.name }}</a></li>
+								<!--<li class="active"><a href="#">{{ cat.name }}</a></li>-->
 							</ul>
 						</div>
 					</div>
@@ -310,7 +310,11 @@
 										<div class="tt-row">
 											<ul class="tt-add-info">
 												{% for cat in object.cat.all %}
-												<li><a href="{% url 'subcat' cat.slug %}">{{ cat.name }}</a></li>
+												{% if car %}
+													<li><a href="/zapchasti/{{ car }}/{{ cat.slug }}">{{ cat.name }}</a></li>
+												{% else %}
+													<li><a href="{% url 'subcat' cat.slug %}">{{ cat.name }}</a></li>
+												{% endif %}
 												{% endfor %}
 											</ul>
 

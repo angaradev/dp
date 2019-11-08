@@ -104,7 +104,7 @@ class Nomenklatura(models.Model):
 class Groups(models.Model):
 
     name = models.CharField(max_length=500, null=True, blank=True)
-    parent = models.IntegerField()
+    parent_id = models.IntegerField()
     plus = models.CharField(max_length=1000, blank=True)
     minus = models.CharField(max_length=1000, blank=True)
     
