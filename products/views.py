@@ -303,9 +303,12 @@ def subcat(request, slug, **kwargs):
 
 def detailed(request, pk):
     cats = Categories.objects.filter(parent_id=0)
-    obj = get_object_or_404(Products, id=pk)
-    bread_sub2 = Categories.objects.get(id=obj.cat.first().parent_id)
-    bread_sub1 = Categories.objects.get(id=bread_sub2.parent_id)
+    try:
+        obj = get_object_or_404(Products, id=int(pk))
+        bread_sub2 = Categories.objects.get(id=obj.cat.first().parent_id)
+        bread_sub1 = Categories.objects.get(id=bread_sub2.parent_id)
+    except Exception as e:
+        raise Http404
     try:
         aver = Rating.objects.get(object_id=pk)
     except:
