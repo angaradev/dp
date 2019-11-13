@@ -342,7 +342,7 @@ def main_work(request):
         nom_qs = Nomenklatura.objects.filter(
                 Q(reduce(operator.or_, (Q(name__icontains=x) for x in plus)) |
                     Q(q_objects)
-                    )).exclude(reduce(operator.or_, (Q(name__icontains=x) for x in minus))).exclude(chk=True).order_by('keywords')
+                    )).exclude(reduce(operator.or_, (Q(name__icontains=x) for x in minus))).exclude(chk=True).order_by('name')
 
         q_objects_key =Q()
         for pl_and in plus_and:
