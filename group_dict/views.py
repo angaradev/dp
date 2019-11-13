@@ -351,7 +351,7 @@ def main_work(request):
         ker_qs = Kernel.objects.filter(
                 Q(reduce(operator.or_, (Q(keywords__icontains=x) for x in plus)) |
                     Q(q_objects_key)
-                    )).exclude(reduce(operator.or_, (Q(keywords__icontains=x) for x in minus))).exclude(chk=True)
+                    )).exclude(reduce(operator.or_, (Q(keywords__icontains=x) for x in minus))).exclude(chk=True).order_by('keywords')
         
         
         ker_qs_json = serializers.serialize('json', ker_qs)
