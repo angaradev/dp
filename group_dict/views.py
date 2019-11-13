@@ -373,8 +373,8 @@ def main_work(request):
                             'parent_id' : parent.id,
                     }
                     )
-            ker_qs.update(chk=True)
-            nom_qs.update(chk=True)
+    #        ker_qs.update(chk=True)
+    #       nom_qs.update(chk=True)
             return redirect('dictionary:main_work')
 
     #Aggregate statistics
