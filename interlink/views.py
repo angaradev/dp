@@ -12,9 +12,10 @@ def subcat_redirect(request, pk):
 
 
 def subcat_ducato_redirect(request, pk):
-    qs = RedireCtcat.objects.filter(id_old=pk).first()
-    nqs = Categories.objects.get(id=qs.id_new)
-    if not qs or not nqs:
+    try:
+        qs = RedireCtcat.objects.filter(id_old=pk).first()
+        nqs = Categories.objects.get(id=qs.id_new)
+    except:
         raise Http404
     return redirect('car_page_subcats', 'fiat-ducato', nqs.slug, permanent=True) 
 

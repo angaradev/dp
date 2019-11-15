@@ -314,7 +314,10 @@ def detailed(request, pk):
     except:
         aver = 0
     # Похожие товары
-    similar_products = Products.objects.filter(cat=obj.cat.first().id)
+    try:
+        similar_products = Products.objects.filter(cat=obj.cat.first().id)
+    except:
+        similar_products = Products.objects.order_by('?')[:8]
 
 
     comments = Comment.objects.filter_by_instance(obj)
