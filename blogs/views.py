@@ -107,10 +107,11 @@ def blog(request, slug):
                parent = parent_obj,
                user = strip_tags(user_string),
                )
-        url = new_comment.content_object.build_absolute_url()
+        url = settings.BASE_URL + new_comment.content_object.get_absolute_url()
+        url_print = settings.SITE_URL + new_comment.content_object.get_absolute_url()
         send_mail(
                 'Ducatoparts.ru новый комментарий',
-                f'На дукато партс оставили новый комментарий на странице {url}. Имя {new_comment.user}. Text-{new_comment.content}',
+                f'На дукато партс оставили новый комментарий на странице {url_print}. Имя {new_comment.user}. Text-{new_comment.content}',
                 'angara99@gmail.com',
                 settings.SHOP_EMAILS_MANAGERS,
                 fail_silently=False,
@@ -236,11 +237,11 @@ def oldblog(request, pk):
                parent = parent_obj,
                user = strip_tags(user_string),
                )
-        url = new_comment.content_object.build_absolute_url()
-        print(new_comment.content, new_comment.user)
+        url_print = settings.SITE_URL + new_comment.content_object.get_absolute_url()
+        url = new_comment.content_object.get_absolute_url()
         send_mail(
                 'Ducatoparts.ru новый комментарий',
-                f'На дукато партс оставили новый комментарий на странице {url}. Имя {new_comment.user}. Text-{new_comment.content}',
+                f'На дукато партс оставили новый комментарий на странице {url_print}. Имя {new_comment.user}. Text-{new_comment.content}',
                 'angara99@gmail.com',
                 settings.SHOP_EMAILS_MANAGERS,
                 fail_silently=False,
