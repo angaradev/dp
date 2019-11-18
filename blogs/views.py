@@ -12,6 +12,8 @@ from comments.forms import CommentForm
 from comments.models import Comment
 from django.utils.html import strip_tags
 from django.core.mail import send_mail
+import re
+from django.conf import settings
 
 def blogs(request):
     req_cat = request.GET.get('category')
@@ -85,10 +87,11 @@ def blog(request, slug):
         content_type = ContentType.objects.get(model=c_type)
         obj_id = form.cleaned_data.get('object_id')
         content_data = form.cleaned_data.get('content')
+        content_data = re.sub(r'\w+\.[a-z\/]{2,5}\S+','', content_data)
+        content_data = re.sub(r'http\S+','', content_data)
         parent_obj = None
         try:
             parent_id = request.POST.get('parent_id')
-            print(parent_id)
         except:
             parent_id = None
 
@@ -104,12 +107,12 @@ def blog(request, slug):
                parent = parent_obj,
                user = strip_tags(user_string),
                )
-        url = new_comment.content_object.get_absolute_url()
+        url = new_comment.content_object.build_absolute_url()
         send_mail(
                 'Ducatoparts.ru новый комментарий',
-                f'На дукато партс оставили новый комментарий на странице {url}',
+                f'На дукато партс оставили новый комментарий на странице {url}. Имя {new_comment.user}. Text-{new_comment.content}',
                 'angara99@gmail.com',
-                ['angara99@gmail.com', 'yellkalolka@gmail.com'],
+                settings.SHOP_EMAILS_MANAGERS,
                 fail_silently=False,
                 )
         return HttpResponseRedirect(url)
@@ -213,10 +216,11 @@ def oldblog(request, pk):
         content_type = ContentType.objects.get(model=c_type)
         obj_id = form.cleaned_data.get('object_id')
         content_data = form.cleaned_data.get('content')
+        content_data = re.sub(r'\w+\.[a-z\/]{2,5}\S+','', content_data)
+        content_data = re.sub(r'http\S+','', content_data)
         parent_obj = None
         try:
             parent_id = request.POST.get('parent_id')
-            print(parent_id)
         except:
             parent_id = None
 
@@ -232,12 +236,13 @@ def oldblog(request, pk):
                parent = parent_obj,
                user = strip_tags(user_string),
                )
-        url = new_comment.content_object.get_absolute_url()
+        url = new_comment.content_object.build_absolute_url()
+        print(new_comment.content, new_comment.user)
         send_mail(
                 'Ducatoparts.ru новый комментарий',
-                f'На дукато партс оставили новый комментарий на странице {url}',
+                f'На дукато партс оставили новый комментарий на странице {url}. Имя {new_comment.user}. Text-{new_comment.content}',
                 'angara99@gmail.com',
-                ['angara99@gmail.com', 'yellkalolka@gmail.com'],
+                settings.SHOP_EMAILS_MANAGERS,
                 fail_silently=False,
                 )
         return HttpResponseRedirect(url)
