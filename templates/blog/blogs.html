@@ -59,7 +59,11 @@
 									</div>
 								</div>
 								<div class="tt-btn">
+									{% if not 'articles' in request.path %}
 									<a href="{% url 'blog' blog.slug %}" class="btn">ЧИТАТЬ ДАЛЕЕ</a>
+									{% else %}
+										<a href="{% url 'oldblog' blog.id %}" class="btn">ЧИТАТЬ ДАЛЕЕ</a>
+									{% endif %}
 								</div>
 							</div>
 						</div>
