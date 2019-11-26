@@ -2,7 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
-
+from django.db.models.signals import pre_save
 
 class CommentManager(models.Manager):
     
@@ -43,3 +43,12 @@ class Comment(models.Model):
         if self.parent is not None:
             return False
         return True
+
+def clean_comment(sender, instance, *args, **kwargs):
+    def clean_bulshit(string):
+        if 'Алексей' in string or 'нажмите' in string:
+            return 'Спасибо за полезную информацию!'
+
+    instance.content = clean_bulshit(instance.content)
+
+pre_save.connect(clean_comment, sender=Comment)
