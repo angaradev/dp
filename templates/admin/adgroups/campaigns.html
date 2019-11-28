@@ -1,0 +1,50 @@
+{% extends 'admin/dictionary/dict_base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load humanize %}
+{% block page_title %}Выбрать Кампании{% endblock %}
+{% block page_content %}
+
+<div class="wrapper-my container-fluid">
+    <div class="row mb-2">
+        <div class="col-2">
+            <h2 class="bblue"><span class="bgreen">Машина:</span> {{ request.session.car }}</h2>
+        </div>
+        <div class="col-4 pt-1">
+            <form action="." method="post" class="form-inline">
+                {% csrf_token %}
+                <div class="form-group">
+                    {{ carform.car|as_crispy_field }}
+                </div>
+                <input type="hidden" name="select_car" value="submited">
+                <button type="submit" class="btn btn-outline-primary btn-sm ml-2">Выбрать машину</button>
+            </form>
+        </div>
+    </div>
+    <hr>
+    <div class="row list-style-group mt-1 form-control-custom">
+        <div class="col-4">
+            <form action="." method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary btn-sm">Сохранить Кампании</button>
+                {{ campform|crispy }}
+            </form>
+        </div>
+        <div class="col-8 words-group">
+            <ul>
+                {% for object in objects %}
+                <li><a class="bred" href="{% url 'ad:adgroupview' object.id %}" title="Показать все группы">{{ object.camp_name }}</a> | <a href="{% url 'ad:main' %}?mk_adgroups={{ object.id }}" title="Сформировать Группы по Ядру машины">Fill out camp</a> | <a href="{% url 'ad:adtemplate' object.id %}" title="Сделать шаблоны объявлений">MakeTemplates</a>  | <a class="bgreen" href="{% url 'ad:maketemplates' object.id %}" title="Заполнить все Группы из шаблонов">FillByTemplatesBulk</a> | <a class="bred" href="{% url 'ad:maketemplates' object.id %}?delete_templates=True" title="Очищает все объявления привязанные к группе. Будьте осторожны!"><i class="fa fa-trash" aria-hidden="true" ></i> Delete Ads</a> | <a class="bblue" href="{% url 'ad:makesamepath' object.id %}?delete_templates=True" title="Копирует видимые пути урла во все три обьявления только внутри группы">Copy Visible Paths</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-4">
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block js %}
+<script src=""></script>
+{% endblock %}

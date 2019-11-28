@@ -210,6 +210,7 @@ def categorizer(request):
             }
     return render(request, 'admin/dictionary/categorizer.html', context)
 
+@login_required
 def get_csv(request, mode):
     resp = HttpResponse(content_type='text/csv')
     if mode == 'comm':

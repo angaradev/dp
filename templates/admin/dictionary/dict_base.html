@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Jekyll v3.8.5">
-    <title>Работа ядром и номенклатурой</title>
+    <title>{% block page_title %}Работа ядром и номенклатурой{% endblock %}</title>
 
     <link rel="shortcut icon" type="image/png" href="{% static 'favicon.png' %}">
 
@@ -70,6 +70,9 @@
             <a class="dropdown-item" href="{% url 'dictionary:kernelclean' %}">Очистка Ядра</a>
             <a class="dropdown-item" href="{% url 'dictionary:categorizer' %}">Категоризатор Ядра</a>
         </div>
+      </li>
+        <li class="nav-item">
+        <a class="nav-link  {% if 'ad' in request.path %} active {% endif %}" href="{% url 'ad:adcamps' %}" tabindex="-1" aria-disabled="true">Работа с Рекламой</a>
       </li>
     </ul>
     <form class="form-inline my-2 my-lg-0">

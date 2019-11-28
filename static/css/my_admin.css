@@ -208,3 +208,15 @@ height: 20px;
     width: 100%;
     margin: auto;
 }
+.form-control-custom input, .form-control-custom select {
+    font-size: 0.8rem;
+}
+.form-control-custom label {
+    font-size: 0.6rem;
+}
+.form-group {
+    margin: 0;
+}
+.car-width {
+    width: 300px;
+}

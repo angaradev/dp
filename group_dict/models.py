@@ -107,6 +107,10 @@ class Groups(models.Model):
     parent_id = models.IntegerField()
     plus = models.CharField(max_length=1000, blank=True)
     minus = models.CharField(max_length=1000, blank=True)
+    full_plus = models.TextField(null=True, blank=True)
+    full_minus = models.TextField(null=True, blank=True)
+    inner_labels = models.CharField(max_length=10, default='generic')
+    old_group_id = models.CharField(max_length=100, default=0, blank=True)
     
     def __str__(self):
         return self.name
