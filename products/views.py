@@ -16,7 +16,7 @@ from email_form.models import EmailModel
 from star_ratings.models import Rating
 from .utils import get_weight, search_splitter
 from blogs.models import Blogs
-
+from django.shortcuts import redirect
 
 def show_cars():
     qs = Products.objects.values('car').annotate(dcount=Count('car'))
@@ -86,8 +86,18 @@ def newparts(request):
             }
     return render(request, 'products/newparts.html', context)
 
+#Функция delete session car
+def del_car(request, slug):
+    if request.GET.get('del_car') == 'True':
+        del request.session['car']
+        slug = request.path.split('/')[:-1]
+        return redirect('subcat', slug)
+
+
 
 def cars(request, car):
+    if car:
+        request.session['car'] = car
     sort = request.GET.get('sort', None)
     show = request.GET.get('show', None)
     if sort == '3':
@@ -122,6 +132,8 @@ def cars(request, car):
     return render(request, 'products/newparts.html', context)
 
 def cars_subcats(request, car, slug, **kwargs):
+    if car:
+        request.session['car'] = car
     brand = request.GET.get('brand', None)
     cats_tmp = Categories.objects.get(slug=slug)
     second_level_cats = Categories.objects.filter(parent_id=cats_tmp.id)
@@ -188,6 +200,7 @@ def cars_subcats(request, car, slug, **kwargs):
 
     context = {
             'objects': objects,
+            'slug': slug,
             'cars': show_cars(),
             'categories': cats,
             'car': car,
@@ -204,6 +217,8 @@ def cars_subcats(request, car, slug, **kwargs):
 # HERE IS SAME STUFF BUT NO CAR
 
 def subcat(request, slug, **kwargs):
+    if request.session.get('car'):
+        del request.session['car']
     brand = request.GET.get('brand', None)
     cats_tmp = Categories.objects.get(slug=slug)
     second_level_cats = Categories.objects.filter(parent_id=cats_tmp.id)
@@ -286,6 +301,7 @@ def subcat(request, slug, **kwargs):
     context = {
             'objects': objects,
             'cars': show_cars(),
+            'slug': slug,
             'categories': cats,
             'brands': brands,
             'title_h1': h1,

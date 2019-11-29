@@ -134,8 +134,12 @@
 <div class="upper-tags">
 	<div class="container">
 		<ul class="tag-class">
-			{% if car %}
-			<li><span class="xmark">&#x274C; </span><a href="{% url 'newparts' %}" id="car" >{{ car|upper }}</a></li>
+			{% with car=request.session.car %}
+			{% if slug and car %}
+			<li><span class="xmark">&#x274C; </span><a href="{% url 'subcat' slug %}" id="slug" >{{ car|upper }}</a></li>
+			{% endif %}
+			{% if car and not slug %}
+			<li><span class="xmark">&#x274C; </span><a href="{% url 'newparts'  %}" id="car" >{{ car|upper }}</a></li>
 			{% endif %}
 			{% if cat.slug %}
 			<li><span class="xmark">&#x274C; </span><a href="{% if car %}{% url 'car_page' car %}{% else %}{% url 'newparts' %}{% endif %}" id="cat" class="nav-link active show"> {{ cat.name|upper }}</a></li>
@@ -143,6 +147,7 @@
 			{% if request.GET.brand %}
 			<li><span class="xmark">&#x274C; </span><a id="brand" class="xbrand" >{{ request.GET.brand }}</a></li>
 			{% endif %}
+			{% endwith %}
 		</ul>
 	</div>
 </div>
