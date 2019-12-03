@@ -71,11 +71,11 @@ class AddsTemplate(models.Model):
 class Keywords(models.Model):
 
     keyword = models.CharField(max_length=255, null=True)
-    group     = models.ForeignKey(AdGroups, on_delete=models.CASCADE, null=True)
+    group     = models.ForeignKey(AdGroups, on_delete=models.SET_NULL, null=True)
     labels      = models.CharField(max_length=255, blank=True)
 
 
 class Negative(models.Model):
 
     negative = models.CharField(max_length=255, null=True)
-    group     = models.ForeignKey(AdGroups, on_delete=models.CASCADE, null=True)
+    group     = models.ForeignKey(AdGroups, on_delete=models.SET_NULL, null=True)
