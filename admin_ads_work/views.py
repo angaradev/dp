@@ -63,7 +63,7 @@ def ad_all_groups_view(request, camp_id):
 
 @login_required
 def ad_camps(request):
-    car_form = CarForm(request.POST, initial={'car': request.session['car']})
+    car_form = CarForm(request.POST)
     if request.method == 'POST' and request.POST.get('select_car') == 'submited':
         if car_form.is_valid():
             car = car_form.cleaned_data.get('car')
