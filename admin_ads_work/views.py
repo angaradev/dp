@@ -211,6 +211,7 @@ def make_templates(request, camp_id):
                 if keywords:
                     key = keywords.keyword.title()
                     key = re.sub(r'[\]\[\+]', '', key)
+                    key = key[:30]
                 else:
                     key = t.headline1.title()
                 ad = Adds.objects.get_or_create(
@@ -241,7 +242,22 @@ def make_same_path(request, camp_id):
     return redirect('ad:adcamps')
 
 
+# Очищаем таблицы admin_ads_work_adgroups, admin_ads_work_keywords, admin_ads_work_negative
+@login_required
+def adgroups_del(request, camp_id):
+    adgroups_del = AdGroups.objects.filter(camp_id=Campaigns.objects.get(id=camp_id))
+    keys_del = Keywords.objects.filter(group_id__in=adgroups_del)
+    negative_del = Negative.objects.filter(group_id__in=adgroups_del)
+    try:
+        keys_del.all().delete()
+        negative_del.all().delete()
+        adgroups_del.delete()
+    except:
+        print("something wrong")
+    return redirect('ad:adcamps')
+    
 
+    
 
 
 
