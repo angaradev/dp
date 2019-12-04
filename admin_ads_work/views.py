@@ -43,6 +43,7 @@ def ad_view(request, camp_id, pk):
             'keyform': formset,
             'negativeform': n_f,
             'addsform': adds_f,
+            'camp_id': camp_id,
             }
     return render(request, 'admin/adgroups/adgroup.html', context)
 
@@ -57,6 +58,7 @@ def ad_all_groups_view(request, camp_id):
     context = {
             'objects': qs,
             'counts': counts,
+            'camp_id': camp_id,
             }
     return render(request, 'admin/adgroups/adgroups_view_all.html', context)
 

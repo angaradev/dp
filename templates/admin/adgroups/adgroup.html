@@ -18,6 +18,7 @@
             {{ negativeform|crispy}}
         </div>
         <div class="col-3">
+            <a href="{% url 'ad:adgroupview' camp_id %}" class="btn btn-success btn-sm" type="button">Назад</a>
             <button class="btn btn-primary btn-sm" type="submit">Сохранить работу</button>
             {{ addsform|crispy}}
         </div>
