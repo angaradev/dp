@@ -7,7 +7,7 @@ from group_dict.models import Groups, KernelReadyCommercial
 from django.contrib.auth.decorators import login_required
 import re
 import pymorphy2 as pm
-
+from django.db.models import Count
 
 @login_required
 def ad_view(request, camp_id, pk):
@@ -70,7 +70,7 @@ def ad_camps(request):
             request.session['car'] = car 
         return redirect('ad:adcamps')
 
-    qs = Campaigns.objects.all().order_by('camp_name')
+    qs = Campaigns.objects.all().annotate(num_ads=Count('adgroups')).order_by('camp_name')
     CampFormset = modelformset_factory(Campaigns, fields=('camp_name',), extra=1)
     if request.method == 'POST':
         camp_form = CampFormset(request.POST, queryset=qs)
