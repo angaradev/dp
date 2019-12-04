@@ -52,7 +52,7 @@ def ad_view(request, camp_id, pk):
 def ad_all_groups_view(request, camp_id):
     qs = AdGroups.objects.filter(camp_id=camp_id).order_by('ad_group_name')
     total = qs.count()
-    not_ready = qs.filter(final_url__exact='').count()
+    not_ready = qs.filter(chk=False).count()
     ready = total - not_ready
     counts = {'total': total, 'ready': ready, 'not_ready': not_ready}
     context = {
