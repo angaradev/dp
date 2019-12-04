@@ -15,7 +15,7 @@
         <div class="col-3">
             <ul style="list-style:none;">
             {% for object in objects %}
-                <li><a href="{% url 'ad:adgroup' object.camp_id.id object.group_id.id %}" {% if object.final_url %} class="bgreen" {% else %} class="bred" {% endif %}> {{ object.ad_group_name }}</a></li>
+                <li><a href="{% url 'ad:adgroup' object.camp_id.id object.group_id.id %}" {% if object.chk %} class="bgreen" {% else %} class="bred" {% endif %}> {{ object.ad_group_name }}</a></li>
             {% endfor %}
             </ul>
         </div>
