@@ -31,7 +31,7 @@ def ad_view(request, camp_id, pk):
                 n_f.save()
             if adds_f.is_valid():
                 adds_f.save()
-            return redirect('ad:adgroup', camp_id, pk)
+            return redirect('ad:adgroupview', camp_id)
     else:
         form = AdGroupForm(instance=ad_group)
         formset = keywords_formset(instance=ad_group)
@@ -240,6 +240,7 @@ def make_same_path(request, camp_id):
         paths.update(
         path1 = paths[0].path1,
         path2 = paths[0].path2,
+        headline1 = paths[0].headline1
         )
     return redirect('ad:adcamps')
 
