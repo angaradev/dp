@@ -9,6 +9,8 @@ from .views import (
         make_templates,
         make_same_path,
         adgroups_del,
+        get_yandex_csv,
+        get_google_csv,
         )
 urlpatterns = [
             path('adgroup/<int:camp_id>/<int:pk>/', ad_view, name='adgroup'),
@@ -19,5 +21,7 @@ urlpatterns = [
             path('maketemplates/<int:camp_id>/', make_templates, name='maketemplates'),
             path('makesamepath/<int:camp_id>/', make_same_path, name='makesamepath'),
             path('adgroupsdelete/<int:camp_id>/', adgroups_del, name='adgroupsdelete'),
+            path('getgooglecsv/<int:camp_id>/', get_google_csv, name='googlecsv'),
+            path('getyandexcsv/<int:camp_id>/', get_yandex_csv, name='yandexcsv'),
             ]
  

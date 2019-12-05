@@ -8,6 +8,72 @@ from django.contrib.auth.decorators import login_required
 import re
 import pymorphy2 as pm
 from django.db.models import Count
+from django.http import JsonResponse, HttpResponse
+import csv
+
+
+
+@login_required
+def get_google_csv(request, camp_id):
+    resp = HttpResponse(content_type='text/csv')
+    resp['Content-Disposition'] = 'attachment; filename="google_test.csv"'
+    qs = AdGroups.objects.all()[:5]
+
+    writer = csv.writer(resp)
+    for row in qs:
+        plus_obj = row.keywords_set.all()
+
+        minus_list = [x.negative for x in row.negative_set.all()]
+        minus = ' '.join(minus_list)
+        ads = row.adds_set.all()
+        for plus in plus_obj:
+            writer.writerow([row.camp_id, '', '', row.ad_group_name])
+            writer.writerow([row.camp_id, plus.keyword, row.ad_group_name, ads[0].headline1, ads[0].headline2])
+        #writer.writerow([row.keywords, row.freq, row.group_id, row.group_name, row.group_name])
+    return resp
+    #return redirect('ad:adcamps')
+
+@login_required
+def get_yandex_csv(request, camp_id):
+    resp = HttpResponse(content_type='text/csv')
+    resp['Content-Disposition'] = 'attachment; filename="yandex_test.csv"'
+    qs = AdGroups.objects.all()[:5]
+    writer = csv.writer(resp)
+    writer.writerow(['Предложение текстовых блоков для рекламной кампании'])
+    writer.writerow(['', '', '', 'Тип кампании:', 'Текстово-графическая кампания'])
+    writer.writerow(['', '','', '№ заказа'])
+    writer.writerow(['', '','', 'Минус-фразы на кампанию:'])
+    writer.writerow(['Доп. объявление группы', 'Тип объявления', 'Мобильное объявление', 'ID группы', 'Название группы',
+	'Номер группы', 'Статус \"Мало показов\"', 'ID фразы', 'Фраза (с минус-словами)', 'ID объявления', 'Заголовок 1',
+	'Заголовок 2', 'Текст', 'заголовок 1', 'заголовок 2', 'текст', 'Ссылка', 'Отображаемая ссылка', 'Регион',
+	'Ставка', 'Ставка в сетях', 'Контакты', 'Статус объявления', 'Статус фразы', 'Заголовки быстрых ссылок',
+	'Описания быстрых ссылок', 'Адреса быстрых ссылок', 'Турбо-страницы быстрых ссылок', 'Параметр 1', 'Параметр 2',
+	'Метки', 'Изображение', 'Креатив', 'Статус модерации креатива', 'Турбо-страница', 'Уточнения',
+	'Минус-фразы на группу', 'Возрастные ограничения', 'Ссылка на приложение в магазине', 'Тип устройства', 'Тип связи',
+	'Версия ОС', 'Трекинговая ссылка', 'Иконка', 'Рейтинг', 'Количество оценок', 'Цена' ])
+    camp = Campaigns.objects.get(id=camp_id)	
+    fast_link = camp.fast_link_yand
+    fast_link_desc = camp.fast_link_yand_desc
+    fast_link_url = camp.fast_link_yand_url
+    for row in qs:
+        plus_obj = row.keywords_set.all()
+        minus_list = [x.negative for x in row.negative_set.all()]
+        minus = ' '.join(minus_list)
+        ads = row.adds_set.all()
+        for plus in plus_obj:
+            plus.keyword = plus.keyword.replace('+', '')
+            writer.writerow(['-',  'Текстово-графическое', '-', '', row.ad_group_name, row.id, '', '', plus.keyword + ' ' + minus,
+            '',  ads[0].headline1, ads[0].headline2, ads[0].description1, '', '', '', row.final_url,
+            ads[0].path1,'', '', '', '', '', '', fast_link, fast_link_desc, fast_link_url, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '',
+            '', '', '', '', ''])
+            writer.writerow(['+',  'Текстово-графическое', '-', '', row.ad_group_name, row.id, '', '', plus.keyword + ' ' + minus,
+            '',  ads[1].headline1, ads[1].headline2, ads[1].description1, '', '', '', row.final_url, ads[1].path1,'', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''])
+            writer.writerow(['+',  'Текстово-графическое', '-', '', row.ad_group_name, row.id, '', '', plus.keyword + ' ' + minus,
+            '',  ads[2].headline1, ads[2].headline2, ads[2].description1, '', '', '', row.final_url, ads[2].path1,'', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''])
+    return resp
+
+
+
 
 @login_required
 def ad_view(request, camp_id, pk):
@@ -55,10 +121,20 @@ def ad_all_groups_view(request, camp_id):
     not_ready = qs.filter(chk=False).count()
     ready = total - not_ready
     counts = {'total': total, 'ready': ready, 'not_ready': not_ready}
+    qs_camp = Campaigns.objects.all().annotate(num_ads=Count('adgroups')).order_by('camp_name')
+    CampFormset = modelformset_factory(Campaigns, fields=('camp_name', 'fast_link_yand', 'fast_link_yand_desc', 'fast_link_yand_url'), extra=1)
+    if request.method == 'POST':
+        camp_form = CampFormset(request.POST, queryset=qs_camp)
+        if camp_form.is_valid():
+            camp_form.save()
+            return redirect('ad:adgroupview', camp_id)
+    else:
+        camp_form = CampFormset(queryset=qs_camp)
     context = {
             'objects': qs,
             'counts': counts,
             'camp_id': camp_id,
+            'campform': camp_form,
             }
     return render(request, 'admin/adgroups/adgroups_view_all.html', context)
 
@@ -73,7 +149,7 @@ def ad_camps(request):
         return redirect('ad:adcamps')
 
     qs = Campaigns.objects.all().annotate(num_ads=Count('adgroups')).order_by('camp_name')
-    CampFormset = modelformset_factory(Campaigns, fields=('camp_name',), extra=1)
+    CampFormset = modelformset_factory(Campaigns, fields=('camp_name', 'fast_link_yand', 'fast_link_yand_desc', 'fast_link_yand_url'), extra=1)
     if request.method == 'POST':
         camp_form = CampFormset(request.POST, queryset=qs)
         if camp_form.is_valid():
