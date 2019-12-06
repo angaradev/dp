@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .forms import AdGroupForm, CarForm
+from .forms import AdGroupForm, CarForm, CampFormSingle, CampEditForm
 from .models import AdGroups, Keywords, Negative, Adds, Campaigns, Cars, AddsTemplate
 from django.forms import inlineformset_factory, modelformset_factory
 from django.shortcuts import redirect
@@ -12,24 +12,98 @@ from django.http import JsonResponse, HttpResponse
 import csv
 
 
+@login_required
+def make_headliner_copy(request, camp_id):
+    qs = Campaigns.objects.get(id=camp_id)
+    form = CampFormSingle(request.POST)
+    campForm = CampEditForm(request.POST, instance=qs )
+    if request.method == 'POST':
+        if request.POST.get('camp_name'):
+            if campForm.is_valid:
+                campForm.save()
+        camp_from = request.POST.get('camp_from', None)
+        if camp_from:
+            if form.is_valid():
+                adgroups = AdGroups.objects.filter(camp_id=Campaigns.objects.get(id=int(camp_from)))
+                for adgroup in adgroups:
+                    n_adgroup, created = AdGroups.objects.get_or_create(group_id=adgroup.group_id, ad_group_name=adgroup.ad_group_name,
+                            max_cpc=adgroup.max_cpc,
+                            max_cpm=adgroup.max_cpm,
+                            final_url=adgroup.final_url,
+                            camp_id=qs,
+                            inner_labels=adgroup.inner_labels
+                            )
+                
+                    ads = adgroup.adds_set.all()
+                    pluses = adgroup.keywords_set.all()
+                    minuses = adgroup.negative_set.all()
+                    for plus in pluses:
+                        p, pc = Keywords.objects.get_or_create(group=n_adgroup, keyword=plus.keyword, labels=plus.labels, criterion_type=plus.criterion_type)
+                    for minus in minuses:
+                        m, mc = Negative.objects.get_or_create(group=n_adgroup, negative=minus.negative)
+                    for ad in ads:
+                        a, ac = Adds.objects.get_or_create(ad_group=n_adgroup,
+                               headline1=ad.headline1,
+                               headline2=ad.headline2,
+                               headline3=ad.headline3,
+                               path1=ad.path1,
+                               path2=ad.path2,
+                               description1=ad.description1,
+                               description2=ad.description2,
+                               variant=ad.variant,
+                               camp_id=qs
+                                )
+
+    context = {
+            'form':form,
+            'campform': campForm,
+            }
+    return render(request, 'admin/adgroups/single_ad_group.html', context)
+
+
+
 
 @login_required
 def get_google_csv(request, camp_id):
     resp = HttpResponse(content_type='text/csv')
     resp['Content-Disposition'] = 'attachment; filename="google_test.csv"'
     qs = AdGroups.objects.all()[:5]
-
     writer = csv.writer(resp)
+
+   # writer.writerow(['Campaign', 'Labels', 'Budget', 'Budget type', 'Recommended budget', 'Campaign Type', 'Networks',
+   #     'Languages', 'Bid Strategy Type', 'Bid Strategy Name', 'Ad location', 'Target impression share',
+   #     'Maximum CPC bid limit', 'Desktop Bid Modifier', 'Mobile Bid Modifier', 'Tablet Bid Modifier', 'TV Screen Bid Modifier',
+   #     'Start Date', 'End Date', 'Ad Schedule', 'Ad rotation', 'Delivery method', 'Targeting method', 'Exclusion method',
+   #     'DSA Website', 'DSA Language', 'DSA targeting source', 'DSA page feeds', 'Merchant Identifier', 'Country of Sale',
+   #     'Campaign Priority', 'Local Inventory Ads', 'Inventory filter', 'Flexible Reach', 'Final URL suffix',
+   #     'Ad Group', 'Max CPC', 'Max CPM', 'Target CPA', 'Max CPV', 'Target CPM', 'Target ROAS', 'Top Content Bid Modifier',
+   #     'Display Network Custom Bid Type', 'Targeting expansion', 'Ad Group Type', 'Tracking template', 'Custom parameters',
+   #     'ID', 'Audience', 'Final URL', 'Final mobile URL', 'Location', 'Reach', 'Feed', 'Radius', 'Unit', 'Criterion Type',
+   #     'Keyword', 'First page bid', 'Top of page bid', 'First position bid', 'Platform Targeting', 'Device Preference',
+   #     'Link Text', 'Destination URL', 'Description Line 1', 'Description Line 2', 'Callout text', 'Ad type', 'Headline 1',
+   #     'Headline 2', 'Headline 3', 'Path 1', 'Path 2', 'Header'
+   #     ])
+    writer.writerow(['Campaign', 'Labels', 'Budget', 'Budget type', 'Campaign Type', 'Networks', 'Ad Group',
+        'Max CPC', 'Max CPM', 'Final URL', 'Criterion Type', 'Keyword', 'Description Line 1', 'Description Line 2',
+        'Headline 1', 'Headline 2', 'Headline 3', 'Path 1', 'Path 2'        
+        ])
+    
     for row in qs:
         plus_obj = row.keywords_set.all()
 
         minus_list = [x.negative for x in row.negative_set.all()]
         minus = ' '.join(minus_list)
         ads = row.adds_set.all()
+        row.ad_group_name = row.ad_group_name.title()
+        writer.writerow([row.camp_id, '', '', '', '', '', row.ad_group_name, '', '', '', '', '', '', '', '', '', '', '', '' ])
         for plus in plus_obj:
-            writer.writerow([row.camp_id, '', '', row.ad_group_name])
-            writer.writerow([row.camp_id, plus.keyword, row.ad_group_name, ads[0].headline1, ads[0].headline2])
-        #writer.writerow([row.keywords, row.freq, row.group_id, row.group_name, row.group_name])
+
+            writer.writerow([row.camp_id, plus.labels, '', '', '', '', row.ad_group_name, '', '', '',
+                plus.criterion_type, plus.keyword, ads[0].description1, ads[0].description2, ads[0].headline1,
+                ads[0].headline2, ads[0].headline3, ads[0].path1, ads[0].path2
+                ])
+        writer.writerow([row.camp_id, '', '', '', '', '', row.ad_group_name, '', '', row.final_url, '', '', '', '', '', '', '',
+                '', '', '' ])
     return resp
     #return redirect('ad:adcamps')
 
@@ -182,11 +256,13 @@ def make_ads_by_kernel(request):
             return ' '.join(nl)
         plus_list = [s.strip() + ' ' + request.session['car'] for s in full_plus.splitlines()]
         for p in plus_list:
-            match = [add_plus(p), '"' + p + '"', '[' + p + ']']
+            match = [(add_plus(p), 'Broad'), ('"' + p + '"', 'Phrase'), ('[' + p + ']', 'Exact')]
+            
             for m in match:
                 new = Keywords.objects.get_or_create(
                     group=AdGroups.objects.get(id=adgroup_id),
-                    keyword = m
+                    keyword = m[0],
+                    criterion_type = m[1],
                    )
     #Эти функции для работы с минус словами
     def remove_dupes(lst):

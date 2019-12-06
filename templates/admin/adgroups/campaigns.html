@@ -41,7 +41,7 @@
                 <tbody>
                 {% for object in objects %}
                     <tr>
-                        <th scope="row"><a class="bred" href="{% url 'ad:adgroupview' object.id %}" title="Показать все группы">{{ object.camp_name }} ({{ object.num_ads }})</a></th>
+                        <th scope="row"><a class="bred" href="{% url 'ad:singlecamp' object.id %}" title="Показать все группы">{{ object.camp_name }} ({{ object.num_ads }})</a> | <a href="{% url 'ad:adgroupview' object.id %}">Группы</a> </th>
                         <td><a href="{% url 'ad:main' %}?mk_adgroups={{ object.id }}" title="Сформировать Группы по Ядру машины">Заполнить</a></td>
                         <td><a class="bred" href="{% url 'ad:adgroupsdelete' object.id %}" title="Удалить Группы"><i class="fa fa-trash" aria-hidden="true" ></i></a></td>
                         <td><a href="{% url 'ad:adtemplate' object.id %}" title="Сделать шаблоны объявлений">Работа с Шаблонами</a></td>

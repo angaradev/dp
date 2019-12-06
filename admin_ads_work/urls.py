@@ -11,6 +11,7 @@ from .views import (
         adgroups_del,
         get_yandex_csv,
         get_google_csv,
+        make_headliner_copy,
         )
 urlpatterns = [
             path('adgroup/<int:camp_id>/<int:pk>/', ad_view, name='adgroup'),
@@ -23,5 +24,6 @@ urlpatterns = [
             path('adgroupsdelete/<int:camp_id>/', adgroups_del, name='adgroupsdelete'),
             path('getgooglecsv/<int:camp_id>/', get_google_csv, name='googlecsv'),
             path('getyandexcsv/<int:camp_id>/', get_yandex_csv, name='yandexcsv'),
+            path('singlecamp/<int:camp_id>/', make_headliner_copy, name='singlecamp'),
             ]
  
