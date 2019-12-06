@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .forms import AdGroupForm, CarForm, CampFormSingle, CampEditForm
+from .forms import AdGroupForm, CarForm, CampFormSingle, CampEditForm, CampCreateForm
 from .models import AdGroups, Keywords, Negative, Adds, Campaigns, Cars, AddsTemplate
 from django.forms import inlineformset_factory, modelformset_factory
 from django.shortcuts import redirect
@@ -15,12 +15,16 @@ import csv
 @login_required
 def make_headliner_copy(request, camp_id):
     qs = Campaigns.objects.get(id=camp_id)
+    print(qs)
     form = CampFormSingle(request.POST)
-    campForm = CampEditForm(request.POST, instance=qs )
+    campForm = CampEditForm(instance=qs )
     if request.method == 'POST':
         if request.POST.get('camp_name'):
-            if campForm.is_valid:
+            camp_form = campForm(request.POST)
+            if camp_form.is_valid:
                 campForm.save()
+            else:
+                camt_form = campForm()
         camp_from = request.POST.get('camp_from', None)
         if camp_from:
             if form.is_valid():
@@ -67,7 +71,7 @@ def make_headliner_copy(request, camp_id):
 def get_google_csv(request, camp_id):
     resp = HttpResponse(content_type='text/csv')
     resp['Content-Disposition'] = 'attachment; filename="google_test.csv"'
-    qs = AdGroups.objects.all()[:5]
+    qs = AdGroups.objects.filter(camp_id=Campaigns.objects.get(id=camp_id))[:5]
     writer = csv.writer(resp)
 
    # writer.writerow(['Campaign', 'Labels', 'Budget', 'Budget type', 'Recommended budget', 'Campaign Type', 'Networks',
@@ -223,14 +227,11 @@ def ad_camps(request):
         return redirect('ad:adcamps')
 
     qs = Campaigns.objects.all().annotate(num_ads=Count('adgroups')).order_by('camp_name')
-    CampFormset = modelformset_factory(Campaigns, fields=('camp_name', 'fast_link_yand', 'fast_link_yand_desc', 'fast_link_yand_url'), extra=1)
-    if request.method == 'POST':
-        camp_form = CampFormset(request.POST, queryset=qs)
+    camp_form = CampCreateForm(request.POST)
+    if request.method == 'POST' and request.POST.get('camp_create'):
         if camp_form.is_valid():
             camp_form.save()
             return redirect('ad:adcamps')
-    else:
-        camp_form = CampFormset(queryset=qs)
 
     context = {
             'objects': qs,
@@ -246,7 +247,7 @@ def ad_camps(request):
 #Нужно заплить вставку полных плюсов, полных минусов, урлов, внутренних лайблов,
 #простановку типов соответствия и словоформ в минусах
 @login_required
-def make_ads_by_kernel(request):
+def make_ads_by_kernel(request, camp_id):
     
     #Эта функция делает типы соответствия и всталяет в ключевые слова плюс
     def make_match_type(full_plus, adgroup_id):
@@ -254,7 +255,10 @@ def make_ads_by_kernel(request):
             l = string.split()
             nl = ['+' + x for x in l]
             return ' '.join(nl)
-        plus_list = [s.strip() + ' ' + request.session['car'] for s in full_plus.splitlines()]
+
+        camp_car = Campaigns.objects.get(id=camp_id)
+        car = camp_car.car.car_rus
+        plus_list = [s.strip() + ' ' + car for s in full_plus.splitlines()]
         for p in plus_list:
             match = [(add_plus(p), 'Broad'), ('"' + p + '"', 'Phrase'), ('[' + p + ']', 'Exact')]
             
@@ -291,7 +295,7 @@ def make_ads_by_kernel(request):
                     )
         return final_list
     
-    camp_id = request.GET.get('mk_adgroups', None)
+    #camp_id = request.GET.get('mk_adgroups', None)
     if camp_id:
         qs = KernelReadyCommercial.objects.values('group_id').distinct()
         for q in qs:
@@ -352,7 +356,7 @@ def adds_templates(request, camp_id):
 # Машина добавляется в ключах
 @login_required
 def make_templates(request, camp_id):
-
+    camp_id = Campaigns.objects.get(id=camp_id)
     if request.GET.get('delete_templates') == 'True':
         clear_ad = Adds.objects.filter(camp_id=camp_id).delete()
     else:
@@ -379,7 +383,7 @@ def make_templates(request, camp_id):
                     path1 = t.path1,
                     path2 = t.path2,
                     variant = t.variant,
-                    camp_id = Campaigns.objects.get(id=camp_id)
+                    camp_id = camp_id 
                     )
 
     return redirect('ad:adcamps')

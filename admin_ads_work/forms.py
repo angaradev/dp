@@ -25,4 +25,8 @@ class CampEditForm(ModelForm):
         model = Campaigns
         fields = '__all__'
     
+class CampCreateForm(ModelForm):
+    class Meta:
+        model = Campaigns
+        fields = ('car', 'camp_name')
     

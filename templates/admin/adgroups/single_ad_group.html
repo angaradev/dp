@@ -9,13 +9,13 @@
         <div class="col-3">
             <form class="" action="." method="post">{% csrf_token %}
                 {{ form|crispy }}
-                <button type="submit" class="btn btn-outline-success btn-sm">Выбрать</button>
+                <button type="submit" class="btn btn-outline-danger btn-sm mt-3">Заполнить</button>
             </form>
         </div>
         <div class="col-9">
             <form action="." method="post">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-primary btn-sm">Сохранить Кампании</button>
+                <button type="submit" class="btn btn-primary btn-sm">Сохранить</button>
                 {{ campform|crispy }}
             </form>
         </div>
