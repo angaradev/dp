@@ -69,7 +69,7 @@ def make_headliner_copy(request, camp_id):
 
 @login_required
 def get_google_csv(request, camp_id):
-    resp = HttpResponse(content_type='text/csv', charset='utf-8')
+    resp = HttpResponse(content_type='text/csv', charset='utf-16')
     resp['Content-Disposition'] = 'attachment; filename="google_test.csv"'
     qs = AdGroups.objects.filter(camp_id=Campaigns.objects.get(id=camp_id))
     writer = csv.writer(resp)
