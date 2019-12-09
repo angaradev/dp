@@ -10,7 +10,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('group_dict', '0014_auto_20191106_1250'),
-    ]
+       ]
 
     operations = [
         migrations.CreateModel(

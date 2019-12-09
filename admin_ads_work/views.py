@@ -69,9 +69,9 @@ def make_headliner_copy(request, camp_id):
 
 @login_required
 def get_google_csv(request, camp_id):
-    resp = HttpResponse(content_type='text/csv')
+    resp = HttpResponse(content_type='text/csv', charset='utf-8')
     resp['Content-Disposition'] = 'attachment; filename="google_test.csv"'
-    qs = AdGroups.objects.filter(camp_id=Campaigns.objects.get(id=camp_id))
+    qs = AdGroups.objects.filter(camp_id=Campaigns.objects.get(id=camp_id))[:2]
     writer = csv.writer(resp)
 
    # writer.writerow(['Campaign', 'Labels', 'Budget', 'Budget type', 'Recommended budget', 'Campaign Type', 'Networks',
@@ -100,14 +100,26 @@ def get_google_csv(request, camp_id):
         ads = row.adds_set.all()
         row.ad_group_name = row.ad_group_name.title()
         writer.writerow([row.camp_id, '', '', '', '', '', row.ad_group_name, '', '', '', '', '', '', '', '', '', '', '', '' ])
+
+        for m in minus_list:
+            writer.writerow([row.camp_id, '', '', '', '', '', row.ad_group_name, '', '', '',
+                'Negative Broad', m, '', '', '', '', '', '', ''  ])
+
         for plus in plus_obj:
 
             writer.writerow([row.camp_id, plus.labels, '', '', '', '', row.ad_group_name, '', '', '',
-                plus.criterion_type, plus.keyword, ads[0].description1, ads[0].description2, ads[0].headline1,
-                ads[0].headline2, ads[0].headline3, ads[0].path1, ads[0].path2
-                ])
-        writer.writerow([row.camp_id, '', '', '', '', '', row.ad_group_name, '', '', row.final_url, '', '', '', '', '', '', '',
-                '', '', '' ])
+                plus.criterion_type, plus.keyword, '', '', '', '', '', '', ''  ])
+
+        for ad in ads:
+            writer.writerow([row.camp_id, plus.labels, '', '', '', '', row.ad_group_name, '', '', row.final_url,
+                '', '', ad.description1, ad.description2, ad.headline1,
+                ad.headline2, ad.headline3, ad.path1, ad.path2])
+        #ads[0].description1, ads[0].description2, ads[0].headline1,
+        #        ads[0].headline2, ads[0].headline3, ads[0].path1, ads[0].path2
+
+
+        #writer.writerow([row.camp_id, '', '', '', '', '', row.ad_group_name, '', '', row.final_url, '', '', '', '', '', '', '',
+        #        '', '', '' ])
     return resp
     #return redirect('ad:adcamps')
 
@@ -116,7 +128,7 @@ def get_yandex_csv(request, camp_id):
     resp = HttpResponse(content_type='text/csv')
     resp['Content-Disposition'] = 'attachment; filename="yandex_test.csv"'
     qs = AdGroups.objects.all()
-    writer = csv.writer(resp, encoding='utf-8')
+    writer = csv.writer(resp)
     writer.writerow(['Предложение текстовых блоков для рекламной кампании'])
     writer.writerow(['', '', '', 'Тип кампании:', 'Текстово-графическая кампания'])
     writer.writerow(['', '','', '№ заказа'])
