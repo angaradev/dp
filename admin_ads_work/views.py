@@ -71,22 +71,9 @@ def make_headliner_copy(request, camp_id):
 def get_google_csv(request, camp_id):
     resp = HttpResponse(content_type='text/csv', charset='utf-8')
     resp['Content-Disposition'] = 'attachment; filename="google_test.csv"'
-    qs = AdGroups.objects.filter(camp_id=Campaigns.objects.get(id=camp_id))[:2]
+    qs = AdGroups.objects.filter(camp_id=Campaigns.objects.get(id=camp_id))
     writer = csv.writer(resp)
 
-   # writer.writerow(['Campaign', 'Labels', 'Budget', 'Budget type', 'Recommended budget', 'Campaign Type', 'Networks',
-   #     'Languages', 'Bid Strategy Type', 'Bid Strategy Name', 'Ad location', 'Target impression share',
-   #     'Maximum CPC bid limit', 'Desktop Bid Modifier', 'Mobile Bid Modifier', 'Tablet Bid Modifier', 'TV Screen Bid Modifier',
-   #     'Start Date', 'End Date', 'Ad Schedule', 'Ad rotation', 'Delivery method', 'Targeting method', 'Exclusion method',
-   #     'DSA Website', 'DSA Language', 'DSA targeting source', 'DSA page feeds', 'Merchant Identifier', 'Country of Sale',
-   #     'Campaign Priority', 'Local Inventory Ads', 'Inventory filter', 'Flexible Reach', 'Final URL suffix',
-   #     'Ad Group', 'Max CPC', 'Max CPM', 'Target CPA', 'Max CPV', 'Target CPM', 'Target ROAS', 'Top Content Bid Modifier',
-   #     'Display Network Custom Bid Type', 'Targeting expansion', 'Ad Group Type', 'Tracking template', 'Custom parameters',
-   #     'ID', 'Audience', 'Final URL', 'Final mobile URL', 'Location', 'Reach', 'Feed', 'Radius', 'Unit', 'Criterion Type',
-   #     'Keyword', 'First page bid', 'Top of page bid', 'First position bid', 'Platform Targeting', 'Device Preference',
-   #     'Link Text', 'Destination URL', 'Description Line 1', 'Description Line 2', 'Callout text', 'Ad type', 'Headline 1',
-   #     'Headline 2', 'Headline 3', 'Path 1', 'Path 2', 'Header'
-   #     ])
     writer.writerow(['Campaign', 'Labels', 'Budget', 'Budget type', 'Campaign Type', 'Networks', 'Ad Group',
         'Max CPC', 'Max CPM', 'Final URL', 'Criterion Type', 'Keyword', 'Description Line 1', 'Description Line 2',
         'Headline 1', 'Headline 2', 'Headline 3', 'Path 1', 'Path 2'        
