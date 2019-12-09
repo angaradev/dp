@@ -116,7 +116,7 @@ def get_yandex_csv(request, camp_id):
     resp = HttpResponse(content_type='text/csv')
     resp['Content-Disposition'] = 'attachment; filename="yandex_test.csv"'
     qs = AdGroups.objects.all()
-    writer = csv.writer(resp)
+    writer = csv.writer(resp, encoding='utf-8')
     writer.writerow(['Предложение текстовых блоков для рекламной кампании'])
     writer.writerow(['', '', '', 'Тип кампании:', 'Текстово-графическая кампания'])
     writer.writerow(['', '','', '№ заказа'])
