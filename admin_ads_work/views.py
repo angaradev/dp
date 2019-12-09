@@ -71,7 +71,7 @@ def make_headliner_copy(request, camp_id):
 def get_google_csv(request, camp_id):
     resp = HttpResponse(content_type='text/csv')
     resp['Content-Disposition'] = 'attachment; filename="google_test.csv"'
-    qs = AdGroups.objects.filter(camp_id=Campaigns.objects.get(id=camp_id))[:5]
+    qs = AdGroups.objects.filter(camp_id=Campaigns.objects.get(id=camp_id))
     writer = csv.writer(resp)
 
    # writer.writerow(['Campaign', 'Labels', 'Budget', 'Budget type', 'Recommended budget', 'Campaign Type', 'Networks',
@@ -115,7 +115,7 @@ def get_google_csv(request, camp_id):
 def get_yandex_csv(request, camp_id):
     resp = HttpResponse(content_type='text/csv')
     resp['Content-Disposition'] = 'attachment; filename="yandex_test.csv"'
-    qs = AdGroups.objects.all()[:5]
+    qs = AdGroups.objects.all()
     writer = csv.writer(resp)
     writer.writerow(['Предложение текстовых блоков для рекламной кампании'])
     writer.writerow(['', '', '', 'Тип кампании:', 'Текстово-графическая кампания'])
