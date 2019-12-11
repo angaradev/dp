@@ -15,7 +15,6 @@ import csv
 @login_required
 def make_headliner_copy(request, camp_id):
     qs = Campaigns.objects.get(id=camp_id)
-    print(qs)
     form = CampFormSingle(request.POST)
     campForm = CampEditForm(instance=qs )
     if request.method == 'POST':
@@ -71,7 +70,7 @@ def make_headliner_copy(request, camp_id):
 def get_google_csv(request, camp_id):
     resp = HttpResponse(content_type='text/csv', charset='utf-16')
     resp['Content-Disposition'] = 'attachment; filename="google_test.csv"'
-    qs = AdGroups.objects.filter(camp_id=Campaigns.objects.get(id=camp_id), dont_use=False)
+    qs = AdGroups.objects.filter(camp_id=Campaigns.objects.get(id=camp_id)).exclude(dont_use=True)
     writer = csv.writer(resp)
 
     writer.writerow(['Campaign', 'Labels', 'Budget', 'Budget type', 'Campaign Type', 'Networks', 'Ad Group',
