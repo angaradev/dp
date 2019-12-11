@@ -34,6 +34,7 @@
                     <th scope="col">Заполнить по шаблону</th>
                     <th scope="col">Удалить по шаблону</th>
                     <th scope="col">Скопировать пути</th>
+                    <th scope="col">Обновить по шаблону</th>
                     <th scope="col">Google CSV</th>
                     <th scope="col">Yandex CSV</th>
                 </tr>
@@ -47,9 +48,11 @@
                         <td><a href="{% url 'ad:adtemplate' object.id %}" title="Сделать шаблоны объявлений">Работа с Шаблонами</a></td>
                         <td><a class="bgreen" href="{% url 'ad:maketemplates' object.id %}" title="Заполнить все Группы из шаблонов">Заполнить по шаблонам</a></td>
                         <td><a class="bred" href="{% url 'ad:maketemplates' object.id %}?delete_templates=True" title="Очищает все объявления привязанные к группе. Будьте осторожны!"><i class="fa fa-trash" aria-hidden="true" ></i> Удалить заполн по шаблонам</a></td>
-                        <td><a class="bblue" href="{% url 'ad:makesamepath' object.id %}" title="Копирует видимые пути урла во все три обьявления только внутри группы">Скопировать пути</a></li></td>
+                        <td><a class="bblue" href="{% url 'ad:makesamepath' object.id %}" title="Копирует видимые пути урла во все три обьявления только внутри группы">Скопировать пути</a></td>
+                        <td><a href="{% url 'ad:maketemplates' object.id %}?copy_desc=True" title="Копируем из шаблонов в кампанию кроме хедлайнера">Copy Desc</a></td>
                         <td><a href="{% url 'ad:googlecsv' object.id %}">Google_CSV</a> </td>
                         <td><a href="{% url 'ad:yandexcsv' object.id %}">Yandex_CSV</a> </td>
+
                     </tr>
                 {% endfor %}
                 </tbody>

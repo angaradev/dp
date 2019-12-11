@@ -55,6 +55,12 @@
     color: #007bff;
     font-weight: bold;
 }
+
+.borange {
+    color: #F4A460;
+    font-weight: bold;
+}
+
 .car-active {
     color: HOTPINK;
     font-weight: bold;

@@ -32,6 +32,7 @@ class AdGroups(models.Model):
     camp_id = models.ForeignKey(Campaigns, on_delete=models.SET_NULL, null=True)
     inner_labels = models.CharField(max_length=20, default='generic')
     chk = models.BooleanField(default=False)
+    dont_use = models.BooleanField(default=False)
 
 
 class Adds(models.Model):

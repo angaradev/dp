@@ -71,7 +71,7 @@ def make_headliner_copy(request, camp_id):
 def get_google_csv(request, camp_id):
     resp = HttpResponse(content_type='text/csv', charset='utf-16')
     resp['Content-Disposition'] = 'attachment; filename="google_test.csv"'
-    qs = AdGroups.objects.filter(camp_id=Campaigns.objects.get(id=camp_id))
+    qs = AdGroups.objects.filter(camp_id=Campaigns.objects.get(id=camp_id), dont_use=False)
     writer = csv.writer(resp)
 
     writer.writerow(['Campaign', 'Labels', 'Budget', 'Budget type', 'Campaign Type', 'Networks', 'Ad Group',
@@ -114,7 +114,7 @@ def get_google_csv(request, camp_id):
 def get_yandex_csv(request, camp_id):
     resp = HttpResponse(content_type='text/csv')
     resp['Content-Disposition'] = 'attachment; filename="yandex_test.csv"'
-    qs = AdGroups.objects.all()
+    qs = AdGroups.objects.filter(camp_id=Campaigns.objects.get(id=camp_id), dont_use=False)
     writer = csv.writer(resp)
     writer.writerow(['Предложение текстовых блоков для рекламной кампании'])
     writer.writerow(['', '', '', 'Тип кампании:', 'Текстово-графическая кампания'])
@@ -358,8 +358,20 @@ def make_templates(request, camp_id):
     camp_id = Campaigns.objects.get(id=camp_id)
     if request.GET.get('delete_templates') == 'True':
         clear_ad = Adds.objects.filter(camp_id=camp_id).delete()
-    else:
+    elif request.GET.get('copy_desc') == 'True':
+        qs = AdGroups.objects.filter(camp_id=camp_id)
+        templates = AddsTemplate.objects.filter(camaign=camp_id)
+        for q in qs:
+            adds = Adds.objects.filter(ad_group=q)
+            for (ad, t) in zip(adds, templates):
+                ad.headline2 = t.headline2
+                ad.headline3 = t.headline3
+                ad.description1 = t.description1
+                ad.description2 = t.description2
+                ad.save()
 
+        
+    else:
         qs = AdGroups.objects.filter(camp_id=camp_id)
         templates = AddsTemplate.objects.filter(camaign=camp_id)
         for q in qs:
@@ -371,7 +383,8 @@ def make_templates(request, camp_id):
                     key = key[:30]
                 else:
                     key = t.headline1.title()
-                ad = Adds.objects.get_or_create(
+
+                ad, created = Adds.objects.get_or_create(
                     ad_group=q,
                     headline1 = key, 
                     headline2 = t.headline2,
@@ -384,6 +397,7 @@ def make_templates(request, camp_id):
                     variant = t.variant,
                     camp_id = camp_id 
                     )
+     
 
     return redirect('ad:adcamps')
 
