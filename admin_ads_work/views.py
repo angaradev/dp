@@ -93,7 +93,7 @@ def get_google_csv(request, camp_id):
 
         for plus in plus_obj:
 
-            writer.writerow([row.camp_id, plus.labels, '', '', '', '', row.ad_group_name, '', '', '',
+            writer.writerow([row.camp_id, plus.labels, '', '', '', '', row.ad_group_name, plus.max_cpc, '', '',
                 plus.criterion_type, plus.keyword, '', '', '', '', '', '', ''  ])
 
         for ad in ads:

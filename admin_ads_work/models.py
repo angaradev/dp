@@ -81,6 +81,7 @@ class Keywords(models.Model):
     group     = models.ForeignKey(AdGroups, on_delete=models.SET_NULL, null=True)
     labels      = models.CharField(max_length=255, blank=True)
     criterion_type = models.CharField(max_length=20, null=True, blank=True)
+    max_cpc     = models.DecimalField(blank=True, null=True, max_digits=7, decimal_places=2)
 
 
 class Negative(models.Model):
