@@ -35,7 +35,7 @@ def make_headliner_copy(request, camp_id):
                             final_url=adgroup.final_url,
                             camp_id=qs,
                             inner_labels=adgroup.inner_labels,
-                            chk = adgroup.chk
+                            dont_use = adgroup.dont_use
                             )
                 
                     ads = adgroup.adds_set.all()
