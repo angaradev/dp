@@ -42,7 +42,10 @@ def make_headliner_copy(request, camp_id):
                     pluses = adgroup.keywords_set.all()
                     minuses = adgroup.negative_set.all()
                     for plus in pluses:
-                        p, pc = Keywords.objects.get_or_create(group=n_adgroup, keyword=plus.keyword, labels=plus.labels, criterion_type=plus.criterion_type)
+                        p, pc = Keywords.objects.get_or_create(group=n_adgroup, keyword=plus.keyword,
+                                labels=plus.labels, criterion_type=plus.criterion_type,
+                                max_cpc=plus.max_cpc
+                                )
                     for minus in minuses:
                         m, mc = Negative.objects.get_or_create(group=n_adgroup, negative=minus.negative)
                     for ad in ads:
