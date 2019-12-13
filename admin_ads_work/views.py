@@ -89,7 +89,7 @@ def get_google_csv(request, camp_id):
         minus = ' '.join(minus_list)
         ads = row.adds_set.all()
         row.ad_group_name = row.ad_group_name.title()
-        writer.writerow([row.camp_id, '', '', '', '', '', row.ad_group_name, '', '', '', '', '', '', '', '', '', '', '', '' ])
+        writer.writerow([row.camp_id, '', '', '', '', '', row.ad_group_name, row.max_cpc, row.max_cpm, '', '', '', '', '', '', '', '', '', '' ])
 
         for m in minus_list:
             writer.writerow([row.camp_id, '', '', '', '', '', row.ad_group_name, '', '', '',
