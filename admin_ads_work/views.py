@@ -158,8 +158,8 @@ def get_yandex_csv(request, camp_id):
 @login_required
 def ad_view(request, camp_id, pk):
     group = Groups.objects.get(id=pk)
-    camp_id = Campaigns.objects.get(id=camp_id)
-    ad_group_create = AdGroups.objects.get_or_create(group_id=group, ad_group_name=group.name, camp_id=camp_id)
+    c_id = Campaigns.objects.get(id=camp_id)
+    ad_group_create = AdGroups.objects.get_or_create(group_id=group, ad_group_name=group.name, c_id=camp_id)
     ad_group = AdGroups.objects.get(group_id=pk, camp_id=camp_id)
     keywords_formset = inlineformset_factory(AdGroups, Keywords, fields=('keyword',), extra=1)
     negative_formset = inlineformset_factory(AdGroups, Negative, fields=('negative',), extra=1)
