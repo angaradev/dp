@@ -431,6 +431,22 @@ def adgroups_del(request, camp_id):
     except:
         print("something wrong")
     return redirect('ad:adcamps')
+
+
+@login_required
+def adgroup_del(request, adgroup_id):
+    adgroups_del = AdGroups.objects.get( id=adgroup_id)
+
+    camp_id = adgroups_del.camp_id
+    keys_del = Keywords.objects.filter(group_id=adgroups_del)
+    negative_del = Negative.objects.filter(group_id=adgroups_del)
+    try:
+        keys_del.all().delete()
+        negative_del.all().delete()
+        adgroups_del.delete()
+    except:
+        print("something wrong")
+    return redirect('ad:adgroupview', camp_id.id)
     
 
     
