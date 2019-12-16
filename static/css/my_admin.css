@@ -54,6 +54,9 @@
     color: FORESTGREEN;
     font-weight: bold;
 }
+.cart-red {
+    color: #FF0000;
+}
 
 .bblue {
     color: #007bff;
