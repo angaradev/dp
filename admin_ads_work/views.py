@@ -10,7 +10,7 @@ import pymorphy2 as pm
 from django.db.models import Count
 from django.http import JsonResponse, HttpResponse
 import csv
-
+import requests
 
 @login_required
 def make_headliner_copy(request, camp_id):
@@ -431,6 +431,34 @@ def adgroups_del(request, camp_id):
     except:
         print("something wrong")
     return redirect('ad:adcamps')
+
+#Removing adgroups for some reasons, for example not working urls
+
+@login_required
+def adgroups_del_non_working_urls(request, camp_id):
+    adgroups_del = AdGroups.objects.filter(camp_id=Campaigns.objects.get(id=camp_id))
+    i = 0
+    for adgroup in adgroups_del:
+        try:
+            r = requests.get(adgroup.final_url)
+            if r.status_code == 404 or r.status_code == 500:
+                
+                i += 1
+                print(r.status_code, adgroup.final_url)
+               # keys_del = Keywords.objects.filter(group_id=adgroup)
+               # negative_del = Negative.objects.filter(group_id=adgroup)
+               # try:
+               #     keys_del.all().delete()
+               #     negative_del.all().delete()
+               #     adgroups_del.delete()
+               # except:
+               #     print("something wrong")
+        except:
+            print('Url is fucked up')
+    print('Не найдено групп: ', i)
+    return redirect('ad:adcamps')
+
+
 
 
 @login_required
