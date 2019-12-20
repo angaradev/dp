@@ -146,9 +146,9 @@ def get_yandex_csv(request, camp_id):
             '',  ads[0].headline1, ads[0].headline2, ads[0].description1, '', '', '', row.final_url,
             ads[0].path1,'', '', '', '', '', '', fast_link, fast_link_desc, fast_link_url, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '',
             '', '', '', '', ''])
-            writer.writerow(['+',  'Текстово-графическое', '-', '', row.ad_group_name, row.id, '', '', plus.keyword + ' ' + minus,
+            writer.writerow(['+',  'Текстово-графическое', '-', '', row.ad_group_name, row.id, '', '', plus.keyword,
             '',  ads[1].headline1, ads[1].headline2, ads[1].description1, '', '', '', row.final_url, ads[1].path1,'', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''])
-            writer.writerow(['+',  'Текстово-графическое', '-', '', row.ad_group_name, row.id, '', '', plus.keyword + ' ' + minus,
+            writer.writerow(['+',  'Текстово-графическое', '-', '', row.ad_group_name, row.id, '', '', plus.keyword,
             '',  ads[2].headline1, ads[2].headline2, ads[2].description1, '', '', '', row.final_url, ads[2].path1,'', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''])
     return resp
 
@@ -438,12 +438,14 @@ def adgroups_del(request, camp_id):
 def adgroups_del_non_working_urls(request, camp_id):
     adgroups_del = AdGroups.objects.filter(camp_id=Campaigns.objects.get(id=camp_id))
     i = 0
+    f = open("/home/manhee/Downloads/google_csv/404.txt", "w+")
     for adgroup in adgroups_del:
         try:
             r = requests.get(adgroup.final_url)
             if r.status_code == 404 or r.status_code == 500:
                 
                 i += 1
+                f.write(str(i) + ';' + str(adgroup.ad_group_name) + ';' + str(adgroup.final_url) + '\n' )
                 print(r.status_code, adgroup.final_url)
                # keys_del = Keywords.objects.filter(group_id=adgroup)
                # negative_del = Negative.objects.filter(group_id=adgroup)
@@ -456,6 +458,7 @@ def adgroups_del_non_working_urls(request, camp_id):
         except:
             print('Url is fucked up')
     print('Не найдено групп: ', i)
+    f.close()
     return redirect('ad:adcamps')
 
 

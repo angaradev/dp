@@ -136,7 +136,7 @@
 		<ul class="tag-class">
 			{% with car=request.session.car %}
 			{% if slug and car %}
-			<li><span class="xmark">&#x274C; </span><a href="{% url 'subcat' slug %}" id="slug" >{{ car|upper }}</a></li>
+			<li><span class="xmark">&#x274C; </span><a href="{% url 'delcar' car slug %}" id="slug" >{{ car|upper }}</a></li>
 			{% endif %}
 			{% if car and not slug %}
 			<li><span class="xmark">&#x274C; </span><a href="{% url 'newparts'  %}" id="car" >{{ car|upper }}</a></li>

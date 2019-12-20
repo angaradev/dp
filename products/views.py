@@ -87,10 +87,9 @@ def newparts(request):
     return render(request, 'products/newparts.html', context)
 
 #Функция delete session car
-def del_car(request, slug):
-    if request.GET.get('del_car') == 'True':
+def del_car(request, car, slug):
+    if request.session.get('car'):
         del request.session['car']
-        slug = request.path.split('/')[:-1]
         return redirect('subcat', slug)
 
 
@@ -218,7 +217,7 @@ def cars_subcats(request, car, slug, **kwargs):
 
 def subcat(request, slug, **kwargs):
     if request.session.get('car'):
-        del request.session['car']
+        car = request.session['car']
     brand = request.GET.get('brand', None)
     cats_tmp = Categories.objects.get(slug=slug)
     second_level_cats = Categories.objects.filter(parent_id=cats_tmp.id)
@@ -265,6 +264,9 @@ def subcat(request, slug, **kwargs):
 
     sort = request.GET.get('sort', None)
     show = request.GET.get('show', None)
+    if request.session.get('car'):
+        car = request.session['car']
+        qs = qs.filter(car=car)
     if sort == '2':
         qs = qs.order_by('price')
     elif sort == '3':
@@ -505,7 +507,7 @@ def search(request):
         qs = eval(qs_s)
 
     if tag:
-        qs = qs.filter(name__icontains=tag)
+       qs = qs.filter(name__icontains=tag)
     qs_cars = qs.values('car').annotate(scount=Count('car'))
 
     qs_brand = qs.values('brand').annotate(bcount=Count('brand'))
