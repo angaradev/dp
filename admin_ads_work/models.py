@@ -14,8 +14,8 @@ class Campaigns(models.Model):
 
     car = models.ForeignKey(Cars, on_delete=models.SET_NULL, null=True)
     camp_name = models.CharField(max_length=255, null=True, blank=True)
-    fast_link_yand = models.CharField(max_length=66, null=True, blank=True)
-    fast_link_yand_desc = models.CharField(max_length=126, null=True, blank=True)
+    fast_link_yand = models.CharField(max_length=71, null=True, blank=True)
+    fast_link_yand_desc = models.CharField(max_length=240, null=True, blank=True)
     fast_link_yand_url = models.CharField(max_length=1000, null=True, blank=True)
 
     def __str__(self):

@@ -18,12 +18,12 @@ def make_headliner_copy(request, camp_id):
     form = CampFormSingle(request.POST)
     campForm = CampEditForm(instance=qs )
     if request.method == 'POST':
+        campForm = CampEditForm(request.POST, instance=qs )
         if request.POST.get('camp_name'):
-            camp_form = campForm(request.POST)
-            if camp_form.is_valid:
+            if campForm.is_valid:
                 campForm.save()
             else:
-                camt_form = campForm()
+                camp_form = campForm()
         camp_from = request.POST.get('camp_from', None)
         if camp_from:
             if form.is_valid():
@@ -135,21 +135,44 @@ def get_yandex_csv(request, camp_id):
     fast_link = camp.fast_link_yand
     fast_link_desc = camp.fast_link_yand_desc
     fast_link_url = camp.fast_link_yand_url
+    car = camp.car.car_rus
+    car = car.replace(' ', '').upper()
     for row in qs:
         plus_obj = row.keywords_set.all()
-        minus_list = [x.negative for x in row.negative_set.all()]
+        #minus_list = [x.negative for x in row.negative_set.all()]
+        minus_list = []
+        for x in row.negative_set.all():
+            if len(x.negative.split(' ')) == 1:
+                minus_list.append(x.negative)
         minus = ' '.join(minus_list)
+        minus = minus[:4000].rstrip('-')
         ads = row.adds_set.all()
-        for plus in plus_obj:
+        for ip, plus in enumerate(plus_obj):
             plus.keyword = plus.keyword.replace('+', '')
-            writer.writerow(['-',  'Текстово-графическое', '-', '', row.ad_group_name, row.id, '', '', plus.keyword + ' ' + minus,
-            '',  ads[0].headline1, ads[0].headline2, ads[0].description1, '', '', '', row.final_url,
-            ads[0].path1,'', '', '', '', '', '', fast_link, fast_link_desc, fast_link_url, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '',
-            '', '', '', '', ''])
-            writer.writerow(['+',  'Текстово-графическое', '-', '', row.ad_group_name, row.id, '', '', plus.keyword,
-            '',  ads[1].headline1, ads[1].headline2, ads[1].description1, '', '', '', row.final_url, ads[1].path1,'', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''])
-            writer.writerow(['+',  'Текстово-графическое', '-', '', row.ad_group_name, row.id, '', '', plus.keyword,
-            '',  ads[2].headline1, ads[2].headline2, ads[2].description1, '', '', '', row.final_url, ads[2].path1,'', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''])
+            
+            keyword = re.sub(r'[\"\[\]\+]', '', plus.keyword)
+            keyword = keyword.replace(' ', '+')
+            utm_main_first = f'?utm_source=yandex&utm_campaign={camp.camp_name}&utm_medium=cpc&utm_content=first&utm_term={keyword}' 
+            utm_main_second = f'?utm_source=yandex&utm_campaign={camp.camp_name}&utm_medium=cpc&utm_content=second&utm_term={keyword}' 
+            utm_main_third = f'?utm_source=yandex&utm_campaign={camp.camp_name}&utm_medium=cpc&utm_content=third&utm_term={keyword}' 
+            if ip == 0 or ip % 3 == 0:
+                writer.writerow(['-',  'Текстово-графическое', '-', '', row.ad_group_name, row.id, '', '', plus.keyword + ' ' + minus,
+                '',  ads[0].headline1, ads[0].headline2, ads[0].description1, '', '', '', row.final_url + utm_main_first,
+                car + '/' + ads[0].path1, '', '', '', '', '', '', fast_link, fast_link_desc, fast_link_url, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '',
+                '', '', '', '', ''])
+                writer.writerow(['+',  'Текстово-графическое', '-', '', row.ad_group_name, row.id, '', '', plus.keyword + ' ' + minus,
+                '',  ads[1].headline1, ads[1].headline2, ads[1].description1, '', '', '', row.final_url + utm_main_second, car +'/' + ads[1].path1,'', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''])
+                writer.writerow(['+',  'Текстово-графическое', '-', '', row.ad_group_name, row.id, '', '', plus.keyword + ' ' + minus,
+                '',  ads[2].headline1, ads[2].headline2, ads[2].description1, '', '', '', row.final_url + utm_main_third,  car + '/' + ads[2].path1,'', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''])
+            else:
+                writer.writerow(['-',  'Текстово-графическое', '-', '', row.ad_group_name, row.id, '', '', plus.keyword,
+                '',  ads[0].headline1, ads[0].headline2, ads[0].description1, '', '', '', row.final_url + utm_main_first,
+                car + '/' + ads[0].path1, '', '', '', '', '', '', fast_link, fast_link_desc, fast_link_url, '', '', '', '', '', '', '', '', '', '', '', '', '', '', '',
+                '', '', '', '', ''])
+                writer.writerow(['+',  'Текстово-графическое', '-', '', row.ad_group_name, row.id, '', '', plus.keyword,
+                '',  ads[1].headline1, ads[1].headline2, ads[1].description1, '', '', '', row.final_url + utm_main_second, car + '/' + ads[1].path1,'', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''])
+                writer.writerow(['+',  'Текстово-графическое', '-', '', row.ad_group_name, row.id, '', '', plus.keyword,
+                '',  ads[2].headline1, ads[2].headline2, ads[2].description1, '', '', '', row.final_url + utm_main_third, car + '/' + ads[2].path1,'', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', '', ''])
     return resp
 
 
