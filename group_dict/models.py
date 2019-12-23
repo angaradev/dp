@@ -5,7 +5,7 @@ import csv
 class KernelTmp(models.Model):
     
     keywords = models.CharField(max_length=500, default='')
-    freq    = models.PositiveIntegerField(default=0)
+    freq    = models.DecimalField(max_digits=20, decimal_places=2)
     chk = models.BooleanField(default=0)
     group_id = models.IntegerField(default=0)
     group_name = models.CharField(max_length=255, blank=True)
@@ -18,7 +18,7 @@ class KernelTmp(models.Model):
 class KernelCleanedFromTrash(models.Model):
     
     keywords = models.CharField(max_length=500)
-    freq    = models.PositiveIntegerField()
+    freq    = models.DecimalField(max_digits=20, decimal_places=2)
     chk = models.BooleanField(default=False)
 
     def __str__(self):
@@ -29,7 +29,7 @@ class KernelCleanedFromTrash(models.Model):
 class KernelReadyCommercial(models.Model):
     
     keywords = models.CharField(max_length=500)
-    freq    = models.PositiveIntegerField()
+    freq    = models.DecimalField(max_digits=20, decimal_places=2)
     chk = models.BooleanField(default=False)
     group_id = models.IntegerField(default=0)
     group_name = models.CharField(max_length=255, blank=True)
@@ -42,7 +42,7 @@ class KernelReadyCommercial(models.Model):
 class KernelReadyInfo(models.Model):
     
     keywords = models.CharField(max_length=500)
-    freq    = models.PositiveIntegerField()
+    freq    = models.DecimalField(max_digits=20, decimal_places=2)
     chk = models.BooleanField(default=False)
     group_id = models.IntegerField(default=0)
     group_name = models.CharField(max_length=255, blank=True)
@@ -55,7 +55,7 @@ class KernelReadyInfo(models.Model):
 class Kernel(models.Model):
     
     keywords = models.CharField(max_length=500)
-    freq    = models.PositiveIntegerField()
+    freq    = models.DecimalField(max_digits=20, decimal_places=2)
     chk = models.BooleanField(default=False)
 
     def __str__(self):
