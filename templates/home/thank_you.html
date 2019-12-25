@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block page %}
+<div class="tt-breadcrumb">
+	<div class="container">
+		<ul>
+			<li><a href="{% url 'home' %}">Главная</a></li>
+			<li>Корзина</li>
+		</ul>
+	</div>
+</div>
+<div id="tt-pageContent">
+	<div class="container-indent nomargin">
+		<div class="tt-empty-cart">
+			<span class="tt-icon icon-f-39"></span>
+			<h1 class="tt-title"><span class="bgreen">ЗАПРОС ОТПРАВЛЕН</span></h1>
+			<h4>СПАСИБО ЧТО ЗАКАЗАЛИ ЗВОНОК!</h4>
+			<p>Менеджер свяжется с Вами в ближайшее время.</p>
+			<a href="{% url 'newparts' %}" class="btn">ПРОДОЛЖИТЬ ПОКУПКИ</a>
+		</div>
+	</div>
+</div>
+{% endblock %}

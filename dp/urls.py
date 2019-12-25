@@ -10,7 +10,7 @@ from accounts.views import login_view, register_view, logout_view, account_view
 from admin_photos.views import (admin_photos_view, admin_photos_statistic, admin_photo_listing,
 admin_detailed_view,upload_files, create_dirs, admin_photo_search, ChartData, make_stat)
 from admin_photos.views import admin_empty_listing, nocat_product
-from home.views import home, about, payment, contacts, delivery, guaranties, policy, requsites, reviews
+from home.views import home, about, payment, contacts, delivery, guaranties, policy, requsites, reviews, thankyoucall
 from admin_photos.cron_stat import make_stat
 from .sitemaps import BlogsSitemap, StaticViewsSitemap, CategoriesSitemap, ProductsSitemap, ZapchastiCarSitemap
 from .sitemaps import ZapchastiCarSubcatSitemap, OldBlogsSitemap
@@ -54,6 +54,7 @@ urlpatterns = [
     path('articles/<int:pk>/', oldblog, name='oldblog'),
     path('articles/', oldblogs, name='oldblogs'),
     path('', home, name='home'),
+    path('thankyoucall/', thankyoucall, name='thankyoucall'),
     path('newparts/', newparts, name='newparts'),
     path('subcat/<slug:slug>/', subcat, name='subcat'),
     path('delcar/<str:car>/<slug:slug>/', del_car, name='delcar'),

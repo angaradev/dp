@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .forms import EmailFormLight
 from .models import EmailModel
 from django.http import HttpResponseRedirect
@@ -21,7 +21,8 @@ def e_form_view(request):
             settings.SHOP_EMAILS_MANAGERS,
             fail_silently=False,
         )
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    return redirect('thankyoucall')
+    #return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 def footer_form(request):
@@ -36,5 +37,6 @@ def footer_form(request):
             settings.SHOP_EMAILS_MANAGERS,
             fail_silently=False,
         )
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    return redirect('thankyoucall')
+    #return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 

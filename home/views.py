@@ -40,6 +40,7 @@ def reviews(request):
         phone = form.cleaned_data.get('phone')
         name = form.cleaned_data.get('name')
         callback, created = EmailModel.objects.get_or_create(phone=phone, name=name)
+        return redirect('tankyoucall')
     context = {
         'form': form,
 
@@ -55,6 +56,7 @@ def about(request):
         phone = form.cleaned_data.get('phone')
         name = form.cleaned_data.get('name')
         callback, created = EmailModel.objects.get_or_create(phone=phone, name=name)
+        return redirect('tankyoucall')
     context = {
         'form': form,
 
@@ -75,6 +77,7 @@ def delivery(request):
         phone = form.cleaned_data.get('phone')
         name = form.cleaned_data.get('name')
         callback, created = EmailModel.objects.get_or_create(phone=phone, name=name)
+        return redirect('tankyoucall')
 
     context = {
         'form': form,
@@ -105,4 +108,5 @@ def requsites(request):
             }
     return render(request, 'home/requsites.html', context)
 
-
+def thankyoucall(request):
+    return render(request, 'home/thank_you.html')
