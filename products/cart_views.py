@@ -8,13 +8,16 @@ import os
 from django.core.mail import send_mail, EmailMessage
 from decimal import Decimal
 from django.contrib.auth.models import User
-from .forms import OrderForm
+from .forms import OrderForm, PaymentForm
 from django.template.loader import render_to_string
 
 
 
 
 def order_success(request, order_n):
+    del request.session['cart_id']
+    del request.session['total']
+    
     context = {
             'order_n': order_n,
             }
@@ -28,6 +31,8 @@ def order_view(request):
     else:
         cart = None
     action = request.POST.get('action', None)
+    payment_online = request.POST.get('payment_online', None)
+
     order = None
     if request.user.is_authenticated:
         user = User.objects.get(id=request.user.id)
@@ -40,14 +45,13 @@ def order_view(request):
                 'address': address,
                 'phone': phone,
                 }
-                
-                
     else:
         initial_data = None
         user = None
         user_id = None
         email = request.POST.get('email', None)
         phone = request.POST.get('phone', None)
+        request.session['tel'] = phone
         address = request.POST.get('address', None)
     
     # Определяю функцию для отправки писем заказа
@@ -63,8 +67,9 @@ def order_view(request):
         msg = EmailMessage(subject=subject, body=html_msg, from_email=sender, bcc=receiver)
         msg.content_subtype = 'html'
         return msg.send()
-
+    
     order_form = OrderForm(request.POST or None, initial=initial_data)
+
     if request.session['cart_id']:
         comments = request.POST.get('comments', None)
         if action == 'order':
@@ -73,17 +78,15 @@ def order_view(request):
                 instance.cart = cart
                 instance.save()
                 order_n = Orders.objects.get(cart=cart)
+                request.session['order_n'] = order_n.order_n
                 if email:
                     send_html_email(order_n, email, 'cart/order_email.html')
                 send_html_email(order_n, settings.SHOP_EMAILS_MANAGERS, 'cart/order_email_manager.html')
-                del request.session['cart_id']
-                del request.session['total']
-                return redirect('order_success', order_n.order_n)
-                
+                if payment_online == 'True':
+                    return redirect('paymentmethod')
 
-
-
-
+                else:
+                    return redirect('order_success', order_n.order_n)
         
     context = {
             'cart': cart,
@@ -91,6 +94,44 @@ def order_view(request):
             'order_user': user,
             }
     return render(request, 'cart/checkout.html', context)
+
+
+
+def payment_method(request):
+   
+    cart = Cart.objects.get(id=request.session.get('cart_id'))
+    if request.user.is_authenticated:
+        initial_data = {
+                'sum': cart.cart_total,
+                'customerNumber': request.user.profile.phone,
+                }
+    elif request.session.get('tel'):
+        initial_data = {
+                'sum': cart.cart_total,
+                'customerNumber': request.session.get('tel')
+                }
+    else:
+
+        initial_data = {
+                'sum': cart.cart_total,
+                }
+    payment_form = PaymentForm(request.POST or None, initial=initial_data)
+    order_n = request.session.get('order_n') 
+    context = {
+            'order_n': order_n,
+            'payment_form': payment_form,
+            'cart_total': request.session['total'],
+            'cart_id': request.session['cart_id'],
+            }
+    del request.session['cart_id']
+    del request.session['total']
+    return render(request, 'cart/payment.html', context)
+
+
+
+
+
+
 
 
 def cart_view(request):
@@ -111,7 +152,6 @@ def cart_view(request):
 
 
 def add_to_cart(request):
-
     product_id = request.GET.get('product_id')
 
     if product_id is not None:
@@ -123,6 +163,7 @@ def add_to_cart(request):
             cart = Cart.objects.get(id=cart_id)
             request.session['total'] = cart.items.count()
         else:
+            print('in here')
             cart = Cart()
             cart.save()
             cart_id = cart.id

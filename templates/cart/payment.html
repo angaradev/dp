@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block page %}
+<div class="tt-breadcrumb">
+	<div class="container">
+		<ul>
+			<li><a href="index.html">Home</a></li>
+			<li>Account</li>
+		</ul>
+	</div>
+</div>
+<div id="tt-pageContent">
+	<div class="container-indent">
+		<div class="container container-fluid-custom-mobile-padding">
+			<!--<h1 class="tt-title-subpages noborder">ЗАКАЗ</h1>-->
+			<div class="tt-shopping-layout">
+				<div class="row mb-4 bblue">
+					<div class="col-6 b9s2">
+						<div class="b9s3">
+							<span class="icon-img" style="width:24px;height:24px;" data-v-19ad9aa5="" data-v-41940272="">
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+									<path fill="currentColor" fill-rule="nonzero" d="M5.414 16H15a5 5 0 0 0 0-10H7a1 1 0 1 1 0-2h8a7 7 0 0 1 0 14H5.414l1.829 1.828a1 1 0 0 1-1.415 1.415l-3.535-3.536a1 1 0 0 1 0-1.414l3.5-3.5a1 1 0 1 1 1.414 1.414L5.414 16z"></path>
+							</svg>
+							</span>
+						</div>
+						<div class="b9s4">
+							<div class="b9s5">
+					  			Гарантия легкого возврата
+							</div>
+							<div class="b9s6">
+								Заберем товар и быстро вернем деньги
+							</div>
+						</div>
+					</div>
+					<div class="col-6 b9s2">
+						<div class="trust-factors-item b9s2" data-v-41940272="" data-v-baa10562="">
+							<div class="b9s3">
+								<span class="icon-img" style="width:24px;height:24px;" data-v-19ad9aa5="" data-v-41940272="">
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+										<path fill="currentColor" fill-rule="nonzero" d="M23 9.5V11H3v5a2 2 0 0 0 2 2h4a1 1 0 0 1 0 2H5a4 4 0 0 1-4-4V8a4 4 0 0 1 4-4h14a4 4 0 0 1 4 4v1.5zM21 8a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2h18zm1.293 6.293a1 1 0 1 1 1.414 1.414l-6 6a.997.997 0 0 1-1.414 0l-3-3a1 1 0 1 1 1.414-1.414L17 19.586l5.293-5.293z">
+										</path>
+									</svg>
+								</span>
+							</div>
+						<div class="b9s4">
+							<div class="b9s5">
+							  Безопасные способы оплаты
+							</div> <div class="b9s6">
+							  Онлайн и при получении
+							</div>
+						</div>
+					</div>
+				</div>
+				</div>
+				<hr>
+				<div class="row">
+					<div class="tt-data"><h5 class="bgreen">Вы можете оплатить заказ онлайн через Яндекс Кассу. Это безопасно, так как мы являемся партнерами Яндекса и совместно несем финансовою ответсвенность.</h5>
+					</div>
+				</div>
+				<div class="tt-wrapper">
+					<div class="row">
+						<div class="col-xs-12 col-md-6">
+							<h6 class="tt-title">ЗАКАЗ #{{ order_n }}</h6>
+							<div id="payment-form" class="tt-item">
+								<form action="https://money.yandex.ru/eshop.xml" method="post">
+								{% csrf_token %}
+								{{ payment_form|crispy }}
+									<button class="btn-green btn btn-sm btn-outline-success" type="submit">Оплатить</button>
+									<a href="{% url 'cart' %}" class="btn btn-sm btn-outline-primary" type="submit"></a>
+									<input type="hidden" name="inner_order_id" value="{{ order_n }}">
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+{% block custom_js %}
+<script src="{% static 'js/order.js' %}"></script>
+{% endblock %}

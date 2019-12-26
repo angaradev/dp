@@ -17,7 +17,7 @@ from .sitemaps import ZapchastiCarSubcatSitemap, OldBlogsSitemap
 from django.contrib.sitemaps.views import sitemap
 from django.views.generic import TemplateView
 from products.cart_views import cart_view, add_to_cart, remove_from_cart, update_cart, clear_cart, order_view
-from products.cart_views import order_success, add_to_wish, remove_wish, see_wish, clear_wish
+from products.cart_views import order_success, add_to_wish, remove_wish, see_wish, clear_wish, payment_method
 from interlink.views import subcat_ducato_redirect, subcat_boxer_redirect, subcat_jumper_redirect, analog_part_brand
 from email_form.views import e_form_view, footer_form
 
@@ -75,6 +75,7 @@ urlpatterns = [
     path('about/', about, name='about'),
     path('reviews/', reviews, name='reviews'),
     path('payment/', payment, name='payment'),
+    path('paymentmethod/', payment_method, name='paymentmethod'),
     path('contacts/', contacts, name='contacts'),
     path('delivery/', delivery, name='delivery'),
     path('guaranties/', guaranties, name='guaranties'),

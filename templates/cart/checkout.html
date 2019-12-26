@@ -15,66 +15,123 @@
 		<div class="container container-fluid-custom-mobile-padding">
 			<!--<h1 class="tt-title-subpages noborder">ЗАКАЗ</h1>-->
 			<div class="tt-shopping-layout">
-				<h2 class="tt-title">ЗАКАЗ #{{ order.id }}</h2>
-				<a href="{% url 'account' %}" class="tt-link-back">
-					<i class="icon-e-19"></i> МОЙ АККАУНТ
-				</a>
-				<div class="tt-data">{{ order.created }}</div>
-				<div class="tt-wrapper">
-					<div class="tt-table-responsive">
-						<table class="tt-table-shop-03">
-							<thead>
-								<tr>
-									<th>ПРОДУКТ</th>
-									<th>ЦЕНА</th>
-									<th>КОЛИЧЕСТВО</th>
-									<th>ВСЕГО</th>
-								</tr>
-							</thead>
-							<tbody>
-								{% for item in cart.items.all %}
-								<tr>
-									<td>{{ item.product.name }} </td>
-									<td>&#x20bd; {{ item.product.price }}</td>
-									<td>{{ item.quantity}}</td>
-									<td>&#x20bd; {{ item.item_total }}</td>
-								</tr>
-								{% endfor %}
-								<!--<tr>
-									<td colspan="3"><strong>SUBTOTAL</strong></td>
-									<td>$300</td>
-								</tr>-->
-								<!--<tr>
-									<td colspan="3"><strong>INTERNATIONAL SHIPPING</strong></td>
-									<td>$18</td>
-								</tr>-->
-								<tr>
-									<td colspan="3"><strong>ИТОГО</strong></td>
-									<td><strong>&#x20bd; {{ cart.cart_total }}</strong></td>
-								</tr>
-							</tbody>
-						</table>
+				<div class="row mb-4 bblue">
+					<div class="col-4">
+						<a href="{% url 'account' %}" class="tt-link-back">
+							<i class="icon-e-19"></i> МОЙ АККАУНТ
+						</a>
 					</div>
-				</div>
-				{% if request.user.is_authenticated %}
-				<div class="tt-wrapper">
-					<div class="row">
-					<div class="col-xs-12 col-md-6">
-						<div class="tt-item">
-							<h2 class="tt-title">ВЫ ВОШЛИ КАК {{ request.user.username|upper }}</h2>
-							<p>
-								Если у Вас уже есть аккаунт, войдите для оформления заказа. Или зарегестрируйтесь и Вы сможете видеть историю заказов, адреса доставки.
-							</p>
-							<div class="form-group">
-								<a href="{% url 'login' %}" class="btn btn-top btn-border">СТРАНИЦА ВХОДА</a>
+					<div class="col-4 b9s2">
+						<div class="b9s3">
+							<span class="icon-img" style="width:24px;height:24px;" data-v-19ad9aa5="" data-v-41940272="">
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+									<path fill="currentColor" fill-rule="nonzero" d="M5.414 16H15a5 5 0 0 0 0-10H7a1 1 0 1 1 0-2h8a7 7 0 0 1 0 14H5.414l1.829 1.828a1 1 0 0 1-1.415 1.415l-3.535-3.536a1 1 0 0 1 0-1.414l3.5-3.5a1 1 0 1 1 1.414 1.414L5.414 16z"></path>
+							</svg>
+							</span>
+						</div>
+						<div class="b9s4">
+							<div class="b9s5">
+					  			Гарантия легкого возврата
 							</div>
-
+							<div class="b9s6">
+								Заберем товар и быстро вернем деньги
+							</div>
 						</div>
 					</div>
+					<div class="col-4 b9s2">
+						<div class="trust-factors-item b9s2" data-v-41940272="" data-v-baa10562="">
+							<div class="b9s3">
+								<span class="icon-img" style="width:24px;height:24px;" data-v-19ad9aa5="" data-v-41940272="">
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+										<path fill="currentColor" fill-rule="nonzero" d="M23 9.5V11H3v5a2 2 0 0 0 2 2h4a1 1 0 0 1 0 2H5a4 4 0 0 1-4-4V8a4 4 0 0 1 4-4h14a4 4 0 0 1 4 4v1.5zM21 8a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2h18zm1.293 6.293a1 1 0 1 1 1.414 1.414l-6 6a.997.997 0 0 1-1.414 0l-3-3a1 1 0 1 1 1.414-1.414L17 19.586l5.293-5.293z">
+										</path>
+									</svg>
+								</span>
+							</div>
+						<div class="b9s4">
+							<div class="b9s5">
+							  Безопасные способы оплаты
+							</div> <div class="b9s6">
+							  Онлайн и при получении
+							</div>
+						</div>
+					</div>
+				</div>
+				</div>
+				<div class="row">
+					<div class="tt-item">
+						{% if user.is_authenticated %}
+
+						{% else %}
+						<p>Если у Вас уже есть аккаунт, войдите для оформления заказа. Или зарегестрируйтесь и Вы сможете видеть историю заказов, адреса доставки.</p>
+						<div class="form-group">
+							<a href="{% url 'login' %}" class="btn btn-top btn-border">СТРАНИЦА ВХОДА</a>
+						{% endif %}
+						</div>
+					</div>
+				</div>
+				<hr>
+					<h5>Ваш Заказ</h5>
+				<div class="tt-wrapper">
+					<div class="row">
+						<div class="col-12">
+							<div class="tt-table-responsive">
+								<table class="tt-table-shop-03">
+									<thead>
+										<tr>
+											<th>ПРОДУКТ</th>
+											<th>ЦЕНА</th>
+											<th>КОЛИЧЕСТВО</th>
+											<th>ВСЕГО</th>
+										</tr>
+									</thead>
+									<tbody>
+										{% for item in cart.items.all %}
+										<tr>
+											<td>{{ item.product.name }} </td>
+											<td>&#x20bd; {{ item.product.price }}</td>
+											<td>{{ item.quantity}}</td>
+											<td>&#x20bd; {{ item.item_total }}</td>
+										</tr>
+										{% endfor %}
+										<!--<tr>
+											<td colspan="3"><strong>SUBTOTAL</strong></td>
+											<td>$300</td>
+										</tr>-->
+										<!--<tr>
+											<td colspan="3"><strong>INTERNATIONAL SHIPPING</strong></td>
+											<td>$18</td>
+										</tr>-->
+										<tr>
+											<td colspan="3"><strong>ИТОГО</strong></td>
+											<td><strong>&#x20bd; {{ cart.cart_total }}</strong></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+				<hr>
+				{% if request.user.is_authenticated %}
+				<div class="tt-wrapper">
+					<form method="post" action=".">{% csrf_token %}
+					<div class="row">
 					<div class="col-xs-12 col-md-6">
-						<h6 class="tt-title">ИЗМЕНИТЬ ДАННЫЕ</h6>
+						<div class="btn-group btn-group-toggle" data-toggle="buttons">
+							<h3>Выберите вариант оплаты</h3>
+					  		<label class="btn btn-secondary active">
+								<input type="radio" name="payment_online" value="False" autocomplete="off" checked> Оплата при Получении
+					  		</label>
+					  		<label class="btn btn-secondary">
+								<input type="radio" name="payment_online" value="True"  autocomplete="off"> Оплата Онлайн
+					  		</label>
+					  	</div>
+					</div>
+					<div class="col-xs-12 col-md-6">
+						<h5 class="tt-title">ИЗМЕНИТЬ ДАННЫЕ</h5>
 					<div class="form-default">
-						<form method="post" action=".">{% csrf_token %}
+
 							<input type="hidden" name="action" value="order">
 							<div class="form-group">
 								<label for="shopPhone" class="control-label">ТЕЛЕФОН *</label>
@@ -101,10 +158,10 @@
 									or	<a href="#" class="tt-link">Cancel</a>
 								</div>-->
 							</div>
-						</form>
 					</div>
 					</div>
 				</div>
+				</form>
 				</div>
 				{% else %}
 				<div class="tt-wrapper">
@@ -143,8 +200,16 @@
 								<label for="shopAddress" class="control-label">КОММЕНТАРИИ К ЗАКАЗУ</label>
 								{{ order_form.comments|as_crispy_field }}
 							</div>
-
-							<div class="row tt-offset-21">
+							<div class="btn-group btn-group-toggle" data-toggle="buttons">
+							<h3>Выберите вариант оплаты</h3>
+					  		<label class="btn btn-secondary active">
+								<input type="radio" name="payment_online" value="False" autocomplete="off" checked> Оплата при Получении
+					  		</label>
+					  		<label class="btn btn-secondary">
+								<input type="radio" name="payment_online" value="True"  autocomplete="off"> Оплата Онлайн
+					  		</label>
+					  	</div>
+							<div class="row tt-offset-21 mt-3">
 								<div class="col-auto">
 									<button type="submit" class="btn">ОФОРМИТЬ ЗАКАЗ</button>
 								</div>
@@ -156,10 +221,13 @@
 					</div>
 					</div>
 				</div>
-				{% endif %}
 				</div>
+					{% endif %}
 			</div>
 		</div>
 	</div>
 </div>
+{% endblock %}
+{% block custom_js %}
+<script src="{% static 'js/order.js' %}"></script>
 {% endblock %}

@@ -238,3 +238,35 @@
 .header-tel-info [class^="icon"] {
     color:mediumseagreen;
 }
+.font-size-24 {
+    font-size: 1.4rem;
+}
+.btn-green {
+    background-color: #3CB371;
+}
+
+.btn-green:hover {
+    background-color: #2E8B57;
+}
+.b9s3 {
+    -webkit-box-pack: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+}
+.b9s5 {
+    font-size: 16px;
+    line-height: 1.38em;
+    color: #001a34;
+}
+.b9s2, .b9s3 {
+    display: -webkit-inline-box;
+    display: inline-flex;
+    -webkit-box-align: center;
+    align-items: center;
+}
+.b9s4 {
+    width: 100%;
+}
