@@ -31,9 +31,9 @@
 						<table>
 							<tbody>
 							{% for object in cart.items.all %}
-								<tr id="cart-item-{{ object.product.id }}">
+								<tr class="cart-item-small-{{ object.product.id }}">
 									<td>
-										<a href="{% url 'remove_from_cart' %}?product_id={{  object.product.id }}" class="tt-btn-close remove-button" data-pk="{{ object.product.id }}"></a>
+										<a href="{% url 'remove_from_cart' %}?product_id={{ object.product.id }}" class="tt-btn-close remove-button" data-pk="{{ object.product.id }}"></a>
 									</td>
 									<td>
 										<div class="tt-product-img">

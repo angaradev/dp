@@ -271,6 +271,8 @@ def remove_from_cart(request):
                     }
             request.session['total'] = cart.items.count()
             return JsonResponse(json_data)
+        else:
+            return redirect(request.META.get('HTTP_REFFERER'))
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 def update_cart(request):

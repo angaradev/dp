@@ -105,7 +105,7 @@ $(document).ready(function(){
             data: data,
             success: function(data){
                 $('.tt-badge-cart').html(data.cartItemCount);
-                $('#cart-item-' + pk).css('display', 'none');
+                $('.cart-item-small-' + pk).css('display', 'none');
                 $('#cart-itogo').html('&#x20bd; ' + parseFloat(data.cart_total).toFixed(2));
             }
         });

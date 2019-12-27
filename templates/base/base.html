@@ -363,11 +363,15 @@
 											<p>No Products in the Cart</p>
 										</a> -->
 										<div class="tt-cart-content">
+											<div class="tt-item">
+													<a href="{% url 'cart' %}" class="btn-link-02 tt-hidden-mobile">В корзину</a>
+													<a href="{% url 'cart' %}" class="btn btn-border tt-hidden-desctope">В КОРЗИНУ</a>
+												</div>
 											<div class="tt-cart-list">
 												{% if cart %}
                                                 {% for cart_item in cart.items.all %}
-												<div class="tt-item">
-													<a href="product.html">
+												<div class="tt-item cart-item-small-{{ cart_item.product.id }}">
+													<a href="{% url 'detailed' cart_item.product.id %}">
 														<div class="tt-item-img">
                                                             <img src="{% static 'images/loader.svg' %}" data-src="{% static cart_item.product.image_path %}" alt="">
 														</div>
@@ -380,8 +384,8 @@
                                                             <div class="tt-price">{{ cart_item.total }}</div>
 														</div>
 													</a>
-													<div class="tt-item-close">
-                                                        <a href="{% url 'remove_from_cart'%}?product_id={{  cart_item.product.id }}" class="tt-btn-close"></a>
+													<div class="tt-item-close" id="cart-item-{{ cart_item.product.id }}">
+                                                        <a href="{% url 'remove_from_cart'%}?product_id={{  cart_item.product.id }}" class="tt-btn-close remove-button" data-pk="{{ cart_item.product.id }}"></a>
 													</div>
 												</div>
                                                 {% endfor %}
