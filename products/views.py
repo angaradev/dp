@@ -459,6 +459,7 @@ def search(request):
         for word in search_list:
             try:
                 n_w = s.stem(word)
+                print(n_w)
             except:
                 n_w = word
             new_search_list.append(n_w)
@@ -487,7 +488,7 @@ def search(request):
         search_list = search_splitter(search)
 
         if len(search_list) == 1:
-            qs_s = f'Products.objects.filter(Q(name__icontains="{search}") | Q(cat_n__icontains="{search}")).distinct().filter('
+            qs_s = f'Products.objects.filter(Q(name__icontains="{search_list[0]}") | Q(cat_n__icontains="{search_list[0]}")).distinct().filter('
         else:
             qs_s = f'Products.objects.filter('
             for word in search_list:
