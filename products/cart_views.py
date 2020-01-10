@@ -79,9 +79,9 @@ def order_view(request):
                 instance.save()
                 order_n = Orders.objects.get(cart=cart)
                 request.session['order_n'] = order_n.order_n
+                send_html_email(order_n, settings.SHOP_EMAILS_MANAGERS, 'cart/order_email_manager.html')
                 if email:
                     send_html_email(order_n, email, 'cart/order_email.html')
-                send_html_email(order_n, settings.SHOP_EMAILS_MANAGERS, 'cart/order_email_manager.html')
                 if payment_online == 'True':
                     return redirect('paymentmethod')
 
