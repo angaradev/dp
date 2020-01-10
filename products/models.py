@@ -53,6 +53,7 @@ class Products(models.Model):
        return reverse('detailed', kwargs={'pk': self.id})
 
 
+
     @property
     def comments(self):
         instance = self
