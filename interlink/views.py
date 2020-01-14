@@ -4,28 +4,30 @@ from products.models import Categories
 from django.http import Http404
 
 def subcat_redirect(request, pk):
-    qs = RedireCtcat.objects.filter(id_old=pk).first()
-    nqs = Categories.objects.get(id=qs.id_new)
-    if not qs or not nqs:
+    try:
+        qs = RedireCtcat.objects.filter(id_old=pk).first()
+        nqs = Categories.objects.get(id=qs.id_new)
+        return redirect('subcat', nqs.slug, permanent=True) 
+    except:
         raise Http404
-    return redirect('subcat', nqs.slug, permanent=True) 
 
 
 def subcat_ducato_redirect(request, pk):
     try:
         qs = RedireCtcat.objects.filter(id_old=pk).first()
         nqs = Categories.objects.get(id=qs.id_new)
+        return redirect('car_page_subcats', 'fiat-ducato', nqs.slug, permanent=True) 
     except:
         raise Http404
-    return redirect('car_page_subcats', 'fiat-ducato', nqs.slug, permanent=True) 
 
 
 def subcat_boxer_redirect(request, pk):
-    qs = RedireCtcat.objects.filter(id_old=pk).first()
-    nqs = Categories.objects.get(id=qs.id_new)
-    if not qs or not nqs:
+    try:
+        qs = RedireCtcat.objects.filter(id_old=pk).first()
+        nqs = Categories.objects.get(id=qs.id_new)
+        return redirect('car_page_subcats', 'peugeot-boxer', nqs.slug, permanent=True) 
+    except:
         raise Http404
-    return redirect('car_page_subcats', 'peugeot-boxer', nqs.slug, permanent=True) 
 
 
 def subcat_jumper_redirect(request, pk):
@@ -37,8 +39,9 @@ def subcat_jumper_redirect(request, pk):
         raise Http404
 
 def analog_part_brand(request, old_url):
-    qs = RedirectProductOldToNew.objects.filter(url=old_url).first()
-    if not qs:
+    try:
+        qs = RedirectProductOldToNew.objects.filter(url=old_url).first()
+    except:
         cat_qs = RedirectProductOldToNewDictionary.objects.filter(url=old_url).first()
         if not cat_qs:
             raise Http404
