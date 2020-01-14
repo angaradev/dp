@@ -29,11 +29,12 @@ def subcat_boxer_redirect(request, pk):
 
 
 def subcat_jumper_redirect(request, pk):
-    qs = RedireCtcat.objects.filter(id_old=pk).first()
-    nqs = Categories.objects.get(id=qs.id_new)
-    if not qs or not nqs:
+    try:
+        qs = RedireCtcat.objects.filter(id_old=pk).first()
+        nqs = Categories.objects.get(id=qs.id_new)
+        return redirect('car_page_subcats', 'peugeot-boxer', nqs.slug, permanent=True) 
+    except:
         raise Http404
-    return redirect('car_page_subcats', 'peugeot-boxer', nqs.slug, permanent=True) 
 
 def analog_part_brand(request, old_url):
     qs = RedirectProductOldToNew.objects.filter(url=old_url).first()
