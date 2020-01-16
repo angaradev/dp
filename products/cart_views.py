@@ -26,10 +26,10 @@ def order_success(request, order_n):
 
 def order_view(request):
     cart_id = request.session.get('cart_id', None)
+    cart = None
     if cart_id:
         cart = Cart.objects.get(id=cart_id)
-    else:
-        cart = None
+
     action = request.POST.get('action', None)
     payment_online = request.POST.get('payment_online', None)
 
@@ -56,11 +56,27 @@ def order_view(request):
     
     # Определяю функцию для отправки писем заказа
     def send_html_email(order, receiver, template):
+        if request.user.is_authenticated:
+            phone = request.user.profile.phone
+        elif order.phone is not None:
+            phone = order.phone
+        else:
+            phone = None
+        email = None
+        if request.user.is_authenticated:
+            email = request.user.email
+        elif order.email is not None:
+            email = order.email
+        address = None
+        if request.user.is_authenticated:
+            address = request.user.profile.address
+        elif order.address is not None:
+            address = order.address
         subject = 'Заказ запчастей на DucatoParts'
         sender = settings.SHOP_EMAIL_FROM
         receiver = email
         shop_address = [settings.SHOP_ADDRESS_LINE_1, settings.SHOP_ADDRESS_LINE_2]
-        context = { 'cart': cart, 'order': order }
+        context = { 'cart': cart, 'order': order, 'phone': phone, 'email': email, 'address': address }
         html_msg = render_to_string(template, context)  
         if not isinstance(receiver, list):
             receiver = [receiver,]

@@ -232,7 +232,10 @@ a[x-apple-data-detectors] {
                    </table></td>
                  </tr>
                </table>
-              {% if order.email %}
+              <div style="padding: 10px; background-color: #eeeeee;">
+                  <h3>Контактные данные</h3>
+              </div>
+              {% if email %}
                   <table width="100%" cellspacing="0" cellpadding="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
                  <tr style="border-collapse:collapse;">
                   <td width="530" valign="top" align="center" style="padding:0;Margin:0;">
@@ -243,27 +246,7 @@ a[x-apple-data-detectors] {
                           <table style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;width:500px;" class="cke_show_border" cellspacing="1" cellpadding="1" border="0" align="left">
                          <tr style="border-collapse:collapse;">
                           <td width="80%" style="padding:0;Margin:0;"><h4 style="Margin:0;line-height:120%;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;">EMAIL ПОКУПАТЕЛЯ</h4></td>
-                          <td width="20%" style="padding:0;Margin:0;"><h4 style="Margin:0;line-height:120%;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;">{{ order.email }}</h4></td>
-                         </tr>
-                       </table>
-
-                      </td>
-                     </tr>
-                   </table></td>
-                 </tr>
-               </table>
-                  {% elif request.user.profile.email %}
-                  <table width="100%" cellspacing="0" cellpadding="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
-                 <tr style="border-collapse:collapse;">
-                  <td width="530" valign="top" align="center" style="padding:0;Margin:0;">
-                   <table style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;border-top:3px solid #EEEEEE;border-bottom:3px solid #EEEEEE;" width="100%" cellspacing="0" cellpadding="0">
-                     <tr style="border-collapse:collapse;">
-                      <td align="left" style="Margin:0;padding-left:10px;padding-right:10px;padding-top:15px;padding-bottom:15px;">
-
-                          <table style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;width:500px;" class="cke_show_border" cellspacing="1" cellpadding="1" border="0" align="left">
-                         <tr style="border-collapse:collapse;">
-                          <td width="80%" style="padding:0;Margin:0;"><h4 style="Margin:0;line-height:120%;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;">EMAIL ПОКУПАТЕЛЯ</h4></td>
-                          <td width="20%" style="padding:0;Margin:0;"><h4 style="Margin:0;line-height:120%;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;">{{ request.user.profile.email }}</h4></td>
+                          <td width="20%" style="padding:0;Margin:0;"><h4 style="Margin:0;line-height:120%;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;">{{ email }}</h4></td>
                          </tr>
                        </table>
 
@@ -274,7 +257,7 @@ a[x-apple-data-detectors] {
                </table>
 
                   {% endif %}
-                  {% if cart.phone %}
+                  {% if phone %}
                   <table width="100%" cellspacing="0" cellpadding="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
                  <tr style="border-collapse:collapse;">
                   <td width="530" valign="top" align="center" style="padding:0;Margin:0;">
@@ -285,7 +268,7 @@ a[x-apple-data-detectors] {
                           <table style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;width:500px;" class="cke_show_border" cellspacing="1" cellpadding="1" border="0" align="left">
                          <tr style="border-collapse:collapse;">
                           <td width="80%" style="padding:0;Margin:0;"><h4 style="Margin:0;line-height:120%;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;">ТЕЛЕФОН</h4></td>
-                          <td width="20%" style="padding:0;Margin:0;"><h4 style="Margin:0;line-height:120%;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;">{{ cart.phone }}</h4></td>
+                          <td width="20%" style="padding:0;Margin:0;"><h4 style="Margin:0;line-height:120%;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;">{{ phone }}</h4></td>
                          </tr>
                        </table>
 
@@ -299,7 +282,7 @@ a[x-apple-data-detectors] {
              </tr>
              <tr style="border-collapse:collapse;">
               <td align="left" style="Margin:0;padding-left:35px;padding-right:35px;padding-top:40px;padding-bottom:40px;">
-                  {% if order.address %}
+                  {% if address %}
                <!--[if mso]><table width="530" cellpadding="0" cellspacing="0"><tr><td width="255" valign="top"><![endif]-->
                <table class="es-left" cellspacing="0" cellpadding="0" align="left" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:left;">
                  <tr style="border-collapse:collapse;">
@@ -309,22 +292,23 @@ a[x-apple-data-detectors] {
                       <td align="left" style="padding:0;Margin:0;padding-bottom:15px;"><h4 style="Margin:0;line-height:120%;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;">Адрес доставки</h4></td>
                      </tr>
                      <tr style="border-collapse:collapse;">
-                      <td align="left" style="padding:0;Margin:0;padding-bottom:10px;"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#333333;">{{ order.address }}</p></td>
+                      <td align="left" style="padding:0;Margin:0;padding-bottom:10px;"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#333333;">{{ address }}</p></td>
                      </tr>
                    </table></td>
                  </tr>
                </table>
-                  {% elif request.user.profile.address %}
+                  {% endif %}
+                  {% if order.comments %}
                <!--[if mso]><table width="530" cellpadding="0" cellspacing="0"><tr><td width="255" valign="top"><![endif]-->
                <table class="es-left" cellspacing="0" cellpadding="0" align="left" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;float:left;">
                  <tr style="border-collapse:collapse;">
                   <td class="es-m-p20b" width="255" align="left" style="padding:0;Margin:0;">
                    <table width="100%" cellspacing="0" cellpadding="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;">
                      <tr style="border-collapse:collapse;">
-                      <td align="left" style="padding:0;Margin:0;padding-bottom:15px;"><h4 style="Margin:0;line-height:120%;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;">Адрес доставки</h4></td>
+                      <td align="left" style="padding:0;Margin:0;padding-bottom:15px;"><h4 style="Margin:0;line-height:120%;mso-line-height-rule:exactly;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;">Комментарии к Заказу</h4></td>
                      </tr>
                      <tr style="border-collapse:collapse;">
-                      <td align="left" style="padding:0;Margin:0;padding-bottom:10px;"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#333333;">{{ request.user.profile.address }}</p></td>
+                      <td align="left" style="padding:0;Margin:0;padding-bottom:10px;"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-size:16px;font-family:'open sans', 'helvetica neue', helvetica, arial, sans-serif;line-height:24px;color:#333333;">{{ order.comments }}</p></td>
                      </tr>
                    </table></td>
                  </tr>

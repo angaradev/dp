@@ -1,25 +1,37 @@
 from django import forms
 from .models import Orders
 from django.conf import settings
+from django.core.exceptions import NON_FIELD_ERRORS
 
 
 
 class OrderForm(forms.ModelForm):
-    phone = forms.CharField(label='')
-    email = forms.EmailField(required=False, label='')
+    messages = {
+            'required': 'Пожалуйста напишите телефон для связи!',
+            'invalid': 'Пожалуйста напишите EMAIL для связи!',
+            }
+
+    phone = forms.CharField(label='', error_messages={'required': 'Enter some telephone please'})
+    email = forms.EmailField(required=True, label='')
     address = forms.CharField(required=False, label='')
     comments = forms.CharField(widget=forms.Textarea, required=False, label='')
     cart = forms.CharField(required=False)
+
+    def clean(self):
+            phone = self.cleaned_data.get('phone')
+            if not phone:
+                raise forms.ValidationError('Invalid Login : I want to change this CSS')
+            return self.cleaned_data
     
     class Meta:
         model = Orders
-        fields = [
-                'email',
-                'phone',
-                'address',
-                'comments',
-                'cart',
-                ]
+        fields = '__all__'
+        error_messages = {
+                'email': {
+                    'invalid': 'Пожалуйста напишите телефон для связи!',
+                    },
+                        
+                }
 
 class PaymentForm(forms.Form):
 
