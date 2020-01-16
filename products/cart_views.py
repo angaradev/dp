@@ -15,13 +15,16 @@ from django.template.loader import render_to_string
 
 
 def order_success(request, order_n):
-    del request.session['cart_id']
-    del request.session['total']
-    
-    context = {
-            'order_n': order_n,
-            }
-    return render(request, 'cart/success.html', context)
+    try:
+        del request.session['cart_id']
+        del request.session['total']
+        
+        context = {
+                'order_n': order_n,
+                }
+        return render(request, 'cart/success.html', context)
+    except:
+        return redirect('home')
 
 
 def order_view(request):
