@@ -67,7 +67,7 @@ def newparts(request):
     elif sort == '3':
         qs = Products.objects.all().order_by('-price')[:200]
     else:
-        qs = Products.objects.all()[:200]
+        qs = Products.objects.all().order_by('price')[:200]
 
     pag = pag_def(show)
     cats = Categories.objects.filter(parent_id=0)

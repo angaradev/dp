@@ -55,7 +55,7 @@ def order_view(request):
         address = request.POST.get('address', None)
     
     # Определяю функцию для отправки писем заказа
-    def send_html_email(order, receiver, template):
+    def send_html_email(order, receiver, template, t='manager'):
         if request.user.is_authenticated:
             phone = request.user.profile.phone
         elif order.phone is not None:
@@ -74,7 +74,6 @@ def order_view(request):
             address = order.address
         subject = 'Заказ запчастей на DucatoParts'
         sender = settings.SHOP_EMAIL_FROM
-        receiver = email
         shop_address = [settings.SHOP_ADDRESS_LINE_1, settings.SHOP_ADDRESS_LINE_2]
         context = { 'cart': cart, 'order': order, 'phone': phone, 'email': email, 'address': address }
         html_msg = render_to_string(template, context)  
@@ -96,6 +95,7 @@ def order_view(request):
                 order_n = Orders.objects.get(cart=cart)
                 request.session['order_n'] = order_n.order_n
                 send_html_email(order_n, settings.SHOP_EMAILS_MANAGERS, 'cart/order_email_manager.html')
+                print(settings.SHOP_EMAILS_MANAGERS)
                 if email:
                     send_html_email(order_n, email, 'cart/order_email.html')
                 if payment_online == 'True':
