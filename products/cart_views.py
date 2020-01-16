@@ -183,7 +183,7 @@ def add_to_cart(request):
             request.session['total'] = cart.items.count()
         else:
             cart = Cart()
-            cart.save()
+            #cart.save()
             cart_id = cart.id
             request.session['cart_id'] = cart_id
             #cart = Cart.objects.get(id=cart_id)
