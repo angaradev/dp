@@ -176,7 +176,7 @@ def cars_subcats(request, car, slug, **kwargs):
     brands = qs.values('brand').annotate(brand_count=Count('brand')) 
     h1 = cats_tmp.name
     try:
-        p = Paginator(qs, pag)
+        p = Paginator(qs.order_by('price'), pag)
         page = request.GET.get('page')
         objects = p.get_page(page)
     except:
