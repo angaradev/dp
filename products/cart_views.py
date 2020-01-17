@@ -172,7 +172,8 @@ def cart_view(request):
 def add_to_cart(request):
     product_id = request.GET.get('product_id', None)
 
-    if product_id is not None:
+    if product_id is not None and request.GET.get('is_ajax', None):
+        print(request.GET.get('is_ajax', None))
         product = Products.objects.get(id=product_id)
         new_item, created = CartItem.objects.get_or_create(product=product, item_total=product.price)
         

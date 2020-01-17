@@ -75,7 +75,8 @@ $(document).ready(function(){
     e.preventDefault();
     var pk = $(this).attr('data-pk');
     data = {
-        product_id: pk
+        product_id: pk,
+        is_ajax: true
     }
     $.ajax({
         type: "GET",
