@@ -44,11 +44,11 @@ class Comment(models.Model):
             return False
         return True
 
-def clean_comment(sender, instance, *args, **kwargs):
-    def clean_bulshit(string):
-        if 'Алексей' in string or 'нажмите' in string:
-            return 'Спасибо за полезную информацию!'
+#def clean_comment(sender, instance, *args, **kwargs):
+#    def clean_bulshit(string):
+#        if 'Алексей' in string or 'нажмите' in string:
+#            return 'Спасибо за полезную информацию!'
+#
+#    instance.content = clean_bulshit(instance.content)
 
-    instance.content = clean_bulshit(instance.content)
-
-pre_save.connect(clean_comment, sender=Comment)
+#pre_save.connect(clean_comment, sender=Comment)

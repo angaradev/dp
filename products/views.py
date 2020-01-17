@@ -362,6 +362,7 @@ def detailed(request, pk):
         content_type = ContentType.objects.get(model=c_type)
         obj_id = form.cleaned_data.get('object_id')
         content_data = form.cleaned_data.get('content')
+        print(strip_tags(content_data))
         parent_obj = None
         try:
             parent_id = request.POST.get('parent_id')
@@ -385,7 +386,7 @@ def detailed(request, pk):
                 'Ducatoparts.ru новый комментарий',
                 f'На дукато партс оставили новый комментарий на странице {url}',
                 'angara99@gmail.com',
-                ['angara99@gmail.com', 'yellkalolka@gmail.com'],
+                settings.SHOP_EMAILS_MANAGERS,
                 fail_silently=False,
                 )
         return HttpResponseRedirect(url)
