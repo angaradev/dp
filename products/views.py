@@ -274,7 +274,7 @@ def subcat(request, slug, **kwargs):
         qs = qs.order_by('-price')
     else:
         qs = qs 
-    qs = qs.order_by['price']
+    qs = qs.order_by('price')
     pag = pag_def(show)
     
     brands = qs.values('brand').annotate(brand_count=Count('brand')) 
