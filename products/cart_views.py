@@ -176,18 +176,16 @@ def add_to_cart(request):
     if product_id is not None:
         product = Products.objects.get(id=product_id)
         new_item, created = CartItem.objects.get_or_create(product=product, item_total=product.price)
-
-        if request.session.get('cart_id', None):
-            cart_id = request.session['cart_id']
-            cart = Cart.objects.get(id=cart_id)
-            request.session['total'] = cart.items.count()
-        else:
-            cart = Cart()
-            #cart.save()
-            cart_id = cart.id
-            request.session['cart_id'] = cart_id
-            #cart = Cart.objects.get(id=cart_id)
         
+
+        if request.session.get('cart_id', None) is None:
+            cart = Cart.objects.create()
+            print(cart.id)
+            request.session['cart_id'] = cart.id
+        else:
+            cart = Cart.objects.get(id=request.session['cart_id'])
+            request.session['total'] = cart.items.count()
+
         if new_item not in cart.items.all():
             cart.items.add(new_item)
             cart.save()
