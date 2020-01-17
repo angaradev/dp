@@ -205,7 +205,10 @@ def add_to_cart(request):
                     'cart_total': new_cart_total,
                     }
             request.session['total'] = cart.items.count()
-            return JsonResponse(json_data)
+            try:
+                return JsonResponse(json_data)
+            except Exception as e:
+                print(e)
 
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
