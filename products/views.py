@@ -63,11 +63,11 @@ def newparts(request):
     sort = request.GET.get('sort', None)
     show = request.GET.get('show', None)
     if sort == '2':
-        qs = Products.objects.all().order_by('price')[:200]
+        qs = Products.objects.all().order_by('price')[200]
     elif sort == '3':
         qs = Products.objects.all().order_by('-price')[:200]
     else:
-        qs = Products.objects.all().order_by('price')[:200]
+        qs = Products.objects.all().order_by('?')[:200]
 
     pag = pag_def(show)
     cats = Categories.objects.filter(parent_id=0)
@@ -168,7 +168,7 @@ def cars_subcats(request, car, slug, **kwargs):
     elif sort == '3':
         qs = qs.order_by('-price')
     else:
-        qs = qs 
+        qs = qs.order_by('?') 
     if not qs:
         raise Http404
 
@@ -176,7 +176,7 @@ def cars_subcats(request, car, slug, **kwargs):
     brands = qs.values('brand').annotate(brand_count=Count('brand')) 
     h1 = cats_tmp.name
     try:
-        p = Paginator(qs.order_by('price'), pag)
+        p = Paginator(qs, pag)
         page = request.GET.get('page')
         objects = p.get_page(page)
     except:
@@ -273,8 +273,8 @@ def subcat(request, slug, **kwargs):
     elif sort == '3':
         qs = qs.order_by('-price')
     else:
-        qs = qs 
-    qs = qs.order_by('price')
+        qs = qs.order_by('?') 
+    qs = qs
     pag = pag_def(show)
     
     brands = qs.values('brand').annotate(brand_count=Count('brand')) 
