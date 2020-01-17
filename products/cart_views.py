@@ -98,7 +98,6 @@ def order_view(request):
                 order_n = Orders.objects.get(cart=cart)
                 request.session['order_n'] = order_n.order_n
                 send_html_email(order_n, settings.SHOP_EMAILS_MANAGERS, 'cart/order_email_manager.html')
-                print(settings.SHOP_EMAILS_MANAGERS)
                 if email:
                     send_html_email(order_n, email, 'cart/order_email.html')
                 if payment_online == 'True':
@@ -180,7 +179,6 @@ def add_to_cart(request):
 
         if request.session.get('cart_id', None) is None:
             cart = Cart.objects.create()
-            print(cart.id)
             request.session['cart_id'] = cart.id
         else:
             cart = Cart.objects.get(id=request.session['cart_id'])
@@ -203,10 +201,7 @@ def add_to_cart(request):
                     'cart_total': new_cart_total,
                     }
             request.session['total'] = cart.items.count()
-            try:
-                return JsonResponse(json_data)
-            except Exception as e:
-                print(e)
+            return JsonResponse(json_data)
 
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
