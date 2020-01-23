@@ -74,7 +74,7 @@ def blog(request, slug):
 
     form = CommentForm(request.POST or None, initial=initial_data) 
     user_string = None
-    if form.is_valid():
+    if form.is_valid() and request.user.is_authenticated:
         
         if request.user.is_authenticated:
             user_string = request.user

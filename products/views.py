@@ -393,9 +393,7 @@ def detailed(request, pk):
                 )
         return HttpResponseRedirect(url)
     else:
-        messages.error(request, "Оставить комментарий может только зарегестрированный пользователь!")
-        print(messages.get_messages(request))
-    
+        pass 
 
     #comments count stuff
     def check_comment_count():
