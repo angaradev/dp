@@ -18,6 +18,7 @@ from star_ratings.models import Rating
 from .utils import get_weight, search_splitter
 from blogs.models import Blogs
 from django.shortcuts import redirect
+from django.contrib import messages
 
 def show_cars():
     qs = Products.objects.values('car').annotate(dcount=Count('car'))
@@ -349,7 +350,9 @@ def detailed(request, pk):
 
     form = CommentForm(request.POST or None, initial=initial_data)
     user_string = None
-    if form.is_valid():
+
+    # Allow leave comments only for authenticated users
+    if form.is_valid() and request.user.is_authenticated:
 
         if request.user.is_authenticated:
             user_string = request.user
@@ -362,7 +365,6 @@ def detailed(request, pk):
         content_type = ContentType.objects.get(model=c_type)
         obj_id = form.cleaned_data.get('object_id')
         content_data = form.cleaned_data.get('content')
-        print(strip_tags(content_data))
         parent_obj = None
         try:
             parent_id = request.POST.get('parent_id')
@@ -384,12 +386,15 @@ def detailed(request, pk):
         url = new_comment.content_object.get_absolute_url()
         send_mail(
                 'Ducatoparts.ru новый комментарий',
-                f'На дукато партс оставили новый комментарий на странице {url}',
+                f'На дукато партс оставили новый комментарий на странице {url}, Текст: {content_data}',
                 'angara99@gmail.com',
                 settings.SHOP_EMAILS_MANAGERS,
                 fail_silently=False,
                 )
         return HttpResponseRedirect(url)
+    else:
+        messages.error(request, "Оставить комментарий может только зарегестрированный пользователь!")
+        print(messages.get_messages(request))
     
 
     #comments count stuff
@@ -403,8 +408,8 @@ def detailed(request, pk):
         elif count >= 5:
             comment_word = 'КОММЕНТАРИЕВ'
         return comment_word
-    # Форма звонка Вася
 
+    # Форма звонка Вася
     e_form = EmailFormLight(request.POST or None)
 
     #Article founder starts here
